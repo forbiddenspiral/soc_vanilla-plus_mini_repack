@@ -1,0 +1,406 @@
+===================
+Crashes still in the game:
+===================
+
+=========================================
+Search this file for the error message you saw, following the 
+instructions in the first section.
+
+This list is undergoing constant revision.  For the latest 
+version of this list, see:
+http://www.metacognix.com/stlkrsoc/CrashesStillInTheGame.html
+=========================================
+
+STALKER still has a lot of issues that cause the game to exit, 
+normally called "Crash to Desktop" or CTD. The best way of 
+dealing with these CTDs is to save your game often, and 
+periodically to named saves. The ZRP has a quick named save 
+feature ("Save Level Game" on the main menu, or press ESC S) that 
+can be used for this purpose. 
+
+If your game "blue-screens" (BSOD - blue screen of death) and 
+reboots: You can stop the reboot to see the specific error. In 
+XP: Start > Control Panel > System > Advanced tab > "Start and 
+Recovery" Settings button > uncheck "Automatically restart" under 
+"System failure". Click OK on each dialog to exit. 
+
+BSODs are usually driver-related, although they can also be 
+related to other issues. The error module reported on the blue 
+screen can be useful in determining the cause of the crash. 
+
+If your game locks up during the Synchronizing stage, this is 
+usually due to an error that was logged but the BugTrap dialog is 
+not visible. You can kill the game via the Windows Task Manager; 
+in XP you can press ctrl-alt-del, alt-E, E to end the current 
+task. You may be able to avoid hard lockups by using the 
+-silent_error_mode command line parameter at the end of the 
+target line in the shortcut you use to start STALKER. The crash 
+might still occur, but the game will simply exit to the desktop. 
+This is recommended even if you don't have hard lockup crashes. 
+
+If you see a screen talking about an error in XR_3DA.exe, it is 
+usually the BugTrap dialog asking you to send in an error report. 
+Don't do it; it doesn't work in STALKER SoC. Instead, find the 
+log file (next paragraphs). 
+
+If your game crashes or locks up, look for the log file that 
+STALKER creates before running your game again. (STALKER 
+overwrites the log each time you start the game.) 
+
+The saved games and logs are on the C: drive by default in the 
+STALKER-SHOC subdirectory. In Vista this subdirectory is under 
+\Users\Public\Documents while in XP this is found in \Documents 
+and Settings\All Users\Documents. 
+
+The latest error log, called xray_<your_user_login>.log* is under 
+STALKER-SHOC in the logs\ subdirectory, while the saved games are 
+stored in the savedgames\ subdirectory. 
+
+*<your_user_login> is usually your name, the one you see at the 
+top of the menu when you click on the "start" button on the 
+taskbar in XP. If your user name is Robert, for example, then you 
+would find a file named xray_Robert.log. 
+
+Open the log file with a text editor or viewer. At the end of 
+that file is usually a section that starts with "FATAL ERROR" and 
+has lines beginning with "[error]" or following "stack trace". 
+These lines are useful in identifying most script and 
+configuration errors. 
+
+
+0: ================
+Any crash that references "out of memory" or similar.
+
+STALKER is resource-intensive. If you encounter this error, here 
+are some workarounds: 
+
+Reduce your texture quality, or perhaps even revert to DX8 mode 
+(static lighting). 
+
+Run with the " -noprefetch" command line option. Put the stuff in 
+quotes at the end of the target line for the shortcut you use to 
+launch STALKER. 
+
+If you are running Vista, you can use the command "bcdedit 
+/SetIncreaseUserVA 3072" while logged on with Administrator 
+rights. 
+
+
+1: ================
+stack trace:
+
+001B:0188B3B6 xrRender_R1.dll (or xrRender_R2.dll)
+
+This is a driver error problem, likely caused by STALKER passing 
+in bad data to a video driver function or perhaps due to a 
+stalled or hung thread so that the processing is not handled in a 
+timely manner. The good news is that it is a temporary failure, 
+and reloading the last save will usually get around the problem. 
+One common location for this error is Yantar, most often just 
+northeast of the ecologist bunker. 
+
+
+2: ================
+FATAL ERROR
+ 
+[error]Expression    : assertion failed
+[error]Function      : CSafeFixedRotationState::create
+[error]File          : e:\stalker\patch_1_0004\xr_3da\xrgame\phvalidevalues.h
+[error]Line          : 81
+[error]Description   : dBodyStateValide(b)
+ 
+
+stack trace:
+
+This is apparently caused by a bad controller animation, usually 
+when it is under attack. Sometimes it is preceded by a severe FPS 
+drop, caused by another problem (like DetailPathManager failure). 
+
+Treatments: Kill the controller(s) before they enter this state. 
+Either rush to the controller and deal with it, or use the ZRP 
+debug code (debug mode must be enabled; default: Esc D K 
+[mnemonic: debug kontroller]) to kill all on-line controllers 
+before they crash the game. 
+
+
+3: ================
+FATAL ERROR
+ 
+[error]Expression    : e_entity
+[error]Function      : xrServer::Process_event_reject
+[error]File          : E:\stalker\patch_1_0004\xr_3da\xrGame\xrServer_process_event_reject.cpp
+[error]Line          : 12
+[error]Description   : entity not found. id_parent=1350 id_entity=1312 frame=11471
+ 
+
+stack trace:
+
+Scheduler tried to update object lvl_community_respawn_xxxxx 
+(e.g., esc_soldier_respawn_11350) 
+
+This crash typically occurs when a newly-killed NPC's dropped 
+weapon is destroyed or leaves the level (e.g., falls through the 
+ground) while being evaluated as a possible replacement by 
+another NPC. 
+
+Treatments: You can use the ZRP "store-weapons-in-backpack" 
+option to reduce the incidence. If the problem occurs, you can 
+usually load the previous save prior to the crash and resume. 
+
+
+4: ================
+If the unmodded game crashes with a pair of xrGame.dll lines in 
+the stack trace and nothing else, or if it shows a "Can't load 
+section" error, the saved game might be corrupt. This can be 
+caused by the game destroying a body but not cleaning up the spot 
+associated with the body. You will have this problem when you see 
+"- Critical: SMapLocation binded to non-existent object 
+id=xxxxx", although this is easily missed because it can occur 
+much, much earlier before the error in the corrupted save is 
+encountered after a reload. 
+
+You might also see an accompanying "- Critical: 
+CMapLocation::UpdateSpot binded to non-existent object id=xxxxx" 
+in the log if you catch the problem when it occurs. 
+
+NOTE: This type of destruction often occurs in mods or in arena 
+venues, but it can also happen when an anomaly (like one of the 
+Whirlygigs found in Pripyat's stadium) destroys a body in vanilla 
+gameplay. 
+
+Treatment: You will have to find a save game that does not have 
+this problem. Good luck with that. 
+
+
+5: ================
+! Cannot build GAME path! (object m_tushkano_normal21511)
+! CURRENT LEVEL : l10_radar
+! CURRENT game point position : [376.978180][-51.199860][29.992897]
+ 
+FATAL ERROR
+ 
+[error]Expression    : I != levels().end()
+[error]Function      : GameGraph::CHeader::level
+[error]File          : e:\stalker\patch_1_0004\xr_3da\xrgame\game_graph_inline.h
+[error]Line          : 171
+[error]Description   : there is no specified level in the game graph : 96
+ 
+
+stack trace:
+
+Scheduler tried to update object m_tushkano_normal21511
+
+... or something like ...
+
+FATAL ERROR
+ 
+[error]Expression    : false
+[error]Function      : CGameGraph::distance
+[error]File          : e:\stalker\patch_1_0004\xr_3da\xrgame\game_graph_inline.h
+[error]Line          : 96
+[error]Description   : There is no proper graph point neighbour!
+ 
+
+stack trace:
+
+
+Cause: Some mutant or NPC was spawned in a bad place. STALKER 
+will spawn Alife in a random radius about a spawn point, which 
+helps make the spawn different each time. Unfortunately this 
+sometimes puts the entity in a spot outside a level, or it falls 
+below the level. 
+
+
+Treatment:  Reload a previous save.
+
+6: ================
+! DetailPathManager has failed : from [142.099976,-4.614447,445.899963] to [142.099976,-5.792273,443.799988]
+! DetailPathManager has failed : from [142.099976,-4.614447,445.899963] to [142.099976,-5.792273,443.799988]
+! DetailPathManager has failed : from [142.099976,-4.614447,445.899963] to [142.099976,-5.792273,443.799988]
+stack trace:
+
+001B:01E59454 xrGame.dll
+001B:01E5E8A4 xrGame.dll
+001B:01E5E584 xrGame.dll
+
+Cause: An NPC or mutant was switched online in a bad place, and 
+there is no possible connection path to the destination. STALKER 
+uses a grid network of squares with connections to adjoining 
+squares, but some squares are isolated. Examples: behind rocks on 
+the edge of a map, or on a different elevation than the 
+destination. 
+
+
+Treatment:  Reload a previous save.
+
+7: ================
+FATAL ERROR
+ 
+[error]Expression    : fatal error
+[error]Function      : CScriptEngine::lua_error
+[error]File          : D:\xray-svn\xr_3da\xrGame\script_engine.cpp
+[error]Line          : 74
+[error]Description   : <no expression>
+[error]Arguments     : LUA error: e:\stalker\gamedata\scripts\_g.script:20: bad argument #2 to 'format' (string expected, got no value)
+ 
+
+stack trace:
+
+
+8: ================
+Some rare crashes, whose treatment is to reload a previous save:
+
+stack trace:
+
+001B:004BCFBC XR_3DA.exe, CTheoraSurface::`vftable'()
+001B:0298C084 xrGame.dll
+001B:02994577 xrGame.dll
+
+It can be caused by viewing a contact in your PDA when that 
+contact is switched offline (e.g., watch Shaggy exit to the 
+Garbage after saving him). 
+
+
+------------
+stack trace:
+
+001B:00451CE8 XR_3DA.exe, CKinematicsAnimated::ID_Cycle_Safe()
+------------
+
+9: ================
+
+[error][     183]    : Cannot create a file when that file already exists.
+
+This might happen when there are two consecutive exceptions 
+(errors) at the same time. The severity of the error is a 
+function of the previous error. 
+
+
+10: ================
+Symptoms: CTD error: Can't load section: xxx\yyy, where xxx\yyy 
+has an invalid character in the path or name of the object. 
+
+
+Causes:
+
+DVD read errors or STEAM download errors, resulting in a corrupt 
+all.spawn file or database.db* file (and all saved games based on 
+them). 
+
+Mod errors due to differences between save/load functions. 
+
+Using a saved game from two (or more) patches earlier in a 
+newly-upgraded game. You cannot use a 1.0001 save game in patch 
+1.0005 directly; you must patch to 1.0003, load the 1.0001 saved 
+game, save, patch to 1.0004, load the 1.0003 saved game, save, 
+and maybe patch to 1.0005/load/save if desired. This is because 
+the patch can only convert the saved game of the 
+immediately-prior patch to the current format. It is usually best 
+to start a new game anyway, to take advantage of the fixes and 
+improvements in the all.spawn file. 
+
+Treatments: STEAM: Verify the integrity of the STEAM download 
+(start by right-clicking the entry in the launcher). Try 
+re-installing the game. You may have to replace the DVD drive; 
+install the game on another computer as a test. You might have a 
+bad DVD; contact THQ if so. 
+
+
+11: ================
+Mod errors, which include the following:
+
+------------
+stack trace:
+
+001B:007A105B xrLUA.dll
+001B:01FB185A xrGame.dll
+
+Typical causes: Broken dialog script or broken dialog XML tree. 
+Example: No existing function for dialog condition. 
+
+------------
+stack trace:
+
+001B:026339F6 xrGame.dll
+001B:007C6D9D xrLUA.dll, luabind::detail::get_class_name()
+001B:007CBCFD xrLUA.dll, luabind::detail::class_rep::function_dispatcher()
+001B:007AA60B xrLUA.dll, lua_getinfo()
+
+Typical cause: C++ function call has invalid arguments. For 
+example, a vector is missing an argument. 
+
+------------
+Starting engine...
+Loading DLL: xrGameSpy.dll
+stack trace:
+
+001B:02155A45 xrGame.dll
+
+Typical cause: main_menu.script has an error.
+
+------------
+FATAL ERROR
+ 
+[error]Expression    : res!=-1
+[error]Function      : get_rank
+[error]File          : E:\stalker\patch_1_0004\xr_3da\xrGame\ui\Restrictions.cpp
+[error]Line          : 34
+[error]Description   : cannot find rank for
+[error]Arguments     : wpn_my_l33t_ubercool_weapon_m1
+ 
+
+stack trace:
+
+Scheduler tried to update object esc_factory_prisoner_guard
+
+Cause: The game exits because the NPC cannot determine the 
+relative value of a mod-specific weapon. 
+
+Treatment: An entry for the new weapon needs to be added to the 
+"available_items" list for one of the ranks in 
+config\mp\mp_ranks.ltx. CAUTION: a semicolon (;) starts a 
+comment, so anything after a semicolon on the long line will be 
+ignored. 
+
+------------
+
+
+===================
+Errors that do not cause obvious trouble:
+===================
+
+~ ERROR: can't detach independant object. entity[wpn_ak7414270:14270], parent[pri_monolith_respawn_114248:14248], section[wpn_ak74]
+~ ERROR: can't detach independant object. entity[wpn_mp52539:2539], parent[agr_factory_defence_stalker6:2532], section[wpn_mp5]
+~ ERROR: can't detach independant object. entity[wpn_ak742662:2662], parent[agr_factory_assault_soldier1:2656], section[wpn_ak74]
+
+or
+
+~ ERROR: can't detach independant object. entity[wpn_ak7414270:14270], parent[single_player:0], section[wpn_ak74]
+
+This warning is caused by the moving of a loose gun which has no 
+parent (owner) into the inventory of the actor or that of an NPC 
+body. Technically, one should not teleport a weapon that isn't 
+theirs. This is the result of a hack to clean up a battlefield of 
+weapons, or a hack to prevent an NPC from dropping a gun -- but 
+he already has, so he is no longer the parent. 
+
+It may be possible to "fix" the warning by assigning a parent to 
+the weapon first. 
+
+------------
+~ cannot remove restriction with id 
+[2734][agr_zone_radioactive_average] to the entity with id 
+[2808][agr_flesh_normal], because it is not added 
+
+A mutant has died, and the cleanup code attempted to remove the 
+anomaly protection (which keeps the mutant away from the 
+specified anomalies) from the mutant -- but the protection was 
+not assigned to the mutant to start. This should be fixable by 
+adding the protection to the mutant configuration files, although 
+only newly-spawned mutants will be freed from the warning 
+"error". 
+
+------------
+!!!processing_enabled ->destroy_queue.push_back physic_destroyable_object[42003] frame [2234850]
+
+I have no idea.

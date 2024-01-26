@@ -1,0 +1,794 @@
+
+    What's New in ZRP 1.07?
+
+Changed files are noted in square brackets.  Scripts are in the 
+gamedata\scripts\ subdirectory.  You should also review the 
+earlier ZRP documentation in the docs\ subdirectory, including 
+other ZRP_Changes_*.txt files.
+
+
+=====================================
+Changes in 1.07 R4 over ZRP 1.07 R3
+=====================================
+ZRP 1.07 R4 changes (NatVac and others as noted):
+* Fixed uncommon Lukash dialog branch CTD.
+  [config\gameplay\dialogs_military.xml]
+* Enabled nighttime ambient music, starts after midnight.
+  [config\game_levels_music.ltx]
+* Sleeping NPCs now turn off headlamps. (ZaGaR)
+  [sr_light.script]
+* Removed references to unused kishka, deadcity gulags.
+  (Also see R3 change in config\misc\gulag_tasks.ltx.)
+  [xr_gulag.script]
+* Added 'select' conditional section support to gulag jobs. 
+  This generally fixes Nimble's post-merc-attack desire to 
+  return to the site of captivity; just save/reload after 
+  the battle otherwise. [config\misc\gulag_escape.ltx, 
+  xr_gulag.script, xr_logic.script]
+* Veteran bandits are now allowed in the Garbage gulags.
+  [config\misc\smart_terrain_presets.ltx]
+* Minor tweaks to logic, part of ongoing process. Example: 
+  Bes looks across vehicle graveyard instead of at you when 
+  telling his team to take their positions.
+  [config\misc\gulag_garbage.ltx et alia]
+* Sakharov's task to find special suit no longer available 
+  until after X18, prevents futile attempt until "that psi 
+  protection" is accessible. [config\misc\task_manager.ltx]
+* Trade files have been updated to reduce/eliminate trade 
+  exploits. (MrSeyker) [config\misc\trade_*.ltx, 
+  config\misc\optional\trade_*.ltx]
+* Fixed binoc animation, FN F2000 silencer icon, 3rd-person 
+  knife view with jrmy's data. (MrSeyker, jrmy)
+  [config\weapons\*.ltx, config\weapons\optional\*.ltx]
+* Updated default and real weapon names. It was a lot of 
+  work. Good job! (MrSeyker) [In config\text\eng\optional, 
+  stable_storyline_info_military..xml.(real_gun_names,zrp),
+  string_table_enc_weapons.xml.(real_gun_names,zrp),
+  string_table_tasks_bar.xml.(real_gun_names,zrp)]
+* Added keybinding choices for first/third-person view.
+  (MrSeyker) [config\ui\ui_keybinding.xml]
+* Some additional script resource optimizations, better 
+  string management. [various; mainly gulag_*.script]
+* Certain important scripts are now pre-loaded. 
+  [_g.script, _z.script, modules.script, xr_*.script]
+* Removed some unusable tasks. [config\gameplay\tasks_*.xml, 
+  config\gameplay\game_tasks.xml]
+* Tweaked sound theme stuff a bit. Good weather also used 
+  idle camp remarks, but weather theme timing had made NPCs 
+  chatterboxes. [sound_theme.script]
+* Fixed Hunter's bio reference.
+  [config\gameplay\character_desc_bar.xml]
+* Added extra X16 objective to reduce confusion.
+  [gameplay\tasks_yantar.xml]
+* Stopped post-X19 replacement antenna farm monolith from 
+  suiciding. [gulag_radar.script]
+* Added in-your-face fatal config error dialog as in-game 
+  warning was not enough for some. This prevents the creation 
+  of bad mismatched-version saves due to custom system.ltx.
+  [already in _dev.script, made zrp_notice.script default]
+* Zombies should no longer panic at grenades.
+  [xr_danger.script]
+* Reworked camp logic:
+    1. NPCs can no longer get the same spots in any camps. 
+    However, some camp spots still share a common destination 
+    vertex or the vertex is not accessible. Some camp spots 
+    with a shared or invalid vertex are already pruned. 
+    (Some camps will need a new game start for complete fix.) 
+    An extra camp in bar has been activated to guarantee 
+    capacity not exceeded for pruned Bar camps.
+    Please report any camps needing attention.
+    2. Stalled NPCs should snap out of their zone fugue. 
+  [xr_kamp.script, gulag_*.script, config\misc\gulag_*.ltx]
+* You can no longer buy binoculars from NPCs per Decane.
+  [config\misc\trade_generic.ltx]
+* Implemented workaround for xrGame.dll bug that runs 
+  overweight tutorial in psi emission field per Decane.
+  [_g.script]
+* Tweaked task manager to better handle 'find' tasks if 
+  found but not present during dialog with task giver. Issue 
+  reported by Decane et alia. [task_manager.script]
+* Tweaked bolt's force_grow_speed; secondary throw charges 
+  seven times faster. (Decane) [config\weapons\w_bolt.ltx]
+* Mark Duty HQ, not Voronin, in Kitsenko dialog per Decane.
+  [bar_dialogs.script]
+* Fixed wrong auto-completion of some autoquests like "Defend 
+  the stalkers at the campsite". [gulag_general.script, 
+  xr_gulag.script]
+* Reworked Barkeep storyline dialog so that X18 uses same 
+  start/gain/done checks as X16 and X19, fixed id="11". 
+  [_dev.script, config\gameplay\dialogs_bar.xml]
+* TZIO: Added Cordon blockpost case to list to add if needed. 
+  (Not likely, but original removed if task marked as done.)
+  [_dev.script]
+* Replaced broken Agroprom soldier path reported by castl.
+  [config\misc\gulag_agroprom.ltx; see also all.spawn]
+* Added newline to Pripyat loner squad logic. (castl)
+  [gulag_pripyat.script]
+* Added isWeapon() support for RG6. (castl) [_g.script]
+* Fixed Pripyat Monolith worshippers not going aggro when 
+  hurt. [gulag_pripyat.script]
+* Fixed Dark Valley watchtower guards and sniper shooting the 
+  Duty sacrifice victim early. [gulag_dark_valley.script]
+* Removed one more Pripyat Electro anomaly for free play.
+  [_z.script]
+* Attempted fix of time display for wide-screen players.
+  [config\ui\ui_custom_msgs.xml]
+* More formatting tweaks of inventory display. (experimental) 
+  [af_params*.xml, inventory_new*.xml in config\ui\]
+* Extended anim control to include Options dialog.
+  [scripts\ui_mm_opt_main.script]
+* Disabled Rostok helicopter fires after a certain point of 
+  progress. [_z.script]
+* Added four more named autosaves as option; see Modifier 
+  changes below. [bind_stalker.script]
+* Modified debug coordinates display, added options; see 
+  Modifier changes below. [_z.script]
+* Returned lightly-wounded weapon action to "strapped".
+  [state_lib.script; see also Vanilla.cfg Modifier changes]
+* Stopped psi-emission intensity doubling on save/reload, 
+  automatically cures stuck psi-field effect on save/reload. 
+  [sr_psy_antenna.script]
+* Removed Red Forest "sleep room" psi-emission bug/exploit.
+  [sr_psy_antenna.script]
+* Merged ZRP script changes into corresponding files in 
+  ai_rx\, grenadier\ and ZRP\ under script\optional\.
+  [bind_stalker.script, modules.script, xr_kamp.script, 
+  xr_logic.script, corresponding add-on files]
+
+All.spawn changes/fixes since R3 (requires new game):
+* Fixed Garbage bandit respawner condition per ZaGaR.
+  [alife_l02_garbage.ltx]
+* Adjusted path of Garbage Duty blockpost patrol to stop 
+  him from shoving campfire guys. [way_l02_garbage.ltx]
+* Removed spaces from space_restrictor names.
+  [alife_l06_rostok.ltx, alive_l08u_brainlab.ltx]
+* Replaced broken Agroprom soldier path reported by castl.
+  [gulag_agroprom.ltx, way_l03_agroprom.ltx]
+* Surviving Kruglov-attack mercs either don't go offline or 
+  don't join ANY quest target camps before they do.
+  [alife_l06_rostok.ltx]
+* Gave Kruglov/Semenov something to play with in the bunker. 
+  [way_l08_yantar.ltx]
+* Removed limit from merc resupply chest in north farmstead. 
+  [alife_l07_military.ltx]
+* Changed Red Forest Monolith and military respawners from 
+  medium frequency to often. [alife_l10_radar.ltx]
+* Reduced some camp spot availability to conform with the 
+  reality of situational obstructions. [way_l05_bar.ltx,
+  way_l10_radar.ltx]
+* Removed spaces from object names. 
+  [alife_l06_rostok.ltx, alife_l08u_brainlab.ltx]
+* Some level changer destination view angles or reject 
+  positions have been adjusted. [various alife_*.ltx and 
+  way_*.ltx, see diffs]
+
+Modifier changes (NatVac unless noted):
+* Real Gun Names are closer to canon. (MrSeyker, NatVac) 
+  [modcfg\_ZRP.cfg, associated Real Gun Name files]
+* More actor.ltx variables are configurable. (MrSeyker) 
+  [modcfg\Actor.cfg]
+* Explosives Carry weight is now adjustable. (MrSeyker) 
+  [modcfg\Experimental.cfg]
+* New Autosaves option to save four more points of progress 
+  (DV and Cordon post X18, Yantar post X16, Red Forest post 
+  X19). Best with new games. [modcfg\_ZRP.cfg]
+* New Vanilla option to restore the original drop-weapon 
+  behavior for NPCs when wounded. [modcfg\Vanilla.cfg]
+* New First-Person Shooter configuration. Read the docs!
+  [modcfg\FirstPersonShooter.cfg, weapons.ltx.fps/.zrp 
+  in config\weapons\optional\]
+* Additional Spawn Tools utility to give Sid the special 
+  Groza/Tunder 5.45 if conditions are right.
+  [scripts\optional\z_give_sidorovich_groza_m1.script, 
+  modcfg\SupportUtilities.cfg]
+* New Debug Options. [modcfg\_ZRP.cfg]
+
+Debug changes (NatVac):
+* Changed use of db.actor:direction() to device().cam_dir,
+  from comment by smoq2. This eliminates need to move a bit 
+  in the desired direction -- just look there.  [_z.script, 
+  z.script, zx.script, z_spawn_item.script]
+* zx.heal_if_needed() still reports NPC health if you have no 
+  standard medkits. [zx.script]
+* Added view angle (up/down) support to debug direction. This 
+  is useful for level changers. (Esc P, Esc D) 
+  [_z.script, zx.script]
+* Adjusted Esc D debug display position and information.
+  [config\ui\ui_custom_msgs.xml, _z.script]
+* Updated versions of some utilities. You can now spawn 
+  grenades. [_z.script, z_spawn_item_in_inventory.script,
+  z_mark_by_partial_name.script, z_variable_watch.script]
+* Increased the use of hard spaces in debug output for 
+  readability. Just remember that they are hard spaces.
+  [_g.script's dbglog() function; see z.print_table()] 
+* Updated docs\ZSU_ExecuteLuaCommand.txt with print_table 
+  example.
+
+=====================================
+Changes in 1.07 R3 over ZRP 1.07 XR2
+=====================================
+ZRP 1.07 R3 changes (NatVac and others as noted):
+* Prevent accidental membership in Freedom. (MrSeyker)
+  [config\gameplay\dialogs_military.xml]
+* Restored original odds of finding grenades on bodies. 
+  [death_items_by_communities.ltx]
+* Prevent dialog crash when talking with wounded NPCs that 
+  are normally enemy (bandits, mercs, military, monolith).
+  [config\misc\dialog_manager.ltx, 
+  config\text\eng\stable_dialog_manager.xml]
+* Prevent Petruha's team from repeating his report should he 
+  die afterward (Lijenstina, NatVac per ZaGaR). 
+  [config\misc\gulag_escape.ltx] 
+* Fixed missing hit@ and death@ logic section references
+  reported by castl.  [gulag_bar.ltx, gulag_mil_dolg.ltx 
+  in config\misc\]
+* Fixed typos in meet@ logic for Freedom trader and armory 
+  guard. [config\misc\gulag_mil_freedom1.ltx]
+* Changed on_meet@ to meet@ logic for AW Freedomers.
+  [gulag_mil_fblockpost.ltx, gulag_mil_freedom1.ltx and 
+  gulag_mil_freedom3.ltx in config\misc\]
+* Red Forest cut/paste logic errors corrected per Lijenstina. 
+  [config\misc\gulag_radar.ltx]
+* Removed unused level and test logic. 
+  [config\misc\gulag_tasks.ltx, gulag_tasks.script]
+* Sleeping bag support added. (Speed/Ab@dDon/fatrap/NatVac) 
+  [_custom_items.ltx, dream.ltx, sleeping_bag.ltx in 
+  config\misc\; config\ui\ui_movies.xml, _z.script, 
+  _dev.script, abc_sleep.script, sleep_manager.script]
+* Guardian of Freedom 3rd-person view corrected per Riddle. 
+  [config\misc\outfit.ltx]
+* Post DV-scam replacement loners don't also follow scam 
+  triggers. [config\scripts\val_rob_leader.ltx]
+* Wide-screen inventory text spacing tweak by Riddle.
+  [af_params_16.xml, inventory_new_16.xml in config\ui\]
+* General script cleanup: used # instead of table.getn(), 
+  commented out printf()/print_table() in supplied scripts. 
+  Commented out some unused functions/tables. [*.script]
+* Fixed chapter selection progress if equipping only a 
+  knife but not entering free play (strange choice). 
+  Also, items no longer needed are removed. [_dev.script]
+* Antirad injection via Esc F1 now only occurs if you are 
+  irradiated; no wasted antirad doses. [_z.script]
+* Autosaves can be automatically renamed for each level.
+  [config\ui\ui_mm_load_dlg.xml, bind_stalker.script, 
+  ui_load_dialog.script]
+* Controller noise will now fade after your death -- wait for 
+  quiet before reloading a save if told to do so.
+  [bind_stalker.script]
+* Unlocked and opened Monolith Control C-Con doors after 
+  dealing with C-Con using existing vanilla game.  This
+  means true free play without having to start anew or 
+  resort to intra-level jumps or debug teleport, etc.
+  [ph_door.script]
+* Removed ST-incompatible psydog from Pripyat gulag list and 
+  corresponding check function. [gulag_pripyat.script]
+* Increased RPM respawn delay max from 596 hours to 596000 
+  hours (68 game years). [se_respawn.script]
+* Added overspawn protection to RPM for mod support.
+  [se_respawn.script]
+* Minor sound repetition tweaks, additional X19 cooling pump 
+  theme. [sound_theme.script]
+* Added missing self ref to better look at target of 
+  speaker per castl. [xr_remark.script]
+* Lowered Agroprom-to-Yantar dynamic level changer height 
+  per ERForman. [zlc.script]
+* Updated ui_icon_equipment.dds. Changes: new sleeping bag, 
+  explosives; revised medkits, flipped antirad and a couple 
+  of artifacts to see the inventory numbers better.
+  [textures\ui\ui_icon_equipment.dds]
+
+All.spawn changes/fixes since XR2 (requires new game):
+* Fixed snork respawner typo found by Lijenstina.
+  [alife_l04_darkvalley.ltx]
+* Adjusted DV-scam zone check per ERForman. 
+  [alife_l04_darkvalley.ltx] 
+* Restored VOG-25 grenades to bandit inventory box spawn.
+  [alife_l04_darkvalley.ltx]
+* Poker kept out of smart terrains until switched online. 
+  To keep him interesting, his spawning is also delayed. 
+  [alife_l04_darkvalley.ltx] 
+* X18 dream not shown in free play (reported by ERForman). 
+  [alife_l04u_labx18.ltx]
+* Return to Bar level before visiting Sakharov no longer 
+  denies you ecologist suit reward if you first saved Kruglov 
+  in Rostok (per romulous et alia). [alife_l05_bar.ltx]
+* Adjusted level changer map markers for Bar-Garbage and 
+  Army Warehouses-Red Forest.  [alife_l05_bar.ltx, 
+  alife_l07_military.ltx]
+* Kruglov attack's surviving mercs can't join quest target 
+  before going offline per weidrik. [alife_l06_rostok.ltx]
+* Army Warehouses Freedom sniper zone stops making Freedom 
+  your enemy if Skull's group dead. [alife_l07_military.ltx]
+* Army Warehouses "Defend border from Monolith" quest now 
+  accepts all dead/wounded per BobBQ. [alife_l07_military.ltx]
+* Above-ground tunnel door keypad now safe to bump. 
+  (Lijenstina) [alife_l10_radar.ltx]
+* Freedom HQ door guard added to bypass possible delay on 
+  Alife spawn reported by Riddle. [alife_l10u_bunker.ltx]
+* Adjusted ph_sound uses of pump cooling sounds to make them 
+  actually work properly. [alife_l10u_bunker.ltx]
+* Removed smart_terrain assignment from Pripyat psydog. 
+  Normally offline since 1.0004, it would crash games based 
+  on 1.0003 or earlier. [alife_l11_pripyat.ltx]
+* Changed NPP building battle sound switch-off triggers from 
+  non-existent aes_blowout info_portion to one obtained in 
+  Monolith Control. [alife_l12_stancia.ltx]
+* Changed one more chopper to not sound altitude alarm at 
+  final path end.  [alife_l12_stancia.ltx]
+* Fixed monolith camp capacity typo found by Lijenstina.
+  [alife_l12u_sarcofag.ltx]
+* Monolith camp capacity typo found by Lijenstina.
+  [alife_l12u_sarcofag.ltx]
+* Reduced height of gar_way_if_reject_to_bar (level changer 
+  reject/ZRP level jump position). [way_l02_garbage.ltx]
+
+Modifier changes (NatVac unless noted):
+* Autosave choices added. [modcfg\_ZRP.cfg]
+* Sleeping bag enable/disable. [modcfg\_ZRP.cfg]
+* CGI cutscenes are now always skippable. [modcfg\_ZRP.cfg,
+  config\ui\ui_movies.xml]
+* Inventory vanilla grid choices added per lowenz. 
+  [modcfg\_ZRP.cfg]
+* Freedom Vs. Duty configuration added to permit joining 
+  Duty or Freedom, or gaining access to Freedom armory.
+  (MrSeyker) [modcfg\Freedom Vs. Duty.cfg/.cfg.txt]
+* Hint now warns of possible weather mod collision for 
+  env_ambient.ltx (ERForman). [modcfg\Soundmanagement.cfg]
+* Revert for Weather Choices removes both modded files.
+  [modcfg\Experimental.cfg]
+* xStream's AIPack, Rulix AI and a ZaGaR-customized version 
+  of xStream's Grenadier are now available as installable and 
+  configurable options. [modcfg\Experimental_AI.cfg]
+* NPC Use Single Item Rule added.  Now you can change it 
+  without having to edit a file. [modcfg\Experimental_AI.cfg]
+* Door Repair/Door Removal scripts added.
+  [modcfg\SupportUtilities.cfg]
+* Mark By Partial Name script added to marking scripts.
+  [modcfg\SupportUtilities.cfg]
+* Wording changed to make clear that a full version of Quest 
+  Overhaul (Decane, with NatVac modifications/extensions) is 
+  included (not-default option). [modcfg\QuestOverhaul_2.cfg]
+* Updated Real Gun Names and associated files per MrSeyker.
+  [config\ui\text\eng\optional\string_table_enc_*.*]
+* A special configuration file is included for tweaking ZRP 
+  for even more vanilla behavior. [modcfg\Vanilla.cfg]
+
+Debug changes (NatVac):
+* Optional functionality moved from _z.script to zx.script. 
+  Move, rename or delete zx.script if that functionality is 
+  not desired. [_z.script, zx.script]
+* User-defined macros can be manually assigned, and menu keys 
+  can be redefined.  Optional file _custom_zrp.script must be 
+  copied from scripts\optional to scripts, or you must merge 
+  the changes with any existing scripts\_custom_zrp.script.
+  [zx.script, optional\_custom_zrp.script]
+* Esc 1 will use an existing medkit. scientific medkit, 
+  or army medkit in that order, or if Marked One is not 
+  seriously hurt or not bleeding, will use food. [zx.script, 
+  optional\_custom_zrp.script]
+* Esc Home opens the sleeping bag dialog directly via macro. 
+  See macro info in gamedata\docs\DebugSupportChanges.txt. 
+  [zx.script, optional\_custom_zrp.script]
+* Esc D O now uses game's CLSIDs which can vary in mods.
+  [zx.script]
+
+  See docs\DebugSupportChanges.txt for details. 
+
+ZRP Support Utilities Changes (NatVac):
+These changes require the re-installation of the ZSU scripts. 
+If you have edited your scripts, be sure to back them up and 
+merge the changes.
+* Added quick-key option to a few scripts which saves clicks 
+  and keystrokes:
+  Faction Friendship [z_faction_friends.script]
+  Faction Relationship Repair 
+  [z_faction_relationship_repair.script]
+  Repair Weapon or Armor [z_repair_item_in_slot.script]
+  Spawn AP Ammo For Weapon 
+  [z_spawn_ap_ammo_for_slot_weapon.script]
+* Added door/gate/switch repair and door removal scripts.
+  [z_remove_nearest_doors.script, z_repair_dv_gate.script, 
+  z_repair_nearest_door.script]
+* Added Mark By Partial Name script.
+  [z_mark_by_partial_name.script]
+* Added script to fix the Rostok Merc/Bandit quest.  It 
+  must be copied from scripts\optional\ to scripts\ for use.
+  It is not needed for a new ZRP 1.07 R3 game.
+  [optional\z_fix_rostok_merc_bandit_quest.script]
+
+=====================================
+Changes in 1.07 XR2 over ZRP 1.07 XR1
+=====================================
+ZRP 1.07 XR2 changes (NatVac):
+* Converted def_box spawn odds into a modifiable variable.
+  [xr_box.script]
+* Returned nightvision sound to vanilla; was using ZRP quiet
+  version. [config\misc\items.ltx]
+* Restored vanilla silencer accuracy multiplier to 1.25.  Use 
+  Weapons entry in Experimental.cfg to tweak it back to 0.8 if 
+  desired. [config\weapons\weapons.ltx]
+* Made the Explosives Carry feature optional -- see entries 
+  in Experimental.cfg. [config\weapons\weapons.ltx]
+
+All.spawn changes since XR1 (NatVac - requires new game):
+* All Monolith invaders at the AW barrier must be dead to 
+  complete Cap's task.  (Wounding not yet enough.)  BobBQ
+  request partially completed. [alife_l07_military.ltx]
+* Attempt made to fix PM/Makarov jumping up a floor from 
+  armory to Lukash's office per BobBQ. [alife_l07_military.ltx]
+* Attempt to make code-locked bunker grenades visible.
+  [alife_l10u_bunker.ltx]
+* Extra Pripyat helicopters now do something instead of just 
+  floating there behind the SE fence. [alife_l11u_pripyat.ltx, 
+  way_l10u_bunker.ltx, way_l11_pripyat.ltx]
+* Changed [logic1] entries to [logic] for Pripyat Monolith. 
+  Found/reported by Lijenstina. [alife_l11u_pripyat.ltx]
+
+Modifier changes (NatVac):
+* Modifier now looks first for configuration and help files 
+  in gamedata\modcfg\.  If not there, it searches gamedata.
+  [Modifier.exe]
+* Fixed LineToggle to work properly with sections and 
+  subsections. [Modifier.exe]
+* Changed Modifier version from 1.1 alpha R3 to just 1.1.
+  [Modifier.exe]
+* Moved gamedata\*.cfg and *.cfg.txt config and help files 
+  to gamedata\modcfg\.
+* Fixed PDA notice on HUD entry; both options turned off 
+  PDA update notifications. Deleted optional files, made 
+  XML files non-optional. [\config\ui\maingame.xml.xml,
+  \config\ui\maingame_16.xml, modcfg\_ZRP.cfg]
+* Fixed Background Sounds entry in SoundManagement.cfg - 
+  choices did not correspond to actual actions.
+  [modcfg\SoundManagement.cfg]
+* Changed Knife FileChoice to Field/LineToggle options. 
+  Removed optional knife.ltx files. [modcfg\_ZRP.cfg, 
+  config\weapons\w_knife.ltx, config\weapons\w_knife.ltx.*] 
+* Changed Nightvision FileChoice to LineToggle options. 
+  Removed optional ZRP and quiet nightvision files. 
+  [config\misc\items.ltx, config\misc\optional\items.ltx.*,
+  modcfg\_ZRP.cfg]
+* Changed Marked One's PDA Marker FileChoice to LineToggle 
+  options. Removed optional map_spots.xml.* files. 
+  [modcfg\_ZRP.cfg, config\ui\optional\map_spots.xml.*, 
+  config\ui\map_spots.xml] 
+* Changed PDA HUD icon FileChoice to two LineToggle 
+  entries. Removed optional maingame*.xml.* files. 
+  [modcfg\_ZRP.cfg, config\ui\optional\maingame*.xml.*, 
+  config\ui\maingame.xml, config\ui\maingame_16.xml] 
+* Added Modifier support for smart AI flashlight option.
+  [modcfg\Experimental.cfg] 
+* Added individually-selectable carry options for six 
+  different kinds of explosives. [modcfg\Experimental.cfg]
+* Separated controller postprocess effect management 
+  from nightvision option. [config\misc\postprocess.ltx, 
+  modcfg\_ZRP.cfg]
+* Removed optional postprocess.ltx.* files.
+  [config\misc\optional\postprocess.ltx.*]
+
+=====================================
+Changes in 1.07 XR1 over ZRP 1.05 RC2a Update 100331
+=====================================
+Optional Mini-Mod (Demo) changes (NatVac):
+* The demo features must be enabled for use in this version. 
+  You can use the Modifier -- see these configurations: 
+  ArtifactSwap, MonoMartyr and QuestOverhaul_2.  Note that if 
+  you are using an existing save based on earlier MM/AS/1.05 RC 
+  demos, the old QO weapon versions are already in the game so 
+  the new ones will not be added.
+* The Lukash sniper rifle mission is now a bit harder; you have 
+  to be able to enter the Duty base to get to it and stealing 
+  it can have foreseeable consequences.
+* The reward for the modified grenade launcher is an improved 
+  version of the modified VLA/AS-Val: It uses a higher-power 
+  scope that you must find somewhere in the game.
+* Fedeyin's Folly explosion protection increased a bit.
+* Ziphty artifact health regen reduced.
+* Odds of finding random grenades (bodies/boxes) cut 80%.
+
+ZRP 1.07 XR1 fixes (NatVac; others mentioned in situ):
+* Added support for killing all the bloodsuckers before talking 
+  to Murk about doing that, which should prevent a possible
+  dialog CTD. [config\gameplay\dialogs_military.xml]
+* Disabled two more anomalies for free play (one killed too 
+  many Pripyat Freedomers). [_z.script]
+* Tweaked white diamond objective marker to be upward-pointing 
+  triangle (the target is above you). [config\ui\ui_common.xml]
+* Enabled previously-optional CTD protection to prevent CTDs 
+  from deaths of badly-constructed entities due to mods or 
+  games based on older patches. [smart_terrain.script]
+* Respawn Population Management 1.0: Changed Alife replacement 
+  script to reduce respawn flooding. [se_respawn.script]
+* NPC Chatter Control to manage the over-the-top repetition by 
+  various NPCs. [config\misc\script_sound.ltx, xr_sound.script, 
+  sound_theme.script]
+* Added TZIO "Follow your instincts" task as a workaround for 
+  empty task list crash when updating "eliminate camp" tasks. 
+  [ui_st_other.xml, tasks_escape.xml, info_portions.xml, 
+  bind_stalker.script, storyline_info_taskmanager.xml]
+* Added missing l10u_bunker reference (Brain Scorcher bunker) 
+  to map file per Cpt. Borovich, then tweaked it to hide the 
+  underground level.  [config\game_maps_single.ltx]
+* Other minor fixes by Cpt. Borovich, like having the newly- 
+  dead fall with respect to the one who killed them if not 
+  you. [various; search for Cpt. Borovich]
+* You can now return to a previous position after an Esc J
+  jump via debug's Esc D R (or via Last Snapshot Position on 
+  Jump menu w/_custom_zrp.script). [ui_level_zip_dialog.script]
+* The DV half-dead bandit doesn't repeat his Bullet spiel when 
+  he switches back online.
+* Gave PSZ-7 outfit its own support, per Storm Shadow State and 
+  ZaGar. [config\text\eng\string_table_outfit.xml,
+  config\misc\outfit.ltx, textures\ui\ui_icon_equipment.dds]
+* Reverted to 1.0003-compatible state_lib.script, removing 
+  unused test stuff put into ZRP 1.05. [state_lib.script]
+* Partial consolidation of weapon/armor/etc. configuration text 
+  entries into corresponding XML files. [config\text\eng\*.xml]
+* Other minor TZIO/free play enhancements. You won't get the 
+  psy helmet or the decoder if past the places where they are 
+  needed.  You can open that door without the decoder if in 
+  free play mode.
+
+All.spawn changes since R11 RC3 (NatVac - requires new game):
+* Moved/adjusted level changers at WT/Bar interchange for a 
+  cleaner appearance in PDA.
+* Added "Change level?" prompt to Pripyat-to-NPP level changer.
+* Adjusted Agroprom-to-Garbage destination view downward a bit.
+* Moved Pripyat-to-Red-Forest destination east of wall segment
+  to provide a bit of cover if there are any Monolith there.
+  (Spawning in the midst of a bunch of Monolith is still silly.)
+* Tweaked three Dark Valley NPCs to no longer require an online 
+  escort to make their way to their new camps.
+* Tweaked Cordon TZIO level changers to reduce the possibility 
+  of teleporting when running and jumping over a bush. They 
+  also now put you west of the rookie camp when you say no. 
+  You can return to previous position with debug mode Esc D R.
+  Also combined and moved the TZIO LC objects to the bunker 
+  file for easier merging, and included them in a separate 
+  document to assist in this.
+* Moved west Garbage hangar guard position to permit stairs 
+  access.  May need more tweaking; position might be ignored.
+* Automatic cleanup of certain dead dogs in Cordon and the 
+  Bar as you progress through the normal game.
+* The Duty Bar hangar guard stops telling you to get out after 
+  you complete a certain task for the faction.
+* Tweaked NPP helicopter activity for post-game support.
+* Adjusted free play return point, for a bit of novelty.
+* Provided a couple of types of ammo to Shaggy and the DV
+  sacrifice victim.
+
+Debug changes (NatVac):
+* Esc D / no longer stores expended but unexploded RPG 
+  missiles. [_z.script]
+* Esc D N now gives a little credit for MonoMartyr weaponry.
+  [_z.script]
+* Esc D Space (bump) now gracefully handles the rare unbumpable 
+  backpack embedded in the ground, left over from a partially-
+  removed body. [_z.script]
+
+Modifier changes (NatVac):
+* Fixed Modifier install for Set Info_portion script; was the 
+  same as that for the Reset script.  Reported by romulous.
+  [SupportUtilities.cfg]
+* Added new respawner configuration. [RespawnerControl.cfg]
+* Actor configuration has new Difficulty sections. [Actor.cfg]
+* Split Artifact Swap configuration off from MonoMartyr one.
+  [ArtifactSwap.cfg, MonoMartyr.cfg]
+* Tweaks configuration has a new TZIO option to spawn with 
+  only a knife. [Tweaks.cfg]
+
+ZRP Support Utilities Changes (NatVac):
+These changes require the re-installation of the associated 
+script entries: Give Yourself Money and Execute Script Command. 
+If you have edited your scripts, be sure to back them up and 
+merge the changes.
+* Protection from bad data for go(), improved functionality for
+  number_online(). [z.script]
+* Give Yourself Money now processes expressions. 
+  [z_give_yourself_money.script]
+* New utility:  Variable Watch.  Add an expression to see the 
+  result on-screen 5 times a second. [z_variable_watch.script, 
+  _z.script]
+* New utility: Remove Pripyat Anomalies disables some of the 
+  anomalies normally hidden when free play is achieved, to 
+  improve NPC activity in Pripyat before going to the NPP.
+  [z_remove_pripyat_anomalies.script]
+  
+* See also Modifier changes for corrected configuration, and 
+  reread the docs\ZSU_ExecuteLuaCommand.txt file for updates.
+
+=====================================
+Changes in 100331 RC2a Update over ZRP 1.05 RC2 release 091230
+=====================================
+ZRP 1.05 RC2a Update 100331 changes:
+* Added more debug functions: Bump bodies/boxes (Esc D Space),
+  toggle show_hit_damage (Esc D X). [_z.script]
+* Added tests to prevent corrupt game saves due to incompatible 
+  mods (forces early crash; useful error message). [_z.script]
+* Added Storm Shadow State's tweak: you can talk to Sidorovich 
+  during game start monologue. [config\scripts\esc_trader.ltx]
+* Extended show_hit_damage to include mutants when enabled.
+  [bind_monster.script]
+* Added telepathic psi emitter damage (versus rupture) per
+  ZaGaR. Optional; see Modifier changes. [sr_psy_antenna.script]
+* Added NPC faction-based color coding to PDA statistics.
+  [config\text\eng\stable_statistic_caption.xml]
+* Yantar/AW LCs now automatically appear after after a certain 
+  Army Warehouses task. [mil_tasks.script]
+* Task manager tweaks.  Script now uses forced exits if bad 
+  conditions encountered (exit would occur anyway but later). 
+  Configuration file's DV bloodsucker task had unneeded 
+  condition. [task_manager.script, config\misc\task_manager.ltx]
+
+ZRP 1.05 RC2a Update 100331 fixes (NatVac; others in situ):
+* The permanent radiation bug is automatically fixed after a 
+  save/reload. [bind_stalker.script]
+* A possible load game crash fixed if you managed to save right 
+  after being punched. (barin, w/NatVac tweak)
+  [bind_stalker.script, xr_effects.script]
+* Storm Shadow State's fix allows being near Fanatic with your 
+  weapon safely equipped. [config\misc\gulag_escape.ltx]
+* Yurik conversation options don't just disappear if you don't 
+  ask in the right order. Reported by romulous.
+  [config\gameplay\dialogs_garbage.xml]
+* If Kruglov stalls in Rostok during rescue, he will recover 
+  his wits when you talk to him. Reported by notanumber.
+  [config\gameplay\dialogs_bar.xml]
+* Fox should now "ignore danger" while wounded until you heal 
+  him. Reported by romulous. [config\misc\gulag_escape.ltx]
+* Demo's psi suit description now has protection parameters.
+  Reported by Storm Shadow State.
+  [config\text\eng\string_table_enc_zone.xml]
+* Fixed chance of def_box surprise spawn -- was zero after box
+  workaround distance-limit tweak deployed. [xr_box.script]
+* Tweaked save/load dialog list formatting for longer filenames.
+  [ui_load_dialog.script, ui_save_dialog.script]
+* NPP map split into two maps.  Player and target markers will 
+  now better appear on the south half.  This needs further 
+  refinement.  Fixes map label issue reported by BobBQ.
+  [config\game_maps_single.ltx, textures\map\ui_aes_*.dds]
+* Save prefix is now "filtered" for valid filename characters.
+  Reported by Storm Shadow State. [ui_main_menu.script]
+* One more typo. [config\text\eng\stable_task_manager.xml]
+
+Modifier changes (NatVac):
+* Quest Time Limits, Etc. 2 - Disable/enable autoquests.
+  [_ZRP.cfg]
+* Endurance tweak entries added.
+  [Actor.cfg]
+* Psi Emitters: use vanilla rupture or ZRP telepathic damage.
+  [Experimental.cfg]
+* Removed obsolete Kick Kruglov script from SupportUtilities 
+  configuration.  Existing installs may need manual removal.
+  [SupportUtilities.cfg]
+
+Debug changes (NatVac):
+* Bump bodies/boxes that have disappeared due to contact with 
+  the ground: Esc D Space. See the console log to know what's 
+  bumped.  Default radius about player is 10 meters.
+  [_z.script]
+* Toggle show_hit_damage: Esc D X.
+  [_z.script]
+* The variable show_hit_damage now shows damage to mutants as 
+  well as NPCs.  Use log_hits = false to not add hits to PDA 
+  log.  The info displayed has been cleaned up a bit.
+  [xr_motivator.script, bind_monster.script]
+* "Jump to unsearched body" and routines that use it now 
+  place the player at the foot of the body oriented toward the 
+  head.  This can be useful in a crowd of bodies.
+* "Store loose weapons on bodies" now marks recipient bodies as 
+  unsearched.
+
+ZRP Support Utilities Changes (NatVac):
+These changes require the re-installation of the ZSU scripts. 
+If you have edited your scripts, be sure to back them up and 
+merge the changes.
+* Added hotkey select of certain ZSU functions if no function 
+  selected (e.g., first use after dialog load).  For subsequent 
+  function selection, click on the list entry or exit to game 
+  and return. [scripts\optional\z_*.script]
+* Added more Execute Script Command ("X") support functions.
+  See docs\ZSU_ExecuteLuaCommand.txt. [z.script]
+* Removed "Kick Kruglov" ZSU script, as the dialog fix is in. 
+  Use the Nudge NPC script if needed (unlikely).  Please 
+  remove z_kruglov_reset.script from gamedata\scripts\ if you 
+  have installed the Fix Broken NPCs set of scripts -- it is 
+  no longer needed.
+* Fixed Set Info_portion script; was the same as the Reset
+  script. [scripts\optional\z_info_portion_set.script]
+
+=====================================
+Changes in 091230 RC2 Update over ZRP 1.05 RC1 release 090912:
+=====================================
+Added (NatVac):
+* One new dynamic level changer pair (Yantar/Army Warehouses).
+  Currently enabled after normal game completion; use Esc L 
+  after visiting Army Warehouses to add manually.
+  [zlc.script, ui_level_zip_dialog.script, level_tasks.script]
+* ZRP Support Utilities dialog. Optional, NOT default.
+  (Bug fixes, workarounds, tweaks and cheats. Expandable.)
+  [config\ui\ui_zrp_utils_dlg.xml, ui_main_menu.script,
+  ui_zrp_utils_dialog.script.  Optionally, the "Force Possible 
+  Secret" entry for the Support Utilities Modifier configuration 
+  will replace treasure_manager.script.]
+* Support to adjust NPP blowout countdown timer.
+  [sr_timer.script]
+
+ZRP 1.05 RC1 to RC2 Update 091230 fixes:
+* Removed extra inventory texture that was wrongly stretched 
+  in some wide-screen formats.  Darkened header portions to 
+  improve contrast. (NatVac)
+  [textures\ui\ui_inventory.dds, config\ui\inventory_new*.xml]
+* Fixed threat-stance NPC pointing weapon to his left when 
+  aiming at you.  (Hack from post by artistpavel)
+  [state_mgr.script]
+* Added fix for vanilla spawn crashes in smart_terrain.script, 
+  and commented it out for speed (enable if crash encountered 
+  with vanilla-all.spawn-based games in Pripyat).  Note that 
+  SMM will likely remove those commented-out lines. (NatVac)
+  [smart_terrain.script]
+* Fix for Pripyat stadium teleport for those who didn't start a 
+  new game; no teleporting into level changer unexpectedly.
+  (NatVac)  [xr_effects.script]
+
+Changes (NatVac):
+* Added adjustable distance limit to box/crate workaround.
+  [xr_box.script]
+* Removed redundant vanilla terrain_sect entries.
+  [config\gameplay\character_desc_*.xml]
+* Removed Cordon road remarks from Dark Valley NPCs.
+  [config\gameplay\character_desc_darkvalley.xml]
+* More text corrections.
+  [config\text\eng\*.xml]
+* Ziphty Viper now uses GP37/G36 accuracy/damage values.
+  [config\misc\_custom_items.ltx)
+* No more novice replacement bandits in Cordon (more challenge).
+  [config\misc\smart_terrain_presets.ltx]
+* Removed unused xr_test scheme from NPCs.
+  [modules.script]
+* Adjusted spawn mechanism to stagger replacement spawns.  Main 
+  improvement will be seen when all.spawn spawn frequency is also 
+  tweaked.  You can adjust the script file further.
+  [se_respawn.script]
+* Enter key now selects highlighted button in main menu if named 
+  save not just performed. (NatVac per romulous)
+  [ui_save_dialog.script, ui_main_menu.script]
+* You can spawn with just a knife in free play mode: Set the 
+  variable add_nothing = true in _dev.script, then use Esc T.
+  [_dev.script]
+
+Modifier changes (NatVac):
+* NPP Blowout Countdown Timer tweak added.
+  [Experimental.cfg]
+* A preliminary SupportUtilities configuration has been added.
+  [SupportUtilities.cfg]
+
+Debug changes (NatVac):
+* You can now enable a variable to see how much damage you do.
+  [xr_motivator.script]
+* Fixed dynamic disabling of spawn markers. See Modifier note 
+  below.  (I recall barin or dezodor or someone mentioning it.) 
+  [sim_statistic.script]
+The rest of these involve the same script: [_z.script]
+* The direction algorithm is improved just a bit more.
+* Added Esc D O to obtain all mutant parts on existing (online) 
+  mutant bodies. Useful for mutants that die at level changers.
+* Removed a space from a debug statement that was converted to 
+  an underscore, messing up a direct copy for coordinates.
+* Now you see info telling you if you don't have a standard 
+  medkit to drop when using the Esc F2 shortcut.
+* Replaced db.actor with actor after assignment in _z.script, 
+  which will probably wreak havoc with merging.  You might be 
+  able to do a find/replace of actor with db.actor on the new 
+  version and then do your file compare.  But it might be 
+  easier to import your changes into the updated version.
+
+Again, PLEASE see docs\DebugSupportChanges.txt for more info.
+
+
+Modifier configurations affected by this installation:  ALL
+
+See the docs\ subdirectory files for details on utilizing the new 
+support utilities.
+
+The "Known Issues" info has been moved to a separate file.

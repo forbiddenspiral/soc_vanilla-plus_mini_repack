@@ -1,0 +1,63 @@
+AI pack RC 
+adaptation for ¿Ã  Mod - Zoid
+author: xStream
+Thanks to: Tambovski, BAC9-FLCL, Kasper, Zoid, Masster, Iwer, Domestos
+Integration into AMK-EN pack: Vizzy
+
+This is a pack of four AI schemes for S.T.A.L.K.E.R.:ShoC.
+1) scheme "grenadier, grenade throwing". (xrs_grenade.script)
+improved version:
+different voices for different factions when throwing grenades;
+new marks on the minimap for grenades;
+bugs fixed;
+the algorithm of NPC supplied with grenades is changed;
+NPCs decision logics is slightly changed.
+2) 'Medic' scheme. (xrs_medic.script)
+Now NPCs can heal their wounded friends and neutrals if they've got a medkit.
+Also NPCs can now heal themselves if they've got less than 50% health left. Of course, only if they've got a medkit.
+The healing process can only happen in a calm environment with no enemies nearby.
+3) 'Anti-funny burial' scheme' (modified xr_kamp.script)
+NPCs having rest (e.g. near a fire) can drag away dead bodies of people and animals.
+Because of the game engine specifics, unfortunately they don't do it all the time. But these exceptions are rare.
+4) "Tamagochi" scheme (xrs_armor.script)
+Now if you sell a costume to an NPC and if it likes it it can equip it.
+Also you can just throw the costume under NPC's legs - if it likes the costume, it'll put it on.
+NPCs are very shy - they only get changed if Marked One doesn't see them and is at least 15 meters away from them.
+Also an armor upgrade system has been included - now NPCs advance, it is possible (after some time in game) to see a guy, who was a Rookie in a stalker costume or even in a scientific costume.
+The system is not final yet, so funny things can happen.
+
+Every scheme could be deleted by deleting the file in brackets.
+Feel free to redistribute, modify and use this pack in any project.
+Only for game version 1.0004
+In a short time this would be adapted for all popular mods and after some more time a universal installer will come, which would be able to install this pack onto ANY mod.
+
+Changes since RC:
+- 'standing' wounded stalker when playing with AMK Mod are fixed
+- NPCs that should be wounded according to the storyline do not heal themselves now
+- fixed when armour was not matching in upgrade or self-upgrade
+- a list is made for the upgrade - all traders are included
+- there is a possibility that some grenades might not explode (e.g. NPC was too excited and forgot to pull the linchpin... it's a bug that was turned into a feature)
+- 'grenade supplying' of NPCs has been slightly rebalanced
+- some other bugs are fixed
+
+Detailed description:
+1) grenade-throwing:
+NPCs can throw grenades
+they judge the situation around them, calculate rough trajectory without hurting their teammates... and throw the grenade
+NPCs shout when they throw grenades so the player has time to react
+Also, grenades thrown by NPCs are shown on the mini-map
+NPCs are constantly supplied by grenades, depending on their rank and they get them only in certain intervals of time.
+It has been adjusted so NPCs don't bombard you with grenades but at the same the grenade-throwing doesn't happen seldom
+
+2) Armour upgrade
+There is now a possibility of giving a costume to an NPC by throwing it under its legs, and if the NPC decides that your armour is better than its it will pick the the armour up and get changed.
+Because of not very good AI net in the game sometimes NPCs don't pick costumes up. In that case try selling armour to them.
+NPCs have the following rules when they are getting changed:
+They do not get changed into a costume of their enemy clan (e.g. no good-mannered stalker will put on bandit's clothes)
+Also, if you give them clan costumes (Freedom, Duty) they 'repaint' it: instead of putting on the costume you've given them they will put on a costume closest to that one but from their clan store.
+Bandits can put on any costume.
+Self-upgrade:
+Not only Marked One can upgrade putting on cool costumes.
+NPCs can self-upgrade after certain periods of time as well now: there is a possibility of seeing Wolf in SEV for example.
+There is the following rule of self-upgrade - gradations inside the clan, meaning lone stalkers will get costumes of neutrals, Duty soldiers will get Duty armour etc.
+The only exception is bandits - they put on anything they get, so don't be surprised if you see a bandit in Duty or Freedom costume.

@@ -1,0 +1,867 @@
+-- ZRP Toolkit extensions -- more support variables and routines by NatVac
+-- Script uses your custom macros placed in _custom_zrp.script.
+-- If needed, copy it from scripts\optional\ to scripts\
+----------------------------------
+-- for checking bodies within this distance from your position
+local max_body_search_distance = 150
+
+macros = {}
+
+predefined_macros = {
+	-- ["keyname"] = {dik_key=DIK_keys.DIK_keyname,func="scriptname.some_function()"},
+	["P"] = {dik_key=DIK_keys.DIK_P,func="zx.write_position_to_console()"} --,
+}
+
+-- get the player's custom macros
+if _custom_zrp and _custom_zrp.macros ~= nil then
+	macros = _custom_zrp.macros
+elseif _z.script_file_exists("_custom_zrp.script") then
+	dbglog("'zx: _custom_zrp.script' is not valid")
+end
+
+-- local dismantle_weapons = true
+
+----------------------------------
+-- nv 080712 - set true to auto-transfer found parts from searched mutant bodies
+local transfer_mutant_parts = false
+
+----------------------------------
+-- nv 071026 - code to auto-transfer favorite items from searched bodies
+----------------------------------
+-- set this true to enable the feature, then add your favorites below
+local transfer_faves = false
+local tf_notify_sound = true
+
+-- enable your favorites by removing the "--" from the front of a line
+local favorites = {
+-- "ammo_9x19_fmj",
+-- "ammo_9x19_pbp",
+-- "ammo_5.45x39_fmj",
+-- "ammo_5.45x39_ap",
+-- "ammo_5.56x45_ss190",
+"ammo_5.56x45_ap",
+-- "ammo_9x39_pab9",
+"ammo_9x39_sp5",
+"ammo_9x39_ap",
+"medkit", "medkit_army", "medkit_scientic",
+-- "bandage",
+"antirad"
+}
+
+local nv_xfer = false
+local in_object  = nil
+local out_object = nil
+local function transfer_object_favorite(item)
+	local section = item:section()
+	for k,v in pairs(favorites) do
+		if section == v then
+			out_object:transfer_item(item, in_object)
+			nv_xfer = true
+		end
+	end
+end
+
+local function transfer_object(item)
+	if string.find(item:section(),"af_",1,true) == 1 then -- found artifact
+		nv_xfer = true
+	end
+	out_object:transfer_item(item, in_object)
+	dbglog(">>    %s",item:section())
+end
+
+-- local function unbundle_if_weapon(item)
+	-- local section = item:section()
+	-- if string.find(section, "wpn_",1,true) and not string.find(section, "wpn_addon_",1,true) then
+		-- unload_and_detach_addons(out_object, item)
+	-- end
+-- end
+
+local function transfer_all_desired(actor, npc)
+	out_object = npc
+	in_object  = actor
+	npc:inventory_for_each(transfer_object_favorite)
+	if tf_notify_sound and nv_xfer then
+		news_manager.pda_tips:play(db.actor, 0, sound_object.s2d)
+		nv_xfer = false
+	end
+end
+
+-- local function strip_all_weapons(actor, npc)
+	-- out_object = npc
+	-- in_object  = actor
+	-- npc:inventory_for_each(unbundle_if_weapon)
+-- end
+
+local function is_artifact(item)
+	if string.find(item:section(),"af_",1,true) == 1 then -- found artifact
+		nv_xfer = true
+	end
+end
+
+-- clsids can vary depending on game
+local fav_parts = {
+	-- ["97"] = "mutant_krovosos_jaw", --clsid.bloodsucker_s is 97, not 95
+	-- ["98"] = "mutant_boar_leg", --clsid.boar_s
+	-- ["104"] = "mutant_psevdodog_tail", --clsid.psydog_s
+	-- ["105"] = "mutant_dog_tail", --clsid.dog_s
+	-- ["106"] = "mutant_flesh_eye", --clsid.flesh_s
+	-- ["110"] = "mutant_psevdodog_tail", --clsid.pseudodog_s
+	-- ["111"] = "mutant_snork_leg" --clsid.snork_s
+	[tostring(clsid.bloodsucker_s)] = "mutant_krovosos_jaw",
+	[tostring(clsid.boar_s)] = "mutant_boar_leg",
+	[tostring(clsid.psydog_s)] = "mutant_psevdodog_tail",
+	[tostring(clsid.dog_s)] = "mutant_dog_tail",
+	[tostring(clsid.flesh_s)] = "mutant_flesh_eye",
+	[tostring(clsid.pseudodog_s)] = "mutant_psevdodog_tail",
+	[tostring(clsid.snork_s)] = "mutant_snork_leg"
+}
+-- nv 071026 - end special code
+----------------------------------
+function execute_macro(k, v)
+	local response1, response2
+	-- dbglog("Attempting to execute: %s",tostring(v.func))
+	-- assert(loadstring(argument))() -- normal method of executing a string
+	local exec_func = loadstring(v.func)
+	if type(exec_func) == "function" then
+		response1, response2 = pcall(exec_func) -- returns true on success, false with error msg otherwise
+		if response1 == false then
+			dbglog("Macro exec error: "..tostring(response2))
+		else
+			_z.resume_game()
+		end
+	else
+		dbglog("Hotkey does not have a valid function block for key %s",tostring(k))
+	end
+end
+----------------------------------
+function process_key(mmw, dik, keyboard_action)
+	-- local macros = ui_main_menu.macros or {}
+	-- process custom keys first - can override predefined
+	for k, v in pairs(macros) do
+		if v.dik_key == dik and type(v.func) == "string" then
+			execute_macro(k, v)
+			return true
+		end
+	end
+	for k, v in pairs(predefined_macros) do
+		if v.dik_key == dik and type(v.func) == "string" then
+			execute_macro(k, v)
+			return true
+		end
+	end
+end
+----------------------------------
+local snap_cnt = 0
+----------------------------------
+function write_position_to_console()
+	-- echo coords to console
+	local actor = db.actor
+	local cpos = actor:position()
+	--nv130122 use camera direction
+	-- local cdir = actor:direction()
+	local cdir = device().cam_dir
+	snap_cnt = snap_cnt + 1
+	local lvl_name = level.name()
+	dbglog("%s={[\"%s%d\"]={dik_key=DIK_keys.DIK_F%d,hotkey=\"F%d\",dtype=\"position\",pos=vector():set(%f,%f,%f),dir=vector():set(%f,0,%f),name=\"Zip%d\",pimage=\"intro\\\\intro_%s\"}}",
+			lvl_name,lvl_name,snap_cnt,snap_cnt,snap_cnt,cpos.x,cpos.y,cpos.z,cdir.x,cdir.z,snap_cnt,lvl_name)
+	local actor_gvid = actor:game_vertex_id()
+	local gpos = game_graph():vertex(actor_gvid):level_point()
+	dbglog("level_vertex_id=%s,game_vertex_id=%s,distance_to_gvid=%f",actor:level_vertex_id(),actor_gvid,cpos:distance_to(gpos))
+	-- x and z coords map to rotation about Y-axis for all.spawn direction
+	-- e.g., x=-0.75, z=-0.75 => 0.75*pi (right-hand rule)
+	-- other axes use object as reference
+	-- pointing slightly up to the SW: pos=-0.43883895874023,0.18358367681503,-0.87961202859879
+	-- pointing slightly down to the SW: pos=-0.42291155457497,-0.13845245540142,-0.89553153514862
+	local half_pi = math.pi * 0.5
+	local xz = math.atan2((cdir.x^2 + cdir.z^2)^0.5,cdir.y) - half_pi
+	-- dbglog("dest_direction=0,%f,0",math.pi/2 - math.atan2(cdir.z,-cdir.x))
+	dbglog("dest_direction=%f,%f,%f", xz, half_pi - math.atan2(cdir.z,-cdir.x), xz)
+	if _custom_zrp then
+		_custom_zrp.set_temp_vector(cpos, cdir, snap_cnt)
+	end
+	return true
+end
+----------------------------------
+function absolute_view_angle_offset(target_pos)
+	-- local dir1 = db.actor:direction()
+	local dir1 = device().cam_dir
+	local dir2 = utils.vector_copy_by_val(target_pos):sub(db.actor:position())
+	-- local look_angle = math.pi/2 - math.atan2(dir1.z,-dir1.x)
+	local look_angle = math.atan2(dir1.x,dir1.z)
+	-- local obj_angle = math.pi/2 - math.atan2(dir2.z,-dir2.x)
+	local obj_angle = math.atan2(dir2.x,dir2.z)
+	-- if obj_angle > math.pi then obj_angle = math.pi * 2 - obj_angle end
+	local net_angle = math.abs(look_angle - obj_angle)
+	-- dbglog("look_angle=%f,object_angle=%f,net_angle=%f",look_angle,obj_angle,net_angle)
+	if net_angle > math.pi then return math.pi * 2 - net_angle end
+	return net_angle
+end
+----------------------------------
+function best_npc_within_view_angle(view_angle, max_distance)
+	local best_npc = nil
+	local smallest_angle = view_angle
+	local acpos = db.actor:position()
+	if max_distance == nil then max_distance = max_body_search_distance end
+	for idb_ = 1, 65534, 1 do
+		local lbobj = level.object_by_id(idb_)
+		if lbobj ~= nil then
+			if lbobj:clsid() == clsid.script_stalker then
+				if lbobj:alive() then
+					local lbobj_pos=lbobj:position()
+					local lbobj_dist = acpos:distance_to(lbobj_pos)
+					if lbobj_dist < max_distance then
+						local view_angle_offset = absolute_view_angle_offset(lbobj_pos)
+						if view_angle_offset <= smallest_angle then 
+							best_npc = lbobj
+							smallest_angle = view_angle_offset
+						end
+					end
+				end
+			end
+		end
+	end
+	return best_npc --, smallest_angle
+end
+----------------------------------
+function bump_bodies_and_boxes()
+	local radius = 10
+	local impulse = 100
+	local acpos = db.actor:position()
+	for idb_ = 1, 65534, 1 do
+		local lbobj = level.object_by_id(idb_)
+		if lbobj ~= nil then
+			local obj_clsid = lbobj:clsid()
+			if obj_clsid == clsid.script_stalker or
+				obj_clsid >= clsid.bloodsucker_s and obj_clsid <= clsid.zombie_s then
+				if not lbobj:alive() then
+					local lbobj_pos=lbobj:position()
+					local lbobj_dist = acpos:distance_to(lbobj_pos)
+					if lbobj_dist <= radius then -- bump this body
+						local physicsShell = lbobj:get_physics_shell()
+						if physicsShell == nil then
+							_z.nvDebug(string.format("No bumpable physics shell for\\n%s",tostring(lbobj:name())))
+						else
+							physicsShell:apply_force(0,1000*impulse,0)
+							dbglog("Bumped %s",lbobj:name())
+						end
+					end
+				end
+			elseif obj_clsid == clsid.obj_phys_destroyable
+				--or obj_clsid == clsid.obj_physic or obj_clsid == clsid.obj_breakable
+				then
+				local lbobj_pos=lbobj:position()
+				local lbobj_dist = acpos:distance_to(lbobj_pos)
+				if lbobj_dist <= radius then -- bump this body
+					local h = hit()
+					h.draftsman = db.actor
+					h.type = hit.fire_wound
+					h.direction = vector():set(0,1,0)
+					-- h:bone("pelvis")
+					h.power = 0.0
+					-- h.impulse = 10000000
+					h.impulse = impulse * 2
+					lbobj:hit(h)
+
+					-- local physicsShell = lbobj:get_physics_shell()
+					-- physicsShell:apply_force(0,25000,0)
+					dbglog("Bumped %s",lbobj:name()) --..", clsid="..tostring(obj_clsid))
+				end
+			end
+		end
+	end
+end
+----------------------------------
+function closest_body_to_object(target_object)
+	local tobj_pos = target_object:position()
+	local closest_body, closest_dist = nil,  10000
+	local second_closest_body, scb_dist = nil,  10000
+	for idb_ = 1, 65534, 1 do
+		local lbobj = level.object_by_id(idb_)
+		if lbobj ~= nil then
+			if lbobj:clsid() == clsid.script_stalker then
+				if not lbobj:alive() then 
+					local dist_to_body = tobj_pos:distance_to(lbobj:position())
+					if closest_body == nil then
+						closest_body = lbobj
+						closest_dist = dist_to_body
+					elseif dist_to_body < closest_dist then
+						second_closest_body = closest_body
+						scb_dist = closest_dist
+						closest_body = lbobj
+						closest_dist = dist_to_body
+					-- use eval shortcut to check second closest
+					elseif second_closest_body == nil or dist_to_body < scb_dist then
+						second_closest_body = lbobj
+						scb_dist = dist_to_body
+					end
+				end
+			end
+		end
+	end
+	return closest_body, second_closest_body
+end
+----------------------------------
+function closest_unsearched_body()
+	local closest_body, closest_dist = nil, max_body_search_distance
+	local acpos = db.actor:position()
+	for idb_ = 1, 65534, 1 do
+		local lbobj = level.object_by_id(idb_)
+		if lbobj ~= nil then
+			if lbobj:clsid() == clsid.script_stalker then
+				if not lbobj:alive() then 
+					local se_obj = alife():object(idb_)
+					if se_obj and se_obj.treasure_processed == false then --unsearched body
+						local lbobj_dist = acpos:distance_to(lbobj:position())
+						if lbobj_dist < closest_dist then
+							closest_body = lbobj
+							closest_dist = lbobj_dist
+						end
+					end
+				end
+			end
+		end
+	end
+	if closest_body == nil then
+		_z.show_large_msg(string.format("No unchecked bodies within %d meters",max_body_search_distance))
+	end
+	return closest_body
+end
+----------------------------------
+function closest_wounded_body()
+	local closest_body, closest_dist = nil, max_body_search_distance
+	local acpos = db.actor:position()
+	for idb_ = 1, 65534, 1 do
+		local lbobj = level.object_by_id(idb_)
+		if lbobj ~= nil then
+			if lbobj:clsid() == clsid.script_stalker then
+				if lbobj:alive() and xr_wounded.is_wounded(lbobj) then 
+					local lbobj_dist = acpos:distance_to(lbobj:position())
+					if lbobj_dist < closest_dist then
+						closest_body = lbobj
+						closest_dist = lbobj_dist
+					end
+				end
+			end
+		end
+	end
+	if closest_body == nil then
+		_z.show_large_msg(string.format("No wounded within %d meters",max_body_search_distance))
+	end
+	return closest_body
+end
+----------------------------------
+function fix_weather()
+	--[ [ version for vanilla
+	if level.get_weather() == "default" then -- only default weather has level-change issue in vanilla
+		level.set_weather("test") --("pripyat")
+		_dev.queue_delayed_event({delay=180,event="level.set_weather(\"default\",true)"})
+	end
+	--] ]
+	--[[ version for mods
+	local w = level.get_weather()
+	level.set_weather("test")
+	_dev.queue_delayed_event({delay=180,event="level.set_weather(\""..w.."\",true)"})
+	--]]
+end
+----------------------------------
+function grab_remote_body_property()
+	local closest_body = closest_unsearched_body()
+	if closest_body ~= nil then
+		-- get a possible secret and mark it as searched
+		treasure_manager.get_treasure_manager():use(closest_body)
+		out_object = closest_body
+		in_object  = db.actor
+		local cb_pos = closest_body:position()
+		dbglog(">> Checking %s at %f,%f,%f",closest_body:character_name(),cb_pos.x,cb_pos.y,cb_pos.z)
+		closest_body:inventory_for_each(transfer_object)
+		local npc_rank = game.translate_string(ranks.get_obj_rank_name(closest_body))
+		local npc_community = game.translate_string(closest_body:character_community())
+		_z.show_large_msg(string.format("Checked %s (%s %s)",closest_body:character_name(),npc_rank,npc_community))
+		if nv_xfer then
+			nv_xfer = false
+			if tf_notify_sound then
+				news_manager.pda_tips:play(db.actor, 0, sound_object.s2d)
+			end
+		end
+	end
+end
+----------------------------------
+function heal_if_needed()
+	local actor = db.actor
+	local closest_body = best_npc_within_view_angle(0.4, 3) -- 0.2 rad is about 12 deg
+	if closest_body == nil then
+		closest_body = best_npc_within_view_angle(math.pi*2, 3) --was 1.57 (+/-90 degrees)
+	end
+	if closest_body ~= nil then
+		if closest_body.health < 0.80 and actor:position():distance_to(closest_body:position()) < 3 then
+			local mdkt = actor:object("medkit") or actor:object("medkit_scientic") or actor:object("medkit_army")
+			if mdkt ~= nil then
+				xr_motivator.last_npc_used = nil -- make it work even if player just talked to him
+				actor:drop_item(mdkt) -- on_drop will say health
+				return
+			else
+				_z.show_blinking_msg("No medkits available")
+			end
+		end
+		-- too far away to heal or no medkits
+		local npc_health = string.format("%s's health is %d",closest_body:character_name(),math.floor(closest_body.health*100))
+		_z.show_small_msg(npc_health)
+		return
+	end
+	check_npc_health() -- if no close body within 3 meters
+end
+----------------------------------
+function hide_anomaly()
+	local actor_pos = db.actor:position()
+	local this_anomaly, this_anomaly_id = nil, nil
+	for id_=1,40000,1 do
+		local obj=level.object_by_id(id_)
+		if obj then
+			if obj:clsid()==clsid.zone_bfuzz_s or
+				obj:clsid()==clsid.zone_galant_s or
+				obj:clsid()==clsid.zone_mbald_s or
+				obj:clsid()==clsid.zone_mincer_s then
+				local obj_pos = obj:position()
+				if actor_pos:distance_to(obj_pos) < 10 then
+					if absolute_view_angle_offset(obj_pos) <= 0.1 then
+						-- these don't work for anomalies (CTD with stack trace)
+						-- alife():set_switch_online(obj.id,false)
+						-- alife():set_switch_offline(obj.id,true)
+						if this_anomaly == nil then
+							this_anomaly = obj
+							this_anomaly_id = id_
+						else
+							if actor_pos:distance_to(obj_pos) < actor_pos:distance_to(this_anomaly:position()) then
+								this_anomaly = obj
+								this_anomaly_id = id_
+							-- else keep previous as closest
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+	if this_anomaly ~= nil then
+		local zapped = string.format("Zapping %s", this_anomaly:name())
+		dbglog(zapped)
+		-- this_anomaly:disable_anomaly() --Experimental, removes it immediately. If issues, don't use
+		local anom_obj = alife():object(this_anomaly_id)
+		local as, pkt = _z.read_anomaly_struct(anom_obj)
+		as.max_power = as.max_power/1000
+		if as.shape_array[1].type == 0 then --sphere
+			as.shape_array[1].radius = 0
+			as.shape_array[1].offset.y = as.shape_array[1].offset.y + 20
+		end
+		_z.write_anomaly_struct(as, pkt, anom_obj)
+		_z.nvDebug(zapped)
+	end
+end
+----------------------------------
+function jump_to_this_body(target_body)
+	_z.save_current_pos_dir()
+	local cur_pos = target_body:position()
+	cur_pos.y = cur_pos.y + 0.2
+	db.actor:set_actor_position(cur_pos)
+	local cur_dir = cur_pos:sub(target_body:bone_position("bip01_head"))
+	db.actor:set_actor_direction(math.pi/2 - math.atan2(-cur_dir.z,-cur_dir.x))
+	-- db.actor:set_sight(target_body)
+end
+----------------------------------
+-- you can go to all the unsearched bodies but you can end up in an anomaly or fight
+function jump_to_any_unsearched_body()
+	local found = false
+	for id_ = 1, 65534, 1 do
+		local lobj = level.object_by_id(id_)
+		if lobj ~= nil then
+			if lobj:clsid() == clsid.script_stalker then
+				if not lobj:alive() then 
+					local se_obj = alife():object(id_)
+					if se_obj.treasure_processed == false then
+						jump_to_this_body(lobj)
+						found = true
+						break
+					end
+				end
+			end
+		end
+	end
+	if not found then _z.show_large_msg("No unsearched bodies") end
+end
+----------------------------------
+-- you can go to the closest unsearched body but you can end up in an anomaly or fight
+function jump_to_closest_unsearched_body()
+	local closest_body = closest_unsearched_body()
+	if closest_body ~= nil then
+		jump_to_this_body(closest_body)
+	end
+	return closest_body
+end
+----------------------------------
+function jump_to_closest_wounded_body()
+	local closest_body = closest_wounded_body()
+	if closest_body ~= nil then
+		_z.save_current_pos_dir()
+		local cur_pos = closest_body:position()
+		cur_pos.y = cur_pos.y + 0.2
+		db.actor:set_actor_position(cur_pos)
+	end
+end
+----------------------------------
+function jump_to_wounded_and_drop_medkit()
+	local actor = db.actor
+	if actor:object("medkit") ~= nil then
+		local closest_body = closest_wounded_body()
+		if closest_body ~= nil then
+			_z.save_current_pos_dir()
+			local cur_pos = closest_body:position()
+			cur_pos.y = cur_pos.y + 0.2
+			actor:set_actor_position(cur_pos)
+			actor:drop_item(actor:object("medkit"))
+		end
+		-- _z.resume_game()
+		-- return true
+	else
+		_z.show_small_msg("No standard medkits available")
+		-- _z.resume_game()
+		-- return true
+	end
+end
+----------------------------------
+function mark_monomartyr_bodies()
+	local stranger_section = "sim_stranger_master"
+	for id_ = 1, 65534, 1 do
+		local lobj = level.object_by_id(id_)
+		if lobj ~= nil then
+			if string.find(lobj:name(),stranger_section,1,true) ~= nil then
+				if not lobj:alive() then 
+					local se_obj = alife():object(id_)
+					if se_obj.treasure_processed == false then
+						-- nv081213 mark death location
+						local str = string.format("MonoMartyr %s",lobj:character_name())
+						level.map_add_object_spot(id_, "red_location", str)
+					end
+				end
+			end
+		end
+	end
+end
+----------------------------------
+function move_loose_guns_to_bodies()
+	local gun_count, move_count = 0,0
+	local sf = string.format
+	local string_find = string.find
+	for id_ = 1, 65534, 1 do
+		local tobj=level.object_by_id(id_)
+		if tobj then
+			local section = tobj:section()
+			if string_find(section,"wpn_",1,true) == 1 then -- found weapon
+				if tobj:parent() == nil then -- and it is loose in the world
+					gun_count = gun_count + 1
+					-- if string_find(section, "_m1",7,true) or
+							-- string_find(section, "_m2",7,true) or
+							-- string_find(section, "_m3",7,true) then
+					if string_find(section, "_m%d",7) then
+						_z.nvDebug(sf("Found %s",_z.friendly_name(section)))
+					elseif section == "wpn_rpg7_missile" then
+						gun_count = gun_count - 1 --don't transfer unexploded RPG missiles
+					else
+						local closest_body, scb = closest_body_to_object(tobj)
+						if closest_body ~= nil then
+							db.actor:transfer_item(tobj, closest_body)
+							move_count = move_count + 1
+							local se_obj = alife():object(closest_body:id())
+							se_obj.treasure_processed = false
+							local cbpos = closest_body:position()
+							dbglog("Moved %s into %s at %f,%f,%f",section,closest_body:character_name(),cbpos.x, cbpos.y, cbpos.z)
+						end
+					end
+				end
+			end
+		end
+	end
+	if gun_count > 0 then
+		if move_count == gun_count then
+			_z.show_large_msg(sf("Loose guns stored: %d.",gun_count))
+		else
+			_z.show_large_msg(sf("Loose guns found: %d.  Stored: %d.",gun_count,move_count))
+		end
+	else
+		_z.show_large_msg("No loose guns online.")
+	end
+end
+----------------------------------
+--search all dead mutants nearby for parts and get them
+function obtain_mutant_parts()
+	local parts_count = 0
+	for id_ = 1, 65534, 1 do
+		local lobj = level.object_by_id(id_)
+		if lobj ~= nil then
+			local mutant_id = lobj:clsid()
+			if mutant_id >= clsid.bloodsucker_s and mutant_id <= clsid.zombie_s then
+				-- dbglog("mutant id is %s for %s",mutant_id,lobj:name())
+				if not lobj:alive() then
+					local mut_part = fav_parts[tostring(mutant_id)]
+					if mut_part ~= nil then
+						-- dbglog("checking for %s",mut_part)
+						-- local mut_part = mutant:object(v)
+						local mut_part_obj = lobj:object(mut_part)
+						if mut_part_obj ~= nil then
+							-- _z.nvDebug(game.translate_string(v))
+							lobj:transfer_item(mut_part_obj, db.actor)
+							dbglog("%s found on %s",mut_part,lobj:name())
+							parts_count = parts_count + 1
+							-- if tf_notify_sound then
+								-- news_manager.pda_tips:play(db.actor, 0, sound_object.s2d)
+							-- end
+						end
+					-- else
+						-- dbglog("no entry for %s",mutant_id) -- like tushkanos
+					end
+				end
+			end
+		end
+	end
+	if parts_count > 0 then
+		_z.show_small_msg(string.format("Mutant parts transferred: %d", parts_count))
+	else
+		_z.show_small_msg("No mutant parts found")
+	end
+end
+----------------------------------
+function on_npc_body_search(actor, npc)
+	-- if dismantle_weapons then
+		-- strip_all_weapons(actor, npc)
+	-- end
+	if transfer_faves then
+		transfer_all_desired(actor, npc)
+	end
+end
+----------------------------------
+function on_mutant_body_search(actor, mutant)
+	if transfer_mutant_parts then
+		-- for k,v in pairs(fav_parts) do
+		local mut_part = fav_parts[tostring(mutant:clsid())]
+		if mut_part ~= nil then
+			-- local mut_part = mutant:object(v)
+			local mut_part_obj = mutant:object(mut_part)
+			if mut_part_obj ~= nil then
+				-- _z.nvDebug(game.translate_string(v))
+				mutant:transfer_item(mut_part_obj, actor)
+				if tf_notify_sound then
+					news_manager.pda_tips:play(db.actor, 0, sound_object.s2d)
+				end
+			end
+		end
+	end
+end
+----------------------------------
+-- use only what you need of what you have when healing yourself
+function smart_heal()
+	local h = db.actor.health
+	local mk
+	if h > 0.7 then
+		if h == 1.0 then _z.show_small_msg("Health: 100%") return end
+		mk = (db.actor:get_bleeding() > 0.05 and db.actor:object("bandage")) or db.actor:object("bread") or db.actor:object("kolbasa") or db.actor:object("conserva") or db.actor:object("bandage") or db.actor:object("medkit")
+	else
+		mk=db.actor:object("medkit") or db.actor:object("medkit_scientic") or db.actor:object("medkit_army")
+	end
+	if mk then
+		local mk_name = _z.friendly_name(mk:section())
+		db.actor:eat(mk)
+		_z.show_small_msg(string.format("Used %s",mk_name))
+	else
+		_z.show_small_msg("No medkits available.")
+	end
+end
+----------------------------------
+-- check health of NPC closest to your line of sight
+function check_npc_health()
+	local closest_body = best_npc_within_view_angle(0.2, 20) -- 0.4 rad is about 23 deg
+	local health_msg
+	if closest_body == nil then closest_body = best_npc_within_view_angle(0.1) end
+	if closest_body ~= nil then
+		health_msg = string.format("%s's health is %d",closest_body:character_name(),math.floor(closest_body.health*100))
+	else
+		health_msg = string.format("No NPC ahead within %d meters",max_body_search_distance)
+	end
+	_z.show_small_msg(health_msg)
+end
+----------------------------------
+local collectables = {
+	-- these start the section name.  "outfit" doesn't; it's handled separately
+	"af_","wpn_","ammo_","grenade_","antirad","medkit","bandage" --,"quest_case_"
+}
+----------------------------------
+function remote_object_grab(dik)
+	local actor = db.actor
+	--nv130122 use camera direction
+	-- local actor_dir = actor:direction()
+	local actor_dir = device().cam_dir
+	local actor_pos = actor:position()
+	local take_distance = 75
+	local quantity = 0
+	if dik == DIK_keys.DIK_C then take_distance = 10 end
+	local collected_msg = ""
+	for id_ = 1, 65534, 1 do
+		local string_find = string.find
+		local tobj=level.object_by_id(id_)
+		if tobj then
+			local tobj_pos=tobj:position()
+			local item_of_interest_found = false
+			local obj_section
+			if actor_pos:distance_to(tobj_pos) < take_distance then
+				obj_section = tobj:section()
+				if string_find(obj_section,"outfit",1,true) then
+					item_of_interest_found = true
+				else
+					for k,v in pairs(collectables) do
+						if string_find(obj_section,v,1,true) == 1 then -- found one
+							item_of_interest_found = true
+							break
+						end
+					end
+				end
+			end
+			-- caution: this parent() test only works on certain items (currently of interest)!
+			if item_of_interest_found and tobj:parent() == nil then
+				if not string_find(obj_section,"_fake",1,true) and
+					not string_find(obj_section,"_test",1,true) then
+					if dik == DIK_keys.DIK_C then
+						actor:transfer_item(tobj, actor)
+						quantity = quantity + 1
+					elseif absolute_view_angle_offset(tobj_pos) <= 0.1 then -- DIK_G
+						-- dbglog("obj %s - pos=%f,%f,%f",tobj:name(),tobj_pos.x,tobj_pos.y,tobj_pos.z)
+						collected_msg = _z.friendly_name(tobj:section())
+						actor:transfer_item(tobj, actor)
+						break
+					end
+				end
+			end
+		end
+	end
+	if quantity > 0 then collected_msg = string.format("Quantity collected: %d",quantity) end
+	_z.show_small_msg(collected_msg)
+end
+
+----------------------------------
+local addon_list = {
+	[1] = "scope_name",
+	[2] = "grenade_launcher_name",
+	[3] = "silencer_name"
+}
+----------------------------------
+-- currently this function just creates duplicates of attachables and ammo
+-- so it is only suitable with destruction of the weapon
+function unload_and_detach_addons(npc, item)
+	-- dismantle the weapon and remove ammo (derived from barin examples)
+	local alife_weapon = alife():object(item:id())
+	if alife_weapon == nil then
+		_z.nvDebug("zx.unload_and_detach_addons(): nil alife_weapon, destroyed?")
+		return false
+	end
+	local packet = net_packet()
+	alife_weapon:STATE_Write(packet)
+	
+	packet:r_seek(packet:w_tell() - 2)
+	local addon_flags = packet:r_u8()
+
+	if addon_flags ~= 0 then
+		for n=1,3 do
+			local ndx = addon_flags % (n*2)
+			if ndx > 0 then -- we have an addon
+				local addon_section = system_ini():r_string(alife_weapon:section_name(), addon_list[n])
+				if addon_section ~= nil then
+					alife():create(addon_section, npc:position(), npc:level_vertex_id(),
+						npc:game_vertex_id(), npc:id())
+				else
+					dbglog("Unrecognized addon for %s",section)
+				end
+				addon_flags = addon_flags - n --only valid for first two iterations
+			end
+		end
+	end
+
+	local ammo_qty = item:get_ammo_in_magazine()
+	if ammo_qty > 0 then
+		local ammo_type = packet:r_u8() -- this fetches next value after addon_flags fetch above
+		-- item:unload_magazine()
+		local types = {}
+		local list = system_ini():r_string(alife_weapon:section_name(), "ammo_class")
+		for str in string.gfind(list, "%s*([^%,]+)%s*") do
+			table.insert(types, str)
+		end
+		if #types > 0 and types[ammo_type + 1] then
+			-- ammo_type = types[ammo_type + 1]
+			se_respawn.create_ammo(types[ammo_type + 1], npc:position(), npc:level_vertex_id(),
+				npc:game_vertex_id(), npc:id(), ammo_qty)
+		end
+	end
+	return true
+end
+
+local actor_profit = 0
+----------------------------------
+function destroy_normal_weapons(npc, item)
+	local section = item:section()
+	local string_find = string.find
+	if section == "bolt" then
+		return false
+	end
+
+	if death_manager.marked_as_keep_item(section) then
+		return true
+	end
+
+	if string_find(section, "wpn_",1,true) then
+		if string_find(section, "wpn_addon_",1,true) then --silencer can has silencer (!)
+			return true --also handles wpn_addon_grenade_launcher_m203 (not unique weapon)
+		elseif string_find(section, "_m%d",7) then -- may be unique weapon
+			-- don't destroy uniques
+			_z.show_blinking_msg(string.format("Unique weapon found on %s",npc:character_name()))
+			return true
+		end
+
+		if not unload_and_detach_addons(npc, item) then return true end -- we can't work with this weapon
+
+		-- destroy this weapon after obtaining the sales value
+		local item_condition = item:condition()
+		local adjust_factor
+		if item_condition < 0.01 then
+			adjust_factor = 0.035
+		else
+			adjust_factor = 0.20 * item_condition
+		end
+		actor_profit = actor_profit + math.floor(item:cost()*adjust_factor)
+		alife():release(alife():object(item:id()), true)
+		return false
+	end
+	return true
+end
+----------------------------------
+function destroy_weapons_on_body()
+	local actor = db.actor
+	local actor_pos = actor:position()
+	actor_profit = 0
+	local closest_body, second_closest = closest_body_to_object(actor)
+	if closest_body and actor_pos:distance_to(closest_body:position()) < 3 then
+		-- dbglog("Closest body is %s",closest_body:character_name())
+		closest_body:iterate_inventory(destroy_normal_weapons, closest_body)
+	end
+	if actor_profit == 0 and second_closest ~= nil then
+		-- dbglog("Second closest body is %s",second_closest:character_name())
+		if second_closest:name() == xr_motivator.last_npc_used and
+				actor_pos:distance_to(second_closest:position()) < 3 then
+			second_closest:iterate_inventory(destroy_normal_weapons, second_closest)
+		end
+	end
+	local mmsg
+	if actor_profit > 0 then
+		actor:give_money(actor_profit)
+		mmsg = string.format("%d Ru credited",actor_profit)
+		actor_profit = 0
+	else 
+		mmsg = string.format("No change.  You have %d Ru",actor:money())
+	end
+	_z.show_small_msg(mmsg)
+end

@@ -1,0 +1,83 @@
+Rough translation notes courtesy BobBQ.
+
+=====================================
+AI additions
+=====================================
+
+Additions, NPC bestow new capabilities.
+
+What is included in the pack:
+
+
+=====================================
+Using first-aid kits and bandages:
+
+NPCs are able to consume first aid kits if they have low health, or apply a bandage if bleeding.
+
+Configuration: config \ misc \ rx_ai.ltx
+
+
+=====================================
+Manager of arms:
+
+A script that controls the NPC's selection of weapons.
+
+NPC is able to determine the best weapon, depending on the opponent, the distance to it, and the number of rounds in the magazine.
+
+For example, he will shoot from afar with a sniper rifle and switch to a machine gun when closer, or if the magazine is empty, will switch to another gun, etc.
+
+Configuration: config \ misc \ rx_weapon_mgr.ltx, config \ misc \ rx_weapon_mgr_ws.ltx
+
+
+=====================================
+Recharging weapons
+
+NPC reload weapons after a fight, if need be.
+
+
+=====================================
+Shooting with rifle grenade
+
+If the NPC has become the happy owner of a rifle with underbarrel launcher,
+he will use it, but only if it is safe for him and friendly NPCs.
+
+Configuration: config \ misc \ rx_gl.ltx
+
+
+=====================================
+Facer
+
+NPC will melee enemies at short range.
+
+Configuration: config \ misc \ rx_facer.ltx
+
+
+=====================================
+Bandaging
+
+If the NPC gets wounded in battle, he takes cover and applies a bandage.
+
+Configuration: config \ misc \ rx_bandage.ltx
+
+
+=====================================
+Friendly fire
+
+NPC stops firing if a friendly NPC is in the way.
+
+Configuration: config \ misc \ rx_ff.ltx
+
+
+=====================================
+Optics
+
+If the NPC has a weapon with a scope, grants extra seeing distance at the cost of reduced field of view.
+
+Configuration: config \ misc \ rx_ai.ltx
+
+
+=====================================
+1.4.1.2 Adaptation to AMK
+25/10/2009
+
+Rulix aka Bak

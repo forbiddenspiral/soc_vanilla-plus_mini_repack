@@ -1,0 +1,26 @@
+name = "Variable Watch"
+description = "This will add the string you enter below to the debug display and attempt to evaluate it during the current session. Enter nil or 0 or off to disable.\\nAn invalid statement can crash the game. (Save first.)"
+author = "NatVac"
+-- keep dik_key and hotkey in sync; use lua_help.script's DIK_keys class
+dik_key = DIK_keys.DIK_V
+hotkey = "V"
+revision = "1.1"
+number_of_parameters = 1
+
+function main(argument)
+	local error_msg
+	if type(argument) == "string" then
+		if argument == "nil" or argument == "0" or argument == "off" then
+			_z.custom_watch_var = nil
+			bind_stalker.nv_debug = false
+			_z.remove_debug_static()
+			return
+		end
+		-- nv130315 execute loadstring here to reduce load on display loop
+		_z.exec_func, error_msg = loadstring(string.format("return %s",argument))
+		if _z.exec_func == nil then return false, error_msg end
+		_z.custom_watch_var = argument
+		_z.zrp_debug_enabled = true
+		bind_stalker.nv_debug = true
+	end
+end

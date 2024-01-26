@@ -1,0 +1,23 @@
+
+	File: SupportUtilities.cfg
+
+These utilities provide the player with the ability to fix 
+or work around most problems, as well as spawn stuff and 
+run scripts or even execute Lua script statements inside 
+the game. 
+
+There are two parts to getting started:
+
+You need to enable the interface dialog.  It's the first 
+item, "Enable ZRP Support Utilities".  Then make sure the 
+checkbox for "Allow ZRP Support Utilities" is checked and 
+click the Apply button.
+
+You also need to install the script(s) you wish to use.
+
+To access these scripts while in the game, press Esc to 
+display the main menu after starting a game or loading a 
+save.  Then press Z to show the ZSU dialog.
+
+Please see the docs\ZRP_SupportUtilities_Manual.txt file for 
+more complete details.

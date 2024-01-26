@@ -1,0 +1,25 @@
+name = "Mark Objects by Name"
+description = "Mark an object or objects by object name.  Name must match exactly. Markers last only during current game session."
+author = "NatVac"
+revision = "1.0"
+number_of_parameters = 1
+
+function main(object_name)
+	local sim = alife()
+	local found = 0
+	for id_ = 0, 65534, 1 do
+		local lobj = sim:object(id_)
+		if lobj ~= nil then --and type(lobj.name) == "function" then
+			if lobj:name() == object_name then
+				level.map_add_object_spot(id_, "red_location", object_name)
+				found = found + 1
+			end
+		end
+	end
+	if found > 0 then
+		_z.show_small_msg("Found "..tostring(found)..".  See PDA map for marker(s).")
+	else
+		_z.show_small_msg("No match found for "..object_name)
+	end
+end
+

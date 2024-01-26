@@ -1,0 +1,16 @@
+name = "Info_portion Reset"
+description = "Enter an info_portion string that you wish to reset in the box below."
+author = "NatVac"
+revision = "1.0.1"
+number_of_parameters = 1
+
+function main(info_portion_to_reset)
+	if type(info_portion_to_reset) == "string" then
+		if has_alife_info(info_portion_to_reset) then
+			_z.show_small_msg("Attempting to reset \""..info_portion_to_reset.."\"")
+			db.actor:disable_info_portion(info_portion_to_reset)
+		else
+			_z.show_small_msg("\""..info_portion_to_reset.."\" is not currently set")
+		end
+	end
+end

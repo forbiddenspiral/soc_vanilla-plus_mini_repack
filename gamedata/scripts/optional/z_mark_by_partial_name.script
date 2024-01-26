@@ -1,0 +1,44 @@
+name = "Mark Objects by Partial Name"
+description = "Mark an object or objects by partial object name, typically a section name for Alife spawns.  Markers last only during current game session."
+author = "NatVac"
+revision = "1.0.2"
+number_of_parameters = 1
+
+function main(object_section)
+	local sim = alife()
+	local found = 0
+	local found_inv = 0
+	for id_ = 0, 65534, 1 do
+		local sobj = sim:object(id_)
+		if sobj ~= nil then
+			if string.find(sobj:name(),object_section,1,true) ~= nil then
+				local lobj = level.object_by_id(id_)
+				if lobj and lobj.parent and type(lobj.parent) == "function" then
+					local pobj = lobj:parent()
+					if pobj ~= nil then
+						if pobj:id() == 0 then -- you have it
+							found_inv = found_inv + 1
+						else
+							level.map_add_object_spot(lobj:parent():id(), "red_location", lobj:name().."'s parent")
+						end
+					else
+						level.map_add_object_spot(id_, "red_location", lobj:name())
+					end
+				else
+					level.map_add_object_spot(id_, "red_location", sobj:name())
+				end
+				found = found + 1
+			end
+		end
+	end
+	if found > 0 then
+		if found_inv > 0 then
+			level.map_add_object_spot(0, "green_location", 
+				"'"..object_section.."':\\nFound "..tonumber(found_inv).." in player inventory")
+		end
+		_z.show_small_msg("Found "..tostring(found)..".  See PDA map for marker(s).")
+	else
+		_z.show_small_msg("No match found for "..object_section)
+	end
+end
+

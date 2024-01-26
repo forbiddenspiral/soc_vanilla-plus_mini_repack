@@ -1,0 +1,71 @@
+
+   File:  SoundManagement.cfg
+
+This configuration controls the way the sounds in the game are 
+played.  If using any sound mod along with the ZRP, please check 
+to see if you have conflicting files before using the FileChoice 
+entries, as these entries overwrite the existing sound script 
+and config files (not the sounds themselves).  If you wish to 
+undo your changes, you can use the Revert button to restore the 
+original installation configuration.
+
+
+Background Sounds
+
+Ambient sounds can be played frequently, moderately often or 
+rarely.  The default is frequently, which loads a background 
+sound every 5 to 8 seconds.  You can increase this to 50 to 80 
+seconds, or 200 to 400 seconds between ambient background 
+noises.
+
+There is also a fourth choice, which reduces the frequency of 
+ambient effects by a factor of 10 as well as the 40X decrease 
+in sounds.
+
+
+NPC Chatter Control
+
+ZRP 1.07 uses a new sound manager for NPC "chatter".  It does 
+not require a new game and it does not affect saves, so you can 
+change it whenever you wish.
+
+The choices for using it include the vanilla configuration, a 
+vanilla-like form which reduces the assigned sounds for each 
+NPC, and the new form which reduces the frequency of speech for 
+NPCs to a more tolerable level.
+
+This last form is the default.  It provides the ability to 
+limit the repeating NPCs to say their lines only once per 
+session, or even randomly not say anything.
+
+This version is experimental, and might result in more frequent 
+garbage collection by the game, one of the factors that can 
+contribute to some stuttering.  If you don't like it, you can 
+try out the "vanilla-compatible" replacement scheme, which 
+lets the NPCs chatter as before but still reduces the load of 
+sounds available to each NPC.  Then use the configuration 
+entries to silence the NPCs you don't want to hear.
+
+Finally you can also use the vanilla setup.  Please note that 
+if you do, you will not be able to use the Sound Annoyances 
+entries to quiet the chatterboxes via the Modifier, as the 
+vanilla configuration is packed in a database file.
+
+See also docs\NPC_Chatter_Control.txt for more details on the 
+NPC chatter control support.
+
+
+Sound Annoyances, Parts 1, 2, and 3
+
+Unlike prior ZRP versions, 1.07 does not suppress annoying 
+sounds by default, so if they are still an issue for you, this 
+is the section for you.
+
+If you have left the NPC Chatter Control at the default or 
+used the vanilla-compatible version, you can still use these 
+entries to shut up individuals that you still find annoying.
+
+Just select the checkbox for the NPC (or NPC group) you wish 
+to silence, then click the Apply button.  If you want to hear 
+an NPC again, uncheck the box and click Apply.
+

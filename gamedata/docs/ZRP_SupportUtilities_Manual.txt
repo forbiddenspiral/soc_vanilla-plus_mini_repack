@@ -1,0 +1,597 @@
+
+================================================================
+    The ZRP Support Utilities (AKA 'Modolith Wish Granter')
+================================================================
+2009/12/18 NatVac - Release (with support scripts over time)
+2010/03/31 NatVac - Hotkey support, quick weather fix script
+2010/09/14 NatVac - updated doc for 1.07 XR2 changes
+2012/03/02 NatVac - 1.07 R3 changes include door fix/removal
+
+Somehow you are enemies with Duty or Freedom, and you don't know 
+how it happened. Or you joined Freedom because you had no choice 
+in the matter. How do you fix that? 
+
+Or the game is too hard in places. Is there a way of turning on 
+"god mode" to get past that? 
+
+Hey, you missed out on the good ending everyone is talking about. 
+How can you use an existing late-game save to fix that?
+
+The answers are at hand, once you enable the ZRP Support 
+Utilities option. 
+
+STALKER doesn't come with any real cheats or godmode options. And 
+yes, you can mod your game to do a lot to get around that. But 
+many folks don't have the bent, inclination or perhaps even just 
+the time to do that. 
+
+The ZRP Support Utilities functionality is provided to the casual 
+user to get around these limitations. And it can be extended by 
+just dropping in third-party or custom script text files as 
+needed. And there's a command line tool to execute Lua statements 
+for modders and scripters and folks who want more.
+
+Straylock:  "If you only knew where I've just been and what I 
+saw!"  (Unfolds hand, revealing ... something.)  "I got it from 
+the Modolith Wish Granter.  (Smiles a smug smile.)
+
+Dock:  (Shakes head.)  "You're going to finish badly, Straylock!"
+
+Special Note: This is similar to the normal Wish Granter in you 
+need to be careful what you wish for, but you will find more 
+choices here. However, this can seriously change your game 
+experience. PLEASE make a named save before using this power, for 
+you (or possibly your saves) may be corrupted. 
+
+Generally, you will know what you can do safely. But be aware 
+that spawning quest items or giving yourself info_portions can 
+affect tasks and/or game progress. 
+
+
+================================================================
+    How to install the ZRP Support Utilities
+================================================================
+
+The ZRP Support Utilities (ZSU) are script files that start with 
+"z_" and end with ".script".  To avoid tempting folks too easily 
+the utilities are in the scripts\optional\ subdirectory.
+
+There are two ways to install them:  1) Copy the one(s) you want 
+to use to the scripts\ subdirectory (one directory above the 
+optional\ subdirectory) or 2) use the Modifier's SupportUtilities 
+configuration to install the utility groups you want to use.
+
+================================================================
+    How to enable the ZRP Support Utilities
+================================================================
+
+To do that via the Modifier: In the SupportUtilities.cfg 
+configuration, select the "Enable ZRP Support Utilities" entry. 
+Check the "Allow ZRP Support Utilities" checkbox if it is not 
+checked already. Click the Apply button. 
+
+To enable it manually: Edit gamedata\scripts\ui_main_menu.script. 
+Find the variable 'allow_zrp_utilities'. If it is set equal to 
+'false', change the 'false' to 'true' (without the quotes). Save 
+the change. 
+
+================================================================
+    How to use the ZRP Support Utilities
+================================================================
+
+You must be in an active game session, and your character must be 
+alive. Press Esc to get to the main menu, then press Z to open 
+the ZRP Support Utilities dialog. 
+
+The listbox shows the available tweaks, cheats, workarounds, and 
+fixes.  Some are selectable via hotkey if none are yet selected. 
+All can be selected via a click of the left mouse button.
+
+Below the listbox is the Description area, showing what the 
+selected utility does when executed. Additional info may be 
+displayed here as you use the utility.
+
+The edit box below that is for any parameters if required. 
+
+At the bottom of the dialog are the 'Go' and 'Exit' buttons. 
+
+'Go' executes the chosen utility, which will automatically close 
+the dialog and return you to the game if the input requirements 
+are satisfied. If information is missing or the script is not 
+valid, you'll see a note to that effect in the Description area. 
+Keyboard shortcut: Enter. 
+
+'Exit' returns you to the main menu. Keyboard shortcut: Esc. 
+
+================================================================
+
+      **** CAUTION ****
+
+Some of these utilities can crash your game if you enter invalid 
+data. The description area will tell you that. Practice saving 
+your game before using those kinds of functions. You can remove 
+these utilities by moving the corresponding script files to 
+another directory, if you wish. 
+
+================================================================
+
+Click on each utility to see a description of the utility's 
+purpose. With these functions, you can spawn an invulnerability 
+artifact, you can patch up faction relationships that have turned 
+sour, you can spawn other stuff and repair items. 
+
+If a command with an option is successfully executed, the option 
+line is stored. The last option line can be recalled during the 
+current game session by pressing F8 in the dialog. This is reset 
+when you change levels or load a saved game. 
+
+Other function keys include F4 to clear the parameter line and F9 
+to prepend "print " to a line.  This latter function is useful if 
+you tried to view a result from a script command (see "Execute 
+Script Command") which happened to be a function (i.e., ending in 
+parentheses).
+
+Some of the default utilities are discussed below. 
+
+
+¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+Execute Script Command:  This is the "cheats of last resort" 
+function.  The other functions give quick and easy fixes, cheats, 
+workarounds, spawns, etc., like an invulnerability artifact (see 
+the Spawn Tools entry).
+
+This tool permits in-game access to the innards of STALKER.  If 
+you can do or access something via a script, you can do that 
+here, too.
+
+Because this is a very powerful function, instructions and 
+examples are given in a separate file:
+
+gamedata\docs\ZSU_ExecuteLuaCommand.txt
+
+See also:  Variable Watch 
+
+
+¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+Faction Relationship Management
+
+The faction utilities are fairly self-explanatory. They do not 
+work on factions inimical to the Marked One: Bandits, 
+Mercenaries, Military and Monolith. 
+
+"Faction Friendship" will make typically neutral factions friends 
+with you. (Note that if you are a member of Freedom, ecologists 
+are enemy while bandits and mercs are neutral, so this doesn't 
+apply.) 
+
+"Faction Relationship Repair" will set neutral (0) any 
+normally-neutral faction whose goodwill is below 0. It won't 
+change the goodwill if already positive. 
+
+"Faction Join or Leave" is mainly provided to correct the 
+accidental joining with Freedom in vanilla by allowing you to 
+rejoin the loners, but you can use it to join Duty or Freedom if 
+you wish. The accidental joining should not occur as of 1.07 R3 
+and you can use MrSeyker's "Freedom Vs. Duty" minimod to make 
+the membership opportunity in either of those factions part of 
+the actual storyline.
+
+"Repair Bar Relationships" is provided for those that broke the 
+law of Duty and fired on someone in the Bar area.  This fix 
+should work for those who did not start a new game and heeded 
+the call for help against attackers in the Bar, only to find 
+that they were punished for doing so.  (That itself is fixed in 
+the ZRP:  You can shoot _bad_ guys without bad repercussions.)
+
+
+¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+Fix Broken Doors/Switches:
+
+Sometimes a door becomes inert, or a switch is already green. 
+While you can bump inert doors open, it is inconvenient and 
+might even prevent you from advancing the storyline.
+
+Use the "Repair Broken Door" script to fix doors that have 
+lost their functionality ("scheme").  The doors that most 
+commonly break are Cordon trader Sidorovich's door, the door 
+to X18 (which can be a show-stopper), and the scientists' 
+bunker doors in Yantar.
+
+Usually the door schemes are lost for an entire level; if the 
+X18 door breaks, so does the door/switch to Shaggy's cell and 
+the door to the bandit armory.
+
+Fix each door by approaching to within 10 meters of it, then 
+execute the script.
+
+While this script has been extensively tested, there still 
+might be quirks encountered.  As a precaution, make a named 
+save prior to running this script.  Should any unusual game 
+behavior occur, you can use the Esc D F workarounds or use 
+the "Remove Nearest Door(s)" script instead.
+
+You might need to re-repair certain doors from time to time, 
+as this scheme reattachment does not fix the cause of the 
+door scheme detachment that broke the door in the first place. 
+If this bugs you enough, you can just remove the door.
+
+That "Remove Nearest Door(s)" script will work on quite a few 
+doors, like many metal cage doors (Zhorik's cell; Duty HQ 
+storage) and a few heavy-duty ones, like Sid's door and the 
+door to Arnie's fake arena.  (Use "Esc P" to snapshot your 
+current position, then use "Esc D -" a couple of times to drop 
+below the fake arena into the real one.  Return when done to 
+your original location via "Esc J F1".)
+
+You can use the "Repair Dark Valley Gate to Cordon" utility to 
+repair the gate scheme if the Dark Valley-to-Cordon gate is 
+inert after you acquire the X18 docs. Ironically, it is likely 
+not needed, as an inert gate can be pushed open granting 
+you access to the level changer.
+
+
+¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+Fix Broken NPCs:
+
+If an NPC gets absentminded and doesn't move, the NPC Nudge 
+script can be used to remind him.  Just walk up to the 
+non-responsive NPC and execute the command.
+
+It will not work on NPCs in panic, because even after they are 
+reset, they will respond to the same stimulous as before.  Wait 
+a while and they will calm down.
+
+This command is not recommended for important folks (which 
+usually have single names like Bullet) because the reset might 
+result in a state that is not really compatible with the current 
+situation.  You can try it, but make a named save first.
+
+
+¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+Info_portion Set/Reset:  You can enable or disable info_portions 
+to fix damage or adjust gameplay.  You will need to know the 
+info_portions that you want to set or reset.  The main source 
+is the script files.  A useful collection of these info_portions 
+is the _dev.script file.
+
+Consult the Internet. Search or ask for help with this on the 
+forum sites that support STALKER.  Some sites are better for 
+getting technical answers than others.  Consider GSC's official 
+forum to start.
+
+
+¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+Mark NPCs and Items:
+
+These scripts can put a temporary red circle marker on NPCs or 
+items in the game.
+
+¯¯¯¯¯¯¯¯¯¯
+Mark Storming Abakan (Obokan) and NPCs:
+
+The weapon of the Dutyer is not properly marked by the game.  
+The location marker is on the spot where the gun bearer last 
+had it out (not in backpack or shouldered).  This marks both 
+the backpack and the usual gun bearer, as well as a couple of 
+other NPCs.  The marks only last for the current game session. 
+
+¯¯¯¯¯¯¯¯¯¯
+Mark Objects by Name:
+
+Enter the name of the object to mark it on your PDA map.  The 
+object does not need to be online.  The name of the object is 
+the one used by the game, and is not the same as the character 
+name for NPCs.
+
+For example, Bullet is val_escort_nap1, Poker is val_kocherga. 
+You probably need to know the actual name from the decompiled 
+all.spawn.  For items that are dynamically created (e.g., flash 
+drives and weapons spawned on NPCs), you would need to know the 
+actual nameXXXXX, where XXXXX is the numeric identifier of the 
+object.  See the z_mark_abakan_etc.script file for a method to 
+find those.
+
+¯¯¯¯¯¯¯¯¯¯
+Mark Stalker by Char Name:
+
+If the NPC is online on the same level, you can mark him in 
+your PDA with info on his health when marked.  You will need 
+to know the exact character name, including case.
+
+
+¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+Remove Certain Pripyat Anomalies:
+
+With this script you can switch certain Pripyat anomalies 
+offline at any time in the game.  If you are on the Pripyat 
+level, you must save/load for the change to take effect. 
+
+This enables NPCs to move more freely according to their logic. 
+Not all problematic anomalies are switched offline, just the 
+main troublesome ones.  These are among the ones switched 
+off when you enter free play after completing the normal game. 
+Doing so early improves the gameplay experience.
+
+The default four that are reset include two in the Freedom 
+camp, the western Whirligig that kills the military, and the 
+large-radius Electro anomaly in the southeast.
+
+Artifact spawning is not affected by this script -- you will 
+still get any artifacts associated with the anomalies.
+
+
+¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+Repair Weapons and Armor:
+
+Does what it says on the tin.  Equip what you want to fix, then 
+use this function to repair it.  (One of the large-bore cheats.) 
+
+
+¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+Secret Scripts:
+
+Force Possible Secret:
+
+When installed and executed, this toggles the state of a 
+secret_always_possible flag and reports the new state.  If true, 
+then the next body searched during the current game session 
+will yield a secret -- if one can be had for that body on that 
+level.  The flag is then reset.
+
+You can also just give yourself the secret you expect; see the 
+"Execute Script Command" entry's corresponding doc file.
+
+¯¯¯¯¯¯¯¯¯¯
+Fill All Stashes:
+
+Execute this script to fill all stashes not previously filled.
+
+
+¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+Spawn Tools
+
+Currently, there are two spawning tools, one for spawning stuff 
+in your inventory, and one for pretty much anything else.  There 
+is some checking to make sure there is a valid section entry to 
+match what you enter, but it is still possible to crash the game. 
+There is also an example of a custom spawner for AP ammo.  And 
+there's the obligatory "god mode" invulnerability artifact.
+
+¯¯¯¯¯¯¯¯¯¯
+Spawn AP Ammo For Weapon:  Per the online help when you select 
+the entry:
+
+Spawn a box of AP ammo (actually, last defined ammo) for the 
+weapon in the specified slot.
+
+1 = Pistol, 2 = Rifle
+
+¯¯¯¯¯¯¯¯¯¯
+Spawn Entities (NPCs and mutants):
+
+You can spawn groups of NPCs of specific factions/rank and 
+groups of mutants, including the ones not available in vanilla 
+(burer, cat, chimera, fracture, and zombie).
+
+The default spawning works similarly to the other spawners. You 
+select an entity class by clicking in the field and typing the 
+name of the entity. The first match for what you are typing is 
+shown; if you like the option, press the right arrow key and 
+then press Enter or click Go.
+
+Use the up/down arrow keys to move up/down. The left/right 
+keys reset the field or auto-fill the rest of the match if 
+possible.
+
+Mutants start with a lower-case character (e.g., cat). NPC
+classes start with a capital letter like "Duty veteran".
+
+Spawn locations are the same as for the Monomartyrs. You can 
+override this by spawning with a direct function call, or you 
+can add your own location table of entries.
+
+Here is a simple example:
+
+pcall(_custom_ext_zrp_mm.spawn_,{section = entity_section})
+
+The pcall() is optional and intended to prevent any CTD if 
+the section is not valid. Once you know what you want and where 
+you can add a spawning function to a script:
+
+function bar_wars()
+	local enemies = {
+		{section="pri_monolith_respawn_3"},
+		{section="rad_soldier_master"}, --note comma on all but last
+		{section="mil_killer_respawn_4"}
+	}
+	local locations = { --only pos is needed, other parameters as desired
+		{pos=vector():set(100, 0, 50), min = 4},
+		{pos=vector():set(50, 0, 50), min = 4},
+		-- ... add more for the level
+		{pos=vector():set(50, 0, 100), min = 4}
+	}
+	for i=1 to #enemies do
+		_custom_ext_zrp_mm.spawn_(enemies[i],locations)
+	end
+end
+
+The locations have to be unique for the call; you can't try to 
+spawn a soldier and then a monolith using the same location 
+table. Instead, clone the location to another table if you want 
+to reuse the position:
+
+local locations = {
+	["pri_monolith_respawn_3"] = {
+		{pos=vector():set(100, 0, 50), min = 4},
+		{pos=vector():set(50, 0, 50), min = 4},
+		{pos=vector():set(50, 0, 100), min = 4}
+	},
+	["rad_soldier_master"] = {
+		{pos=vector():set(100, 0, 50), min = 4},
+		{pos=vector():set(50, 0, 50), min = 4},
+		{pos=vector():set(50, 0, 100), min = 4}
+	},
+	["mil_killer_respawn_4"] = {
+	--can also use just mil_killer_respawn_4 = { {pos=...}, {pos=...}, ...}
+		{pos=vector():set(100, 0, 50), min = 4},
+		{pos=vector():set(50, 0, 50), min = 4},
+		{pos=vector():set(50, 0, 100), min = 4}
+	}
+}
+	for i=1 to #enemies do
+		_custom_ext_zrp_mm.spawn_(enemies[i],locations[i])
+	end
+
+You can replace locations[i] with locations[enemies[i].section] 
+if you use keys like the ones above, to more closely tie a 
+location with a group.
+
+You can easily obtain positions with the Esc P position-logging 
+debug command.
+
+¯¯¯¯¯¯¯¯¯¯
+Spawn Something: You can spawn creatures or other items that 
+would not normally fit in your inventory with this script. 
+
+Please save first! This function requires a VALID item section 
+parameter in the parameter box. Otherwise it will crash your 
+game. 
+
+Some items (like creatures) may be problematic: If they are 
+not normally on a level, creatures will try to move to a smart 
+terrain where they belong, and this can cause log spew if they 
+can't determine a path to the destination.
+
+Enhancements to this functionality is expected as time permits. 
+
+¯¯¯¯¯¯¯¯¯¯
+Spawn Something In Inventory:
+
+Again, please save first! This function requires a VALID item 
+section parameter in the parameter box. There is already a list 
+of spawnable items but you can specify custom items.  You will 
+be warned if you attempt to spawn something it does not recognize
+and telling it to continue might crash your game. 
+
+Most of the vanilla section names are accessible via the 
+auto-complete feature (very highly recommended for use): 
+
+Select the parameter box after selecting the "Spawn Something In 
+Inventory" script. Type the starting letters of the section name 
+of the item you want to add to your inventory. You can then use 
+the keyboard arrow keys to show and select a section name for 
+use. 
+
+Arrow key functions:
+up arrow    = previous item
+down arrow  = next item
+left arrow  = reset the input box (quick clear)
+right arrow = use the currently-displayed item (puts it into 
+              the parameter box)
+
+Type 'af' to start with artifacts, 'am' for ammo, 'w' for 
+weapons. You can view the script file in a text editor to see 
+other choices, or to add your own custom section names for items 
+(e.g., weapons) in your mod. 
+
+Examples:
+af_electra_moonlight
+ammo_7.62x54_ap
+decoder
+medkit
+outfit_exo_m1
+wpn_svd_m1
+
+To spawn the item, press the Enter key or click the Go button.
+
+Be sure your input is complete before pressing the Enter key. The 
+right arrow key always completes the input, using the currently 
+displayed match. 
+
+While it is possible to spawn items not in the list, be careful 
+that the item can be validly spawned in one's inventory.
+
+¯¯¯¯¯¯¯¯¯¯
+Spawn UltimaShield: This gives you the invulnerability artifact. 
+You will have to equip it for use.  You can easily remove it to 
+play normally.
+
+
+¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+Temporary Weather Reset:
+
+If your view fills with flashing triangles during a storm on a 
+level, you can try vid_restart in the console.  If that doesn't 
+work, you have a couple of choices:  Quit the game, relaunch it, 
+and reload the last save, or temporarily remove the rain.
+
+The Weather Reset script uses the "test" weather preset.  It 
+might not work with some weather mods if they have removed 
+support for that preset.  It also has a constant "early evening"
+look regardless of the time of day, making for some bright nights.
+
+It only lasts during the current game session; reloading a save 
+or changing levels will reset the effect.  It might also be reset 
+by a weather mod updating the weather.
+
+
+¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+Variable Watch:
+
+This script allows you to add a script variable or a function 
+with a return value to the ZRP debug display info.  After you 
+have installed this script, you can select "Variable Watch" from 
+the ZRP Support Utilities dialog, then enter the name of a 
+variable or script function that returns a value. Clicking the 
+Go button will return you to the game with the variable shown 
+in the form "var = value" under the standard ZRP debug info.
+
+Only _g.script variables are global; all other names must be 
+properly qualified.  Examples:
+
+db.actor.health
+z.this_thing():name()
+z.this_guy():name()
+
+Note that the z.script functions require that z.script be 
+installed (done when you install the Script Line Execution 
+Utility; see the Execute Script Line entry).
+
+The info is updated five times a second under normal conditions.
+
+Caution:  While you can watch a recursive function, this can 
+seriously affect the refresh rate of the game.  Iterative 
+functions like z.this_thing() will cause the game to stutter.
+
+NOTE:  z.this_thing() returns an object, which cannot be 
+displayed directly; it will show as "userdata".  It is provided 
+to permit you to get information on objects in front of you, 
+like their :character_name() or their .health.  There are also 
+other convenience functions like the following:
+
+z.this_name() -- object name
+z.this_name_section() -- object name and section
+z.this_guy_health() -- npc name and health
+
+To turn this feature off, re-execute the Variable Watch script 
+with the parameter set to 0 or nil or off.
+
+See scripts\z.script and docs\ZSU_ExecuteLuaCommand.txt for more 
+details.  Note that _z.script has also been changed to support 
+this functionality.
+
+
+
+
+================================================================
+    How to get or make new ZRP Support Utilities
+================================================================
+The utility list can be extended. You can request functionality 
+on the forum sites that support the ZRP, or you can "roll your 
+own". See the ZRP_SupportUtilities_ModdingNotes.txt file in the 
+gamedata\docs\ subdirectory for additional information.
+
+================================================================
+This utility support feature is dedicated to romulous, ERForman, 
+and all the other folks who have been frustrated by the quirks 
+and idiosyncracies of the game.  --NatVac

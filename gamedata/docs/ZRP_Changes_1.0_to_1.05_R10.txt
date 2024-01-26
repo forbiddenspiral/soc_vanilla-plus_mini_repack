@@ -1,0 +1,577 @@
+
+ZRP 1.05 Test r10 - 2008/05/02 -
+  All.spawn changes (requires new game):
+      Vanilla typos/errors reported by Alex-Tommy, barin, EggChen fixed.
+      Shaggy is less likely to accidentally free himself.
+      Rostok camera fly-by doesn't happen if you already dealt with mercs.
+      Cap's Barrier news message isn't doubled.
+      You can get the code to the Red Forest codelocked door.
+      Yantar tunnel roar corresponds to beast spawn.
+  Other bug fixes and tweaks:
+      Stadium marker removed after task completion.
+      Quest Overhaul now has ecologists quests corrected in config, not text.
+      "Good" ending goes to credits if you didn't start a new ZRP-based game.
+      If ammo section missing from death_generic.ltx, dunin_ammo logs complaint.
+      You can find high-end artifacts on NPC bodies (1 in 200) per Alex-Tommy.
+      Tushkano now has encyclopedia entry, thanks to Mr. Fusion.
+      Other minor text tweaks.
+  Modifier updates:
+      You can disable the in-game fly-by cutscenes (requires new game).
+      The Real Gun Names option now show the ampersand (&) in H&K.
+      You can enable the sale of some guns to NPCs as well as ammo.
+      New Experimental configuration; see smart terrain spots.
+  Many more TZIO and Free Play tweaks. Some require a new game.
+
+r9 - 2008/04/19 - 
+  Free Play tweaks (*=Requires new game):
+      Moved end-game teleport.*  Current free-play teleport still supported.
+      Removed Freedom-killing info_portion.*
+  TZIO tweaks:
+      New chapter images from TSL16b.  Perfect!
+      You can now talk to Barkeep with just the WT loadout.
+      The reticle is restored after C-Con conversation without a save/reload.
+  carbody_new_16.xml is now internationalized per TSL16b.
+  More Modifier options:
+      Decane's Quest Overhaul (lite version) included.
+      EggChen's tweak for fire dynamic lighting in misc\zone_kampfire.ltx.
+      Real Gun Names, based on info published by Kyodan and Brood_98.
+      Show first-shot weapon accuracy stats.
+      More control of secret info.
+      You can turn off the NPP earthshaking.
+      You can reduce the frequency of ambient sounds loaded/played.
+      You can cancel CGI cutscene movies by pressing ESC. (Not fully tested.)
+  Anti-rad hotkey no longer requires debug mode.
+  Workaround tweaks (*=Requires debug mode enabled):
+      Better eventual removal of left-over markers.  (Please report any still left!)
+      ESC D F now always "teleports" you two meters ahead to get past that idiot NPC.*
+      You no longer need to save the game to fix the X-18 entrance door.*
+  New all.spawn changes (requires new game):
+      Moved final level changer, added teleport for Free Play, tweaked some triggers.
+  Improved modding support:
+      Better file organization for mod support.
+      You can snapshot your position and have it added temporarily to the jump dialog.
+      The snapshot data is logged for copy/pasting into _custom_zrp.script.
+      More predefined intra-level jump locations in optional\_custom_zrp.script.
+
+r8 - 2008/04/06 -
+  Added TSL16b's teleport dialog for "The Zone Is Open" feature.
+  Added intra-zone jump dialog.  Jump locations are customizable.
+  Fixed Italian translation text file which caused a crash.
+  More Free Play tweaks, more TZIO tweaks.
+  Added "Show Zombies on mini-hud" Modifier option.
+
+r7 - 2008/03/28 -
+  Hunting Shotgun quest fix (missing files included).
+  Tweaked "The Zone Is Open" feature a bit (Dark Valley freeplay, X16 start).
+  Included trade_generic.ltx.npc_ammo to permit equipping NPCs.
+  Added stable_task_manager.xml change to ZRP_105_TextChangeNotes.txt. 
+
+r6 - 2008/03/20 -
+  "The Zone Is Open" - See gamedata\docs\TheZoneIsOpen.txt.
+  Fixed helicopter behavior in Yantar.
+  The TOZ-34 is now the hunting shotgun if you start a new game.
+  Added zambien and Shadow State tweaks to Raw's WS stuff.
+  Test tweak for Seriy post Agroprom.
+
+r5 - 2008/03/06 -
+  Added Raw's WS tweak.  Retweaked 16x12 screens per fitzroy_doll.
+  Fixed Modifier bogus error msg, 800x600 suit stats error.
+  Mole now stays at the "well" after you talk to him.
+
+r4 - 2008/02/26 - No more free repairs or lights shining out of the ground. One more screen option.
+r3 - 2008/02/22 - There are more trade/search screen options; anti-rad hotkey and debug fixed.
+r2 - 2008/02/15 - The Modifier program now has support for checkboxes.
+r1 - 2008/02/14 - Removed screen support (textures were missing) and fixed missing actor reference.
+r0 - 2008/02/12 - initial release - see fix list below.
+
+******************************************************************************
+*******  2008/02/08  Changes in the 1.05 ZRP Test R0 update: ******* 
+******************************************************************************
+
+"The Zone Is Open" features a way to start the game anywhere.  It includes a
+rudimentary free-play option.  See gamedata\docs\TheZoneIsOpen.txt.
+
+Army Warehouses merc waypoint crash fixed. (Requires new game.)
+
+Sakharov and Kruglov/Semenov no longer repeat their discussions.
+
+Kruglov/Semenov no longer blocks the bunker door in Yantar.
+
+Mole no longer repeats his "rescue" after you talk to him at the well.
+
+The dialog with Seriy doesn't flash back to asking about Strelok post Agroprom.
+
+Strelok quest completion notification is now more timely.
+
+1.0004/1.0005/1.0006 compatibility installed by default.
+
+Task relationship negatives are now processed correctly.
+
+NPC torches (flashlights) are no longer added to the quest target list.  Also,
+they should not shine out of the ground any longer during the day.
+
+More secrets and tasks and Red Forest snorks fixed, thanks to omero.  Also,
+Wolf won't give you tasks after he moves on.
+
+Task manager is more configurable.  Options include the basic Quest Overhaul by 
+Decane.
+
+For some of the following workarounds: Enable the ZRP debug mode by setting the 
+zrp_debug_enabled variable to true in _z.script*, then press ESC, D to toggle 
+the mode.  This puts debug info on the game's screen.
+
+Broken Sidorovich trader door workaround included:  Press ESC, J in the Cordon 
+to get the Jump menu.  Select Sidorovich to jump to his office.  From there 
+you should be able to push open the door from the inside.
+
+If that doesn't get you out of Sid's office:  Debug mode must be enabled. 
+Face the trader door and press ESC D F.  You will be outside Sid's office. 
+(This works going both ways.  Just stand in front of the door.)  Warning:  
+Save your game first!  This teleport is dangerous; it is possible to fall out 
+of the map if misused.  If you are going to use it, copy over the optional 
+script file _custom_zrp.script from the scripts\optional directory to the 
+scripts directory to enable the "Last Position" feature -- and you can also 
+temporarily record your locations with ESC P; see below.
+
+Broken X18 Lab entrance workaround included: Debug mode must be enabled, and 
+you must have the keys from Barkeep and Borov. Face the X18 Lab entrance door 
+and press ESC followed by F.  You will receive credit for the objective, and 
+you will be given a new one.  And the door will be gone.
+
+Broken Duty prison cell door workaround included: Debug mode must be enabled. 
+Face the cell door from within two meters, then press Esc followed by F.  You 
+will be told to use your knife to break the door open, but you will have or 
+shortly get credit for completing the task.
+
+Everywhere else, ESC D F will teleport you ahead two meters.  This will allow 
+you to get past NPCs that block your path, or look inside doors that cannot be 
+opened.  WARNING:  This is very dangerous!  Be sure to save your game before 
+attempting this.  If you copy over the optional script file _custom_zrp.script, 
+you will be able to press ESC P prior to ESC D F in order to snapshot your 
+position for returning to it via ESC J.  See the file TheZoneIsOpen.txt in the 
+gamedata\docs\ subdirectory.
+
+Optional Screw and Capt. Ivantsov repair.  Enable by setting the variables 
+allow_screw_repair/allow_ivantsov_repair to true in dialogs_military.script.*
+
+Busted-crate spawns are less likely to fall through the floor.
+
+Tushkano beep fix.
+
+Ammo aggregation and anomaly evasion options included.
+
+Better internationalization support.  See docs\ZRP_105_TextChangeNotes.txt.
+
+Better Smart Mod Manager compatibility.
+
+*You can use the Modifier program to make these changes.
+
+
+******************************************************************************
+*******  2007/11/16  Changes in the 1.04c ZRP update: ******* 
+******************************************************************************
+
+Note:  The 1.04c release was separately updated for SMM support and automatic 
+compatibility with either 1.0004 or 1.0005/6.
+
+This is a maintenance update to support 1.0005.  There are some caveats:
+
+The gamedata\config\system.ltx file has a parameter under [script] called 
+current_server_entity_version.  This must be 6 when saving and loading games 
+under 1.0004, and 7 when saving/loading under 1.0005.  NO EXCEPTIONS!  These 
+are defaults in the normal patch installations, but some mods supply their 
+own versions.
+
+Be careful when using the configuration tool to modify actor.ltx.  You will 
+need to choose the correct version of system.ltx corresponding to your patch 
+version.  While you can easily change the parameter above, using Revert 
+might restore the old version with the wrong value of the parameter.  Please 
+check this before you play the game!
+
+While 1.0004 saved games can be loaded into 1.0005, there is no backward 
+compatibility; 1.0005 games will not load properly into 1.0004.
+
+
+******************************************************************************
+*******  2007/11/09  Changes in the 1.04 ZRP update: ******* 
+******************************************************************************
+
+A new Modifier program is included to permit the quick selection of custom 
+options.  It is in the gamedata directory.  Just double-click it in Windows 
+Explorer to run it.  Select the configuration file at the top, then select 
+options from the list on the left.  Hover over fields for notes.  Select 
+"Apply" to install the changes, "Revert" to restore the previous changes, and 
+"Default" to restore the system default configuration for the option.  NOTE: 
+The program modifies files in the gamedata subdirectory, which will likely 
+require admin or power-user privileges.
+
+The Dark Valley scam jeering no longer repeats after the first sale. (Requires 
+new game.)
+
+Skull's group no longer repeats the examination and remarks over the bodies of 
+the Freedom group as you enter the Army Warehouses level from the Bar. 
+(Requires new game.)
+
+You can now set the default idle time delay before a task can be re-offered.
+
+A scrollbar slider button issue on searches was corrected, thanks to Fatrap.
+
+A vanilla Dark Valley NPC hearing problem was fixed, thanks to omero.
+
+A crash in vanilla that occurs when one does not defend the border from the 
+Monolith and then leaves and returns to the area, was fixed.
+
+A rare "job not found" crash was fixed.
+
+This version defaults to an experience that is more "vanilla" than previous 
+versions.  Please use the Modifier program to further customize the game to 
+your liking, or see the ZRP_ModdingNotes.txt file to do it manually.
+
+
+******************************************************************************
+*******  2007/10/17  Changes in the 1.03 ZRP update: ******* 
+******************************************************************************
+
+Tuskanos are now considered enemies by human NPCs.  A missing comma was added 
+to game_relations.ltx based on info found by Fatrap on the Russian forum.
+
+The right-hand grid on searches now has more squares.
+
+The hint on the Red Forest antennae location marker has been corrected.
+
+Reduced the alertness range of most of the Cordon factory bandits to stop them 
+from being more interested in the bridge soldiers than the attackers amongst 
+them.  This may need tweaking, and other situations will likely arise needing 
+similar attention.
+
+More info in a smaller, cleaner format on the optional debug display.
+
+Special thanks to Fatrap, Decane and silverpower for input to this update.
+
+
+******************************************************************************
+*******  2007/10/14  Changes in the 1.02 ZRP release: ******* 
+******************************************************************************
+
+Fixed an occasional crash when taking the documents from Ghost.  The game gives 
+you credit for doing so when you search Ghost, and then again when you actually 
+take the documents, and the news manager would attempt to output a non-existent 
+objective.  This was sometimes just garbage, and sometimes even a CTD.
+
+Made the gameplay character files optional.  The  flashlights-in-the-floor fix 
+didn't work; the disconnected lights belong to the flashlights the NPCs have in 
+their inventory but are not currently using.
+
+Included debug code for modders as a template for their own changes.
+
+The beam of the optional ZRP flashlight has a longer reach.
+
+
+******************************************************************************
+******* ZRP Game Bug fixes: ******* 
+******************************************************************************
+1.05:  Spots for Petruha's buddies, Agroprom soldiers (after detection).  See 
+the ZRP_Test_ReadMe.txt file for other changes.
+
+1.04c:  Added support for 1.0005.
+
+1.04:  Repeating event fixes:  Skull's group examines the Freedomer bodies only 
+once and the Dark Valley scam only goes down once.  (*Requires new game.)
+
+1.03:  Tuskanos are now considered enemies of the human NPCs.
+
+1.02:  Fox won't immediately go into alert mode after you heal him.
+
+1.02:  Fewer location markers remain after quest completion.  This may require 
+loading a game, saving, then loading the saved game.  Let us know on others.
+
+Helicopter noise ends in Dark Valley level at the end of the scripted fly-over 
+after returning from X18. (Yantar choppers fixed via all.spawn, below.) 
+
+The conversation with Bes in Garbage does not loop.
+
+The +30 burn protection artifact is correctly called "Shell" instead of 
+"Battery". 
+
+The ecologist's mutant quests are fixed.
+
+There are several new quests available, like the "Kill the stalker from the 
+Monolith faction" autoquest (no need for return) in Red Forest.
+
+Max really gives you the Desert Eagle (Black Kite) when you complete a certain 
+quest. 
+
+The "Find X16 documents" marker tip no longer says "no hint".
+
+You can exit the Agroprom tunnels either way and still get task completion 
+credit by the time you talk to the barkeep.
+
+The wounded-NPC perfect-gun exploit fixed.
+
+Many, many, many typos and bad translations (e.g., cellar instead of attic). 
+
+And of course, all the bug fixes in bardak's bug fix attempt.  These include 
+the following:
+
+Fixed quests:  "Protect barrier from mutants", Lukash's Skull camp quest [with 
+NatVac update] (You can complete the "eliminate Skull group" quest even if you 
+save/reload in the middle of the fighting), Army Warehouse village bloodsucker 
+quests.
+
+Fixed spawns:  Some NPC "campfire BBQ" spawns, wrong Pripyat communities, wrong 
+Cordon bloodsucker smart terrain info, some NPC same-spot "collision" spawn 
+deaths.
+
+Reputation won't flip back and forth between excellent and terrible, so you can 
+more easily get a different Wish-Granter ending if desired.
+
+No more marked-but-empty secret stashes.
+
+Fanatic's rookie group now acts the way it is supposed to.
+
+You can only get one secret at most from a corpse.
+
+Also fixed:  Duty reaction to firing at enemies in the Bar, a Pripyat crash, 
+corpse perfect-weapon exploit, and additional bugs.
+
+Several other bfa crash fixes are now a part of the patches since 1.0004.
+
+
+******************************************************************************
+******* Game Bug fixes in all.spawn (requires new game): ******* 
+******************************************************************************
+
+1.05:  Corrected typos reported by Alex-Tommy, barin, EggChen and others.  See 
+the ZRP_Test_ReadMe.txt file for other changes.
+
+1.05:  Added level changers and tweaks to support free play, TZIO.
+
+1.05:  Fixed merc camp waypoint crash in Army Warehouses.
+
+1.05:  Removed ability to change levels from wrong side of gate in Dark Valley 
+to the Cordon.  (Reported by Snowball.)
+
+1.05:  Made certain Agroprom soldiers behave on HUD mini-map like the rest.
+
+1.02:  Removed teleport at end of Pripyat stadium cutscene; you no longer 
+immediately change levels to Chernobyl NPP after the stadium cutscene.
+
+1.02:  Skull's quest to kill the sniper will now fail if Skull is killed first.
+
+1.02:  Fixed ducking-causes-level-change near guard tower in northeast corner 
+of military base in southwest Agroprom.
+
+1.02:  Fixed return from Dark Valley to Garbage; no more prompt to return to DV.
+
+1.02:  Removed helicopter noise from Yantar level after scripted attack on 
+zombies.
+
+bfa: Fixed merc attack on stalker campsite in Army warehouses, re-broken by 
+patch 1.0004 after being fixed in 1.0003 bfa.
+
+bfa: Fixed controller spawns in Pripyat (typos fixed).
+
+bfa: Fixed boars camp in the Garbage.
+
+******************************************************************************
+******* Annoyances addressed: ******* 
+******************************************************************************
+
+Bar guard, bar drunk, Snitch, bar bouncer, and Sakharov no longer repeat those 
+phrases.  Others can be added; see ZRP_ModdingNotes.txt.
+
+It is easier to select "eat" or "use" on the right-mouse-button popup menu in 
+inventory.
+
+Over-the-top background battle sounds in Pripyat silenced or replaced with 
+wind.
+
+
+******************************************************************************
+******* Interface changes: ******* 
+******************************************************************************
+
+Quick named save: There is a menu button on the Save screen that permits you to 
+make a quick "levelname_datestamp" save almost as quickly as quicksave. I 
+recommend using this feature at the beginning of a level and just before going 
+to another level. If you find making named saves inconvenient, it also helps to 
+"snapshot" your progress from time to time, like just before and just after a 
+major quest.
+
+1.02:  The keyboard shortcut for this quick named save is Esc, S.  The Esc 
+(escape) key brings up the main menu, and S then saves the game and closes 
+the menu.
+
+When discussing quests with quest-givers like Sid or the Barkeep, you can now 
+bypass a quest that you do not wish to do. Just select the quest, and its 
+description will appear with the possible rewards. Now there will be three menu 
+choices instead of two. The new third choice is "I do not want that task."  
+Selecting this choice will defer the task until the idle_time has elapsed, at 
+least one day. You can then select the next task in line, if one is available 
+from the same category. 
+
+Quests and secrets are marked by colored text.  Quest updates are now added to 
+the Message History.
+
+Inventory, trade, and corpse and stash search screens have more squares on the 
+grids to reduce scrolling. 
+
+PDA Log and Message History links are lowered to above the main link bar. While 
+this is not currently aesthetic, it is extremely functional.  If you don't like 
+it, see ZRP_ModdingNotes.txt.
+
+The "Last save" option is moved to the top of the initial menu. 
+
+Quitting the game from the main menu does not prompt you for confirmation, nor 
+does loading the last save after being killed (duh). 
+
+Save game name field lowered. 
+
+For modders:  Some added debug support.  Press ESC followed by TAB to toggle 
+rs_stats, and press ESC followed by D to toggle the on-screen actor location 
+data in the upper right.  Adjust it for your own needs.
+
+
+******************************************************************************
+******* Gameplay changes: ******* 
+******************************************************************************
+
+Many of these features are easily changed by the Modifier program.
+
+Optional: Weapons are much less frequently dropped by NPCs (non-playing 
+characters); instead the weapon is stored in the backpack. Exceptions are 
+unique weapons, quest items, rocket launchers and gauss guns. Regular weapons 
+will be dropped when NPCs die while reloading or "transitioning" the weapon. 
+Note: See the ZRP_ModdingNotes.txt file to change this, or use the Modifier 
+program.  (Default is normal dropped weapons.)
+
+Corpses disappear after four configurable game hours, after you leave a level.
+
+Quests have a three-day default time limit, but changing this is as simple as 
+changing a number in a text file. It can be two days, 10 days, or no time limit 
+(0). Some additional quests have been re-enabled or fixed. Auto-quests also 
+have a separate time limit, defaulting to 0 -- no time limit. Generally, until 
+you claim the reward, the quest will not be re-issued. There are fewer 
+auto-quests; the former "eliminate camp" auto-quests are now available from the 
+quest's source via dialog. You can also disable auto-quests entirely. Sid's 
+auto-quests do not need returns for reward.
+
+You can also set the time that must elapse before a quest can be given again.
+
+Many more quests, and more coming with efforts from others.
+
+Secrets are generally less boring to read. (Yeah, I know -- that's not saying 
+much.) 
+
+Secrets show the zone where they can be found with a level abbreviation prefix 
+in your PDA's Message History. The notice will stay on the screen a bit longer 
+when you get the secret, and you can make it longer or shorter. (Stash contents 
+listing is optional.) Stash emptying also shows what secret you are claiming. 
+
+Zombies run from grenades a lot more slowly. 
+
+You can complete the Strelok quest. (Requires new game.) 
+
+Skinflint will offer you the village bloodsucker quest even if you have talked 
+to the cook.
+
+Ammo found on bodies in later levels are more likely to be armor-piercing. If 
+you encounter a rocket launcher dude, he is more likely to have rockets in his 
+backpack. (Optional; enabled by default)
+
+Other optional enhancements (NOT DEFAULT):
+
+There can be more combatants in later levels who use armor-piercing ammo. 
+(Requires new game and optional gameplay files moved out of the 
+gameplay\optional directory) 
+
+Wolf can start off with an AK74 and AP ammo.  He can use it later in the game. 
+Fox can get a better shotgun, but it doesn't help him much. (Requires new game 
+and OPTIONAL gameplay files moved out of the gameplay\optional directory) 
+
+
+******************************************************************************
+******* Under the covers: ******* 
+******************************************************************************
+
+Slightly less memory usage, due to some optimizations. There should be somewhat 
+less lag later in the game, since no-longer-needed resources are removed more 
+often.
+
+The check for critical items during inventory changes is much more efficient. 
+You should see a difference in some level transitions; synchronizing should be 
+a bit faster.  Note: The IG2007/Dunin ammo fix might slow this down a bit.
+
+
+===============================================================
+Special Note: A lot of issues are still not fixed. Quite a few may not ever be 
+fixed without an official game engine update. But a few should be correctable 
+via modifications to scripts, configuration files, and the all.spawn 
+configuration file.
+
+******* Some known but currently unresolved issues: ******* 
+
+Some "crash to desktop" (CTD) problems are not fixed and may require an engine 
+change to eliminate them.  See the docs\ZRP_ModdingNotes.txt file for details.
+
+Patch 1.0004 has some instabilities introduced with the relaxed smart_terrains 
+and the deferred object processing in a separate thread.  Some results are 
+benign, like late smoke puffs and out-of-sync movies*, while others result in 
+a crash to desktop, like the destruction of an object while an NPC is trying 
+to evaluate it, or an NPC or creature getting "lost" and unable to find a 
+waypoint.  Although these are rare, please save often, and use the quick named 
+save feature every so often to permit you to find a game that works if the 
+waypoint problem occurs.
+
+When you break a metal box or crate, items will fall from the broken container, 
+and if you are on an upper floor, they will fall to a floor below.  A fix is in 
+place to improve the situation.
+
+Bodies will occasionally collide with the floor and disappear.  They can still 
+be searched; move over the spot in the HUD radar.  You may even be able to pick 
+them up via Shift-Use (default: Shift-F or Shift-Enter).
+
+Climbing a ladder will put away rifles.  Changing levels when climbing a ladder 
+will put you on the new level with binoculars in this case. Tip:  Sometimes 
+jumping up in front of the ladder (e.g., below Mole's Agroprom entrance) will 
+restore the slot-2 weapon in the next level.
+
+The blue bar for psy health in inventory is the same color as the armor bar in 
+the main heads-up display (HUD).
+
+Items are always dropped from the inventory screen in the player's 0,0,1 
+direction (usually to the north of the player).
+
+Occasionally you might pass through a radiation zone and collide (maybe via 
+jumping) with a radioactive source, so that you become permanently affected by 
+radiation.  The only treatment is to load a saved game from prior to the 
+contamination.
+
+Dark Valley (and the Cordon) can have broken switches.  In the Cordon, the 
+trader Sidorovich has a door that might not work; this is minor and can be 
+worked around by bumping it.  But if the Dark Valley switches don't work, this 
+can be corrected in 1.0004 either via a reload of the Garbage level prior to 
+going to Dark Valley or by special patch, which can provide you with the needed
+"keys" (info_portion flags) that the doors would normally provide.  (NOTE: This 
+debug feature is now available as of 1.05.)
+
+The disconnected lights are associated with the flashlights of the NPCs.  They 
+remove the light during the day, but the lamp is not turned off, so it shines 
+out of the location where the NPC spawned.  If you kill the NPC, the light goes 
+away.  (NOTE: 080224 - possibly fixed with hack as of 1.05 test r4.)
+
+The loosened "smart terrains" for creatures and NPCs in version 1.0004 results 
+in extra alertness by NPCs. They won't talk to you until the threat is removed. 
+Some quests will be harder to complete because the associated targets are 
+either temporarily out of the zone or new members of the target group have come 
+onto the level elsewhere.
+
+At least two levels, l10u_bunker (the X19 Brain Scorcher underground level) and 
+l12u_sarcofag (the NPP Sarcophagus level), are missing occlusion maps.  This 
+means that the bad guys can hear you through walls, and they can shoot you 
+through walls.
+
+*Deferred object creation in separate threads in 1.0004 results in late smoke 
+puffs from gunfire impacts, or even (in multi-core processor configurations) 
+late spawning of NPCs and creatures, resulting in out-of-sync video or strange 
+gameplay.

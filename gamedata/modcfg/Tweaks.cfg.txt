@@ -1,0 +1,87 @@
+  File: Tweaks.cfg
+
+This configuration is a simple extension to permit the 
+adjustment of certain game options not found in other 
+Modifier configuration files.
+
+Move the mouse over the fields and radio buttons to see 
+tips on using this configuration.
+
+Install Alife.ltx
+
+If you don't already have a copy of this file in your 
+gamedata subdirectory, you can add it with this option. 
+
+Alife.ltx Tweaks
+
+You can set the starting time, the starting date, and 
+the time you spend on one level before the game will 
+automatically save your progress.
+
+Alife.ltx Advanced Tweaks
+
+You can change the default speed ratio of the game's 
+clock to a real clock.  The default is 10 to 1.
+
+For a 24-hour day, set it to 1.
+
+A new game is required for this setting to be used. 
+There is also a set of debug command sequences that 
+allow you to change this time on-the-fly while playing 
+the game -- see the gamedata\Docs\DebugSupportChanges.txt 
+file, the Debug time commands section.
+
+The switch_distance is the radius of the sphere around 
+the player which "switches" NPCs from offline to online 
+as they enter it.  If your CPU can handle it, you can try 
+1200 to activate all AI activity on a level.
+
+The objects_per_update setting can be used to limit the 
+rendering crashes on some levels -- reduce the value by 
+one or two. Alternatively, you can increase the value 
+from the default of 10 to 12 or so as an experiment to 
+improve the smoothness of the gameplay experience.
+
+
+TZIO/Free Play Tweaks
+
+You can start the game with the storyline removed by 
+selecting the Final Level/Free Play option in the ZRP 
+Teleport menu (Esc T).  Normally the option also provides 
+you with a loadout commensurate with your level of 
+progress in the game.  If desired, you can start the 
+game in free play mode with only a knife.
+
+To do this, first check the "Add only a knife" option and 
+click the Apply button.  Then start a new game.  When the 
+game starts in Sid's office, you can then press Esc T to 
+access the ZRP Teleport menu.  Press E to "Equip only", 
+then press F to select the free play option.
+
+That will bypass all the storyline stuff and let you 
+begin your game in the Cordon.
+
+This section will have more options as they are developed 
+for extending play beyond the normal game.
+
+
+Flashing Disk I/O Icon
+
+There's an icon at the lower right of the in-game HUD 
+display that flashes when the game is loading resources 
+from the hard drive or from the OS cache memory. Some 
+find it annoying. You can install an invisible version of 
+that icon so that you are not distracted while playing.
+
+
+Item Healing
+
+Several consumable items in the vanilla game also 
+provide a bit of healing in addition to their primary 
+function. You can adjust that here. Normally you would 
+use this to eliminate the healing added by bandages, 
+food and drink.
+
+The primary function of these items is not changed; 
+food still reduces hunger, vodka reduces absorbed 
+radioactives, bandages reduce bleeding.

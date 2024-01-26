@@ -1,0 +1,225 @@
+
+	The Zone Is Open -- You Can Start Anywhere
+
+ZRP version 1.07 sports features that should prove extremely valuable to:
+
+	Modders
+	Folks upgrading from 1.0 to 1.0004 or later
+	Folks afflicted with a game-stopping bug
+	Folks desiring a new experience in the basic game
+
+Now you can equip yourself for any major point in the game and get all the 
+objectives for that point. You can optionally jump to the associated level 
+from the Cordon.* You can also quickly jump to level changers on each level, 
+or special custom locations that you define. 
+
+For the "free play" option:  Give yourself all the objectives for the Final 
+Level (or Free Play) at any time, and then enjoy the game with no pending 
+objectives.
+
+Version 1.07 also permits starting with just a knife.  See the Free Play 
+Tweaks entry of the Tweaks Modifier configuration.  You can also edit 
+_dev.script and set add_nothing to true if you wish to avoid the Modifier.
+
+This is an on-going work, but you can get an idea of what is possible. You 
+can now continue playing after you finish the game, even if you did not start 
+a new game.  If you start and finish with this version, you will be prompted 
+to change levels after the "good" cutscene, so you can continue play. (You 
+can also start a new game, select the "Final Level or Free Play" option and 
+then jump to the final level, which will permit you to continue play after 
+you finish the game.) 
+
+If you are already running with STALKER patched to 1.0004 or later, you do NOT 
+need to start a new game for the equipping feature and the intra-level jump 
+feature, but you will need to start a new game to use the new Cordon teleports 
+level jump feature. You can also continue play after the final level without 
+starting a new game, although the convenient return teleport is missing; you 
+will have to go back the way you came.
+
+This means that if you want to see the credits, you will need to select the 
+Credits button from the main menu.
+
+Please note that you can still start the free play option at any time without 
+starting a new game. 
+
+***********************************************************
+ALWAYS make a named save (ESC S is good) before doing any of the following, as 
+it changes the game!
+***********************************************************
+
+The ability to select a chapter in the STALKER SoC story (even changing to 
+the corresponding level from the Cordon) and the ability to jump to select 
+spots within each level are features added in version 1.05, with dialogs to 
+support them. These dialogs are available from the main menu.
+
+Changing to any level can only be done while on the Cordon (Escape) level.  
+But you can do this at any time in the game while visiting that level.
+
+
+======================================
+PART 1:  EQUIPPING and CHANGING LEVELS
+======================================
+
+To equip Marked One for a certain point of progress (PoP) in the game, press 
+
+	ESC T
+
+(If you are already on the main menu in an active game, just press T.)
+
+You will see the dialog (graciously provided by TSL16b) for equipping and 
+teleporting to a new level.  If you are not on the Cordon level in this 
+version, the "Equip only" checkbox will be checked already.
+
+You can then select an entry in the list, or press the key corresponding to 
+that point of progress:
+
+	G - Garbage
+	A - Agroprom
+	U - Agroprom Underground
+	B - Bar, post Agroprom
+	D - Dark Valley
+	8 - Lab X18
+	C - Cordon from Dark Valley, post X18
+	W - Wild Territory
+	Y - Yantar
+	6 - Lab X16
+	L - Yantar Lower Level (Tunnels), post X16
+	M - Military Warehouses
+	R - Red Forest
+	9 or 0 - Lab X19, AKA Brain Scorcher
+	P - Pripyat
+	N - Chernobyl NPP
+	S - Chernobyl NPP Sarcophagus
+	H - Monolith Control Center
+	F - Final level or free play (all storyline objectives completed)
+
+Depending on the checkbox selections, this will a) give you the "keys", 
+objectives and needed objects for the start of any of those locations, and/or 
+b) change levels to the selected location. It is safe to repeat the selections 
+or select them out of order, but the results might be unpredictable. 
+
+The checkbox options allow you to equip yourself for a PoP without traveling
+there, or just change levels without changing your PoP.
+
+Each PoP is based on the normal progression in the game, as indicated by the 
+order of selection list above.  You can customize the loadout you receive; see 
+the "Under the Covers" section below.
+
+***********************************************************
+NOTE:  While this works on some setups without problems, there may be 
+conflicts with key assignments.  There are several possible workarounds:
+
+You can use the mouse to perform the action instead of the hotkey.
+You can edit the _dev.script file to fix this to suit your needs.
+You can change your key assignment.  (This is listed only for completeness.)
+***********************************************************
+
+After you have acquired the desired PoP settings, you should examine your 
+inventory and make adjustments ("Lock and load") as needed.  For example, 
+you might want to put the scope and grenade launcher on the rifle, or select 
+a different primary weapon, as well as equip your belt.
+
+In later levels this is necessary because you will need to choose what to 
+drop, as you will likely be overloaded if you don't modify your carrying 
+capacity. 
+
+Except for the Cordon jump, you will be prompted if you want to change levels. 
+Selecting yes will load the new level.  Selecting No will put you at the north 
+end of the Cordon.  (You can press ESC J S to get back to Sid's office.)
+
+Please note that you can mix and match.  You can give yourself the PoP for Red 
+Forest, but jump to the Bar instead.
+
+In some cases while trying to change levels, you might have to repeat the 
+sequence if you didn't trigger the level changer's hit box collision 
+detection. 
+
+
+========================================
+PART 2:  JUMPING to spots inside a level
+========================================
+
+To jump to another level changer or custom location on a level, press
+
+	ESC J
+
+(If you are already on the main menu in an active game, just press J.)
+
+You can select one of the various set points on the level to jump to it. 
+Generally, the defaults are the level changer "reject" spots (where you would 
+wind up if you said "No" to the question "Move to next level?" 
+
+Custom locations are in the _custom_zrp.script file which is not installed by 
+default; see the "Under the Covers" section for details. 
+
+
+===============
+Free Play Stuff
+===============
+
+A "free play" treat is in store if you use the "Final Level or Free Play" PoP 
+and then jump to the Garbage or one of the other levels.
+
+As a natural result, there will be a mass migration of NPCs and mutants in 
+some cases. You might want to quickly jump to a different location and let the 
+creatures get to their destinations before returning. Some additional 
+polishing may still be needed; please report any unusual issues you encounter. 
+
+The game has a bit of a different flavor with characters assuming new roles 
+in new locations...
+
+The passphrase is "There is no spoon."
+
+
+================
+Under the Covers
+================
+
+This stuff is supported by the following files in gamedata\scripts\:
+
+_z.script
+ui_main_menu.script
+ui_teleport_dialog.script
+ui_level_zip_dialog.script
+_dev.script
+optional\_custom_zrp.script  <== must be copied to gamedata\scripts\ for use
+
+Note that some of these files in turn depend on other files, like those in 
+gamedata\config\ui.
+
+Additional changes were made to all.spawn files and other config files to 
+support the new level changers and to modify triggers for free play. You do 
+not need the all.spawn for the "Part 2" intra-level jumps.
+
+The file _custom_zrp.script is the place to make changes to the special jump 
+points within a level, and to change the loadouts, which you can edit to 
+change your preferred loadout. You can give yourself whatever custom equipment 
+you desire; see the use_my_special_loadout variable and the 
+add_my_special_loadout() function.
+
+SPECIAL NOTE: Copy _custom_zrp.script from the gamedata\scripts\optional
+subdirectory to gamedata\scripts\ for use.  This will permit you to keep your 
+custom settings even if you install a newer version of the ZRP.
+
+You can output some position and direction info suitable for use with the 
+custom jump locations by pressing P (for position) while at the main menu
+in a live game.  This information is sent to your console/log file.  It also 
+adds a temporary entry to your Jump dialog.  Required: _custom_zrp.script 
+copied from the scripts\optional directory to scripts\.
+
+Take care with the info_portions.  You should not modify them unless you are 
+very familiar with them.
+
+There are new level changers added to the files alife_l01_escape.ltx and 
+alife_l12_stancia_2.ltx, found in the decompiled all.spawn.  This makes the 
+Cordon level a bit heavier; some tweaking of your texture quality might be 
+useful if you are close to the resource edge on that level.
+
+Modders and others:  If you repeatedly find yourself starting a new game, 
+you should rename gamedata\config\scripts\esc_trader.ltx.no_Sid_talk to 
+esc_trader.ltx to skip Sid's opening monologue, and use the -nointro command 
+line parameter on the shortcut you use to launch STALKER to skip the movie.
+
+____________
+*Requires new game. But hey, you can duplicate your existing game, pretty 
+much. 

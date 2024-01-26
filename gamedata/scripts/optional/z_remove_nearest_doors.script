@@ -1,0 +1,53 @@
+name = "Remove/Restore Nearest Door(s)"
+description = "This function switches the door(s) nearest you to an offline/online state."
+author = "NatVac"
+revision = "1.1"
+number_of_parameters = 0
+
+function main()
+	local found = 0
+	local acpos = db.actor:position()
+	if max_distance == nil then max_distance = 10 end
+	local sim = alife()
+	local x18doorname = sim:story_object("426"):name() --val_door_underground
+	for idb_ = 0, 65534, 1 do
+		local lobj = sim:object(idb_)
+		if lobj ~= nil then
+			if string.find(lobj:name(),"door",1,true) ~= nil and
+				lobj:section_name() == "physic_object" then
+				local real_obj = level.object_by_id(lobj.id)
+				if real_obj ~= nil then
+					local real_obj_pos=real_obj:position()
+					local real_obj_dist = acpos:distance_to(real_obj_pos)
+					if real_obj_dist < max_distance then
+						if lobj:name() == x18doorname then
+							_z.show_blinking_msg("Use Esc D F to remove door to X18")
+							-- nothing else nearby
+							return
+						end
+						-- make the door disappear
+						alife():set_switch_online(lobj.id, false)
+						alife():set_switch_offline(lobj.id, true)
+						found = found + 1
+					end
+				else
+					local offline_obj_pos=lobj.position
+					local offline_obj_dist = acpos:distance_to(offline_obj_pos)
+					if offline_obj_dist < max_distance then
+						alife():set_switch_offline(lobj.id, false)
+						alife():set_switch_online(lobj.id, true)
+						found = found + 1
+					end
+				end
+			end
+		end
+	end
+	if found > 0 then
+		local plural = ""
+		if found > 1 then plural = "s" end
+		_z.show_small_msg("Attempt made to remove/restore "..tostring(found).." door"..plural)
+	else
+		_z.show_small_msg("No nearby doors found")
+	end
+end
+

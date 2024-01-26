@@ -1,0 +1,509 @@
+===================
+Debug support enhancements and changes:
+===================
+This document defines the shortcut keys that you can use in the 
+game to perform various tricks and debug operations, like speed 
+up/slow down game time, or remotely search bodies.
+
+These require debug support enabled in _z.script. This can be 
+done by editing the file or using the Modifier's Debug Options 
+entry to check "Enable ZRP Debug Features". Note: Some minor 
+spoilers below. 
+
+The menu must be showing (that's the Esc part of the key 
+sequences) with the game in progress and Marked One must still be 
+alive. The particular keystrokes that follow Esc can be changed 
+manually to suit your purposes. 
+
+WARNING: Sometimes the use of the "jump" sequences can put you 
+in a very bad place. It is possible to break a game in progress 
+if you teleport to a location out of sequence. Or you can simply 
+die because your destination puts you in bad company. You should 
+make a quicksave before using these sequences. 
+
+Also, many of these commands will result in information being 
+output to the console log and subsequently to the log file. 
+You'll see "! Unknown command: " followed by "dbg:_" and the 
+information printed to the console.  This info is benign.
+
+===================
+New in 1.07 R3:  Macro support.  Almost any key on the keyboard 
+can be used to execute a command or sequence of commands from 
+the main menu while playing the game.  You can add your own, or 
+change the key mapping for certain functions currently mapped 
+to F2, F3, or F4, or override other function assignments (e.g., 
+use Esc P to do something other than record position info).
+
+These macro sequences are kept in _custom_zrp.script.  The file 
+can be found in the scripts\optional\ subdirectory.  If you 
+already have a customized copy in scripts\ you might need to 
+copy the macro tables from the optional file.  If you don't 
+have this file in scripts\, you will need to copy it up a 
+directory from scripts\optional\.  This is done so that 
+installing a ZRP update won't overwrite any custom keys or 
+intralevel jumps you have defined.
+
+Note that Esc P is considered a predefined macro stored in 
+zx.script, but you can define your own macro assigned to 
+DIK_keys.DIK_P in _custom_zrp.script.  It will be processed 
+instead.  Study the macros table in that file for examples 
+of what you can do.
+
+You might want to set ui_main_menu.script's use_quit_hotkey to 
+false to avoid accidentally quitting when trying to execute a 
+macro that uses a hotkey near the letter "Q".
+
+Debug support is now split between _z.script and zx.script.  
+The zx.script file contains the macro support and some routines 
+that are not critical to playing the game, like the "jump to 
+bodies" or "remote grab" functions.  The game will function 
+just fine without this file, although some debug functions 
+will no longer work.
+
+===================
+Debug data commands:
+
+Esc D Esc -- Display on-screen debug info
+
+Esc D Esc puts the display of positional debug info on the HUD 
+and returns to the game. The display now supports additional info 
+relating to the closest game vertex, useful for all.spawn entries. 
+This is a toggle; if the debug info is present, Esc D removes it 
+and returns directly to the game.
+
+Esc P -- Record console and log position info
+
+A snapshot of the current position info can be written to the 
+console (and therefore the log file) via Esc P. If you have 
+installed the _custom_zrp.script file, this snapshot can be used 
+to return to the recorded position while you are still alive on 
+the same level. Make the return jump via the Esc J Fn key 
+sequence, where Fn is the function key (F1-F12) assigned in order 
+according to the number of times you pressed Esc P during that 
+level session. So the fifth Esc P is assigned to F5.
+
+The console log contains this info in a manner that can be copied 
+to the _custom_zrp.script file to make it a permanent jump 
+destination, although care must be taken to keep the braces and 
+parentheses matched, and the key shortcuts should be changed.
+
+This command provides the necessary info for position, vertex 
+IDs, direction, and dest_direction for most all.spawn objects 
+like level changers, etc.
+
+Esc CapsLock -- toggle statistics
+
+When enabled via the Modifier "Debug Options" entry, Esc CapsLock 
+toggles the display of the rs_stats debug statistics information 
+on the game screen. The CapsLock key is easily changed in 
+_z.script if you prefer to use a different key.
+
+This is the same as typing "rs_stats on" or "rs_stats off" in the 
+console -- except it is faster.
+
+Esc D X -- toggle NPC/mutant damage reporting
+
+This toggles the debug info on showing NPC and mutant damage when 
+you hurt them.  It works for the current session only.  If you 
+wish to make it always on, change show_hit_damage to true in 
+xr_motivator.script.
+
+Esc D D -- No operation
+
+Press D to return to the game if you accidentally press Esc D. So 
+Esc D D does nothing. 
+
+
+===================
+Debug movement commands:
+
+Esc D R -- return to previous position
+
+After any ONE of these Esc D movement commands, you can return to 
+your original position by pressing Esc D R.  Only the last 
+position is remembered.  See also Esc P.
+
+Esc D F -- teleport FORWARD a little bit
+
+Esc D F in most cases will teleport you straight ahead 2 meters. 
+This can be convenient to get around NPCs that block your way, 
+or extricate yourself if you find that you are stuck when you 
+reload a saved game.
+
+It can be used to fix the Cordon trader's door if it breaks. 
+Just teleport inside his office, then push the inert door open. 
+You can then block it open, or continue to use Esc D F. (NOTE: 
+a better solution, an actual fix that reattaches the missing 
+door scheme, is supplied as one of the ZSU utilities.)
+
+If you are in Dark Valley near Shaggy's jail cell door or near 
+the entrance to X18, this key sequence will permit you to advance 
+the game in the event the Dark Valley door switches are broken. 
+(They also do this even if the switches are not broken.) Again, 
+save your game beforehand -- and try the ZSU script to repair 
+broken doors first.
+
+This Esc D F sequence now also records your current position even 
+if you don't install the optional support for the intra-level 
+jumps (Esc J). Again, use Esc D R to return to the last recorded 
+snapshot. Since this is overwritten every time you use Esc D F 
+(and the other jump commands listed below), you should install 
+the optional _custom_zrp.script file before starting the game, 
+and then record a specific location in game via Esc P as a 
+precaution for your first jump. Otherwise, your option may be 
+limited to the level start or even just the level exit 
+(Sarcophagus). 
+
+(The _custom_zrp.script file is optional to prevent future ZRP 
+installs from overwriting your custom changes. See the file 
+TheZoneIsOpen.txt in the gamedata\docs subdirectory.) 
+
+Esc D <n> -- teleport UP
+
+Esc D followed by a number from 1 through 9 will teleport you 
+forward 2 meters, and move you straight up 5 times that number of 
+meters, plus three more. So Esc D 1 jumps up 8 meters (and ahead 
+2 meters), Esc D 2 jumps up 13 meters, Esc D 3 corresponds to 18 
+meters, etc., through Esc D 9 which will put you up 48 meters. 
+You are moved ahead 2 meters to put you on a rooftop or inside a 
+building if needed; otherwise you'd just fall back down. Rapid 
+successive repeats of this command sequence can put you up even 
+higher, if you want to test the impact protection of your 
+invulnerability artifact. 
+
+TIP: You can turn on the distance indicator for your cursor to 
+determine the number of meters you need to rise to get to the 
+roof of a building. 
+
+Esc D 0 -- teleport UP a little bit
+
+Esc D 0 will move you up only 6 meters, which may be useful for 
+jumping up one floor if Esc D 1 is too much. 
+
+Esc D - -- teleport DOWN
+
+Esc D - (hyphen) will drop you below your current location.  This 
+can be useful for dropping below the level to see if any items 
+(e.g., artifacts) spawned from breaking crates fell out of the 
+level. (Remember Esc D R to return to your previous position, one 
+level only.  Save first!)
+
+Esc D W -- jump to wounded
+
+Esc D W teleports you to the nearest wounded guy (good or bad; 
+maybe this should be changed) within 150 meters of your current 
+position, or reports "No wounded". 
+
+Esc D B -- jump to nearest unsearched body
+
+Esc D B (think "dead body") will teleport you to the nearest 
+unsearched body within 150 meters. This is useful when you want 
+to search a body on the rooftop of the building in Pripyat, and 
+not the body of the snork or Electro victim around the corner. 
+
+This command will place you at the foot of the body and orients 
+you toward the head of the body.  You'll need to look down each 
+time you use this command; the function to set the player's 
+direction resets the vertical view angle.
+
+Esc D A -- jump to any unsearched body
+
+Esc D A (think "all" or "any") will teleport you to a random dead 
+body on the level that you have not yet searched. DO NOT USE THIS 
+when you have not yet completed the main storyline tasks for the 
+level, because it can mess up the game's progression, and 
+possibly trigger events that expect other triggers to have 
+occurred already. Also note that some bodies spawn dead on a 
+level at certain points (e.g., the Dark Valley trenchcoated 
+bandit on the upper floor of the factory above X18) and even 
+respawn over and over (certain bodies are created anew each time 
+you come near X19 in Red Forest after switching off the 
+Scorcher). 
+
+This is intended to permit searching those bodies that fly 
+across the level due to the physics collision-detection bug.
+
+
+These jumps each make a snapshot of the current position only if 
+there is an unsearched or wounded body available. Even if you are 
+on a rooftop and try to jump to the next body but there isn't any 
+unsearched, you can still press Esc D R to return to the previous 
+position. However, if you encounter two bad places in a row, you 
+will have to use the jump menu to extricate yourself if you did 
+not record a position snapshot with Esc P. 
+
+Jumping to a body will orient your direction to face the head of 
+the body after placing you at the position of the "feet" (where 
+the game marks the location of the NPC).  This can be useful in 
+determining which body you've jumped to.
+
+WARNINGs: Some wounded and bodies are in bad places, like Electro 
+anomalies. Wear suitable protection and expect bad things nearby, 
+like pseudodogs, snorks or enemy NPCs. The jump will put you at 
+the feet of the target body, and that might be in a place where 
+you can fall out of the level -- immediately press Esc D R to 
+return to your starting point. Some bodies are already out of the 
+level, but you can use this feature to search the body and then 
+use Esc D R to get back to the normal game.  See also Esc D Home.
+
+Esc D R or Esc D \ -- return to last recorded position
+
+Esc D R or Esc D \ will return you to your last position prior to 
+the jump performed by the last Esc D [A|B|F|W|0-9], if that sequence 
+went somewhere.  If the jump fails (e.g., no more unsearched), your 
+current position doesn't overwrite any existing snapshot.
+
+===================
+Debug collection commands:
+
+Esc D G -- get loose items ahead of you
+
+Esc D G (think "debug get") will acquire any loose artifact 
+("af_*") or weapon ("wpn_*") or grenade ("grenade_*") directly in 
+front within 75 meters, one per execution. This works through 
+walls or ground. Exception: The item must be online; 
+Electro-based artifacts Moonlight, Flash, and Sparkler are only 
+online between midnight and 5 AM.  
+
+NOTE: There's some quirk in the game that requires you actually 
+move in the direction of your target; merely spinning around and 
+looking the right way won't work. TIP: put the spot of your 
+target straight up on the minimap, then move toward it a bit 
+before using this command.
+
+Esc D C -- collect loose items around you
+
+Esc D C (think "debug collect") will acquire ALL artifacts, 
+weapons, grenades, ammo, and outfits within 10 meters, even 
+through walls or out of the ground. You can grab the X18 rocket 
+launcher this way if it is below the surface, or the Storming 
+Obokan if it is somewhere nearby but you are not sure (make sure 
+it isn't in Agroprom underground; go by the marker). WARNING: 
+This will grab stuff you might not want to grab, like the weapons 
+in Skinflint's office. 
+
+Esc D / -- store all loose weapons on bodies
+
+Esc D / will locate all loose non-unique (*_m1, *_m2, *_m3 
+weapons are unique) online weapons and move each to the corpse 
+nearest it. You will see a notice of loose guns stored, or loose 
+guns found and stored if not all found are non-unique or there 
+are no dead bodies available. A news item about each unique 
+weapon found will be displayed.
+
+The console will contain the weapon identifier and the name and 
+location of the destination body for each weapon moved.
+
+This command executes in a pair of nested loops, an outer loop 
+over all the objects to identify the online loose weapons, with 
+an inner loop to find the closest body to each storeable weapon. 
+It may take a few seconds to execute.
+
+This command is recommended if you don't use the "store weapons 
+in backpack" option, in order to keep your framerate up -- if 
+you aren't already collecting the dropped weapons for sale.
+
+The target bodies are marked unsearched in case you wish to 
+jump to them. 
+
+Esc D Home
+
+If you can't reach the next unsearched body without triggering 
+the "Move to next level?" prompt or falling out of the level 
+or getting fried in an anomaly, press Esc D Home. This will 
+"search" the nearest body (which might net you a secret) and 
+then transfer all the NPC's goods to your inventory. 
+
+Nothing wasted. --Unless you drink the vodka when there's no 
+radioactivity around. :P
+
+While you can use this command to fetch the inventory of the 
+hapless dude caught up in a whirligig, be aware that the game 
+will crash if the dude is obliterated at just the same instant 
+the inventory is being checked. 
+
+===================
+Debug creation/destruction commands:
+
+Esc D K - kill controllers
+
+Esc D K (think "debug kill kontroller") will kill any living 
+controllers on the current level. This is a cheat provided to 
+avoid the "dBodyStateValide(b)" CTD caused by a bad controller 
+animation, usually because it is being attacked by a pack of 
+dogs. 
+
+Esc D Delete - remove anomalies
+
+Esc D Delete will convert the closest anomaly within 10 meters 
+directly ahead to offline status, if it is one of the four 
+supported types: Whirligig, Springboard, Electro, and Burnt Fuzz 
+(not tested for Burnt Fuzz), the same as those avoided by stalkers 
+via SANB. For this to work, however, you must "delete" an anomaly 
+(you'll see a news message), save, and then reload. 
+
+NOTE: While this has had a fair amount of testing, one should 
+make a named savegame prior to deleting an anomaly, just in case. 
+
+Esc D L -- add extra level changers
+
+Esc D L will add the new free-play level changers if they have 
+not already been added.  You can execute this command at any 
+time; only the level changers appropriate for the current level 
+of progress will be added if they are not already in the game.
+Currently this command is automatically executed when you 
+complete the normal game, but it is safe to repeatedly execute 
+it as you go.  (Yes, the plan is to automate this.)
+
+Esc D N or Esc D End - nuke the weapons
+
+You can use Esc D N to destroy any non-unique weapons in the 
+inventory of the nearest body (or the second nearest, if it is 
+the last one you searched) within 3 meters, and get the same 
+credit as you would get from a trader.
+
+Back story:  The Ziphty guys have agreed to pay you to "clean 
+up the zone" of weapons that compete with what they want to 
+sell.  Just pour acid over the moving parts to claim a credit 
+(radioed to you) of up to 20% of the gun's cost, depending on 
+its condition.
+
+Yes, it's a cheat to save you the grief of transporting the 
+guns back to a trader.  You can lower the reimbursement fee or 
+comment out the DIK_N block in _z.script if it offends you. 
+(Weigh in with your vote at the GSC forum site.)
+
+===================
+Debug time commands:
+
+You can now vary the game's clock speed.  This does not change 
+the speed at which events happen; it just speeds up or slows 
+down the game's clock.
+
+However, that does have an effect on events.  Quests will time 
+out sooner if you speed up the clock.  Quests might terminate 
+early if the target lairs or entities change day/night states.
+
+If you slow down time, be aware that the Esc S quick save game 
+feature uses the game clock for the name of the save.  Since 
+you are be limited to only one quick named save per game minute 
+(default is six real-time seconds per game minute at 10X), the 
+last save in any game minute will overwrite any previous quick 
+named saves, similar to the normal quicksave overwriting the 
+previous quicksave.
+
+There are two types of time adjustments, absolute and relative. 
+
+Esc D <numpad-n> -- absolute time rate adjustment
+
+Absolute changes set the time to fixed powers of ten times 
+real time. Use Esc D keypad-n (where n=0 to 4) to set the game 
+clock to 1X, 10X (system default), 100X, 1000X, and 10000X real 
+time.  The formula is:
+
+    game_time_rate = real_time * 10^n
+
+	Esc D <numpad-0> -- game time is the same as real time
+	Esc D <numpad-1> -- game time is ten times faster than real
+	Esc D <numpad-2> -- game time is one hundred times faster
+	Esc D <numpad-3> -- game time is one thousand times faster
+	Esc D <numpad-4> -- game time is ten thousand times faster
+
+The advantage to this approach is that you can save games with 
+different time speeds, and always be able to reset the game 
+clock to the default of 10X via Esc D numpad-1.
+
+Esc D numpad-* and Esc D numpad-/ -- relative time rate setting
+
+The time can also be adjusted relative to the current setting, 
+either multiplying it by a factor of 10 (Esc D keypad-*) or 
+dividing it by ten (1/10X, Esc D keypad-/).  Think of it as 
+moving a gear shift lever on a bicycle up a notch or down a 
+notch.  The min/max values would still be 1X realtime/10000X
+realtime.
+
+Esc D numpad-Enter
+
+Esc D numpad-Enter either gets the current setting if it has 
+not already been set/checked in the current game session (since 
+the last savegame load or level change), or it restores the 
+clock speed that was present at the start of the session.
+
+Note that you can watch the time change on the HUD clock if you 
+wish to use this as a method of skipping the dark of nighttime. 
+Just press Esc when you near the desired time, followed D and 
+the number or symbol corresponding to the time speed you want.
+
+===================
+Other cheats and shortcuts:
+
+Esc F1 -- Antirad hotkey. (Not debug.)
+
+Esc F2 -- Shortcut for dropping a medkit if you are within three 
+meters of a stalker that has less than 80 points of health. It 
+will trigger the "drop-a-medkit" transfer if so. (You can make a 
+friend if his health is less than 71%.) Otherwise no medkit will 
+be dropped and you will see a note about the health of anyone in 
+front of you. 
+
+Esc F3 -- Combination of jump-to-wounded and drop-a-medkit.  This 
+is useful if the wounded guy is in a level changer.
+
+Esc F4 -- Combination of jump-to-unsearched-body and destroy 
+weapons.
+
+Esc F5 and Esc F6 -- Named quicksave commands. (Not debug.)
+
+===================
+Debug miscellaneous commands:
+
+Esc D Space
+
+This sequence bumps bodies and boxes around the player (default 
+10-meter radius).  If any are invisible because a portion of mesh 
+intersects with the ground, they will become visible at least 
+briefly as they are pushed into the air.
+
+Small metal cases are likely to break after going airborne.
+
+Esc D H
+
+Look at a stalker and set the direction by moving a bit toward 
+him.  Then press Esc D H to find out his health.  This works on 
+enemies as well as neutrals and friends, so you can check if your 
+shots have been having any effect.
+
+A reminder:  You can drop a medkit to heal the nearest stalker 
+within three meters whose health is below 80%.  On master 
+difficulty, a medkit will heal 60 points of health.
+
+Esc D M
+
+There is also Esc D M to mark MonoMartyr bodies. Use with 
+caution; if used right after a MonoMartyr has been killed by an 
+anomaly but before the body is destroyed by the anomaly, this 
+will likely crash the game. 
+
+
+===================
+Notes:
+
+The deprecated debug support to remove the faulty Yantar 
+helicopters has been removed. 
+
+The Esc D Z command to spawn an item into the game has been 
+superseded by a couple of ZRP Support Utility (ZSU) functions.
+
+The Esc Tab sequence to toggle the rs_stats command has been 
+changed to Esc CapsLock, as the Alt-Tab key combination in the 
+menu was conflicting with the original sequence. 
+
+The direction algorithm no longer identifies stuff that is 
+directly behind you as well as in front.
+
+The deprecated Esc D I ("Identify artifact") command has been 
+removed, since it was used for obtaining info on unreachable 
+NPCs which no longer exist.  Again, see Esc D Home.
+
+See the ZSU's Execute Script Command for more debug commands 
+(e.g., teleport to level locations by position or distance).

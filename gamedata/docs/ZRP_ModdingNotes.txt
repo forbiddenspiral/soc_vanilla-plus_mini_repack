@@ -1,0 +1,260 @@
+=====================================
+*** Some Notes on Modding STALKER ***
+=====================================
+
+Author: NatVac, 2007/08/06, 09/28, 10/13, 10/17, 11/09
+Revised: NatVac, 2010/09/23 for ZRP 1.07 XR1, 2012/03/30 for ZRP 1.07 R3
+
+Please visit the Mod Discussions forum for questions and discussion about this mod and modding in general:
+
+http://www.gsc-game.com/index.php?t=community&s=forums&s_game_type=xr&lang=en
+
+STALKER (when fsgame.ltx is changed) will look first for external versions of its configuration and script files before defaulting to internal versions.  It is recommended that one extract the databases (gamedata.db0 - .db9, .dba, .dbb, and optionally .dbc/.dbd for patches 1.0005/1.0006), in numeric and then alphabetic order, to a gamedata_source directory if you want to be serious about modding.
+
+You can find a link to a smart tool created by Don Reba in the "Getting Started" sticky topic in the Mod Discussions section of the GSC forum web site above.  This tool allows you to extract only the files you need, and it automatically fetches the latest version from the database files.
+
+Most simple modding stuff (config files, scripts) are found in gamedata.dbb, with the possible exception of config\misc\items.ltx (found in gamedata.dba).  Patch 1.0005 adds gamedata.dbc with script changes to a couple of important files, while patch 1.0006 mainly changes multiplayer support scripts in gamedata.dbd.
+
+The ZRP mod is an adaptation of those original files, with support for all three patches.
+
+**********************************************************
+First off:   Can other mods be used with this mod?
+
+In many cases, yes -- but it has to be done on a case-by-case basis.  For example, weather mods like the Thunderbolt Remover mod are fine; there are no common files which might conflict with the standard ZRP.  The same goes for the Float32 mod, which solely resides in the shaders subdirectory.  Weapon texture mods like Siro's excellent reskins should not be a problem.
+
+In some cases, even though there's no file conflict, the mod won't work well.  One example: changes to the game_relations.ltx file impact reputation, and may break the reputation fix in this code.  (Note: as of ZRP 1.03, there is a game_relations.ltx file included.)
+
+Don Reba's Mod Manager might be all you need to merge the mods.  A file comparison tool like the open-source WinMerge program may also prove useful for determining the differences between mods.
+
+If you wish to make changes to the all.spawn file, you will need bardak's acdc.pl script modified for the ZRP (see the diffs\DiffReadMe_ZRP_107_R3.txt for how to add support for the Hunting Shotgun) and a Perl interpreter like the one produced by ActiveState Software Inc.  This will give you the ability to extract the *.ltx files from all.spawn.  The same tool can be used to build a new all.spawn.
+
+There are various web-based sites to provide instructions on modding STALKER or editing the all.spawn.  Visit the Mod Discussion forum mentioned above to find out the latest details on these sites.
+
+**********************************************************
+
+==================
+What to Change Where:
+
+All paths are relative to the <stalker_install_dir>\gamedata subdirectory.  Configuration files are usually found under the Config subdirectory in a corresponding category directory.
+
+==================
+Scripting and Troubleshooting:
+
+The scripting language used by STALKER is Lua.  There is extensive online help for this language; see http://www.lua.org/ and http://lua-users.org/ for starters.
+
+All the modification files are editable with Notepad or other text editor.  Strongly recommended for modding STALKER:  Notepad++, an open-source text editor with syntax highlighting very suitable for the types of files used by STALKER-SoC and the ability to search through multiple files and intelligently report the results.
+
+
+	Comments:
+		.ltx files: To comment a line, put a semicolon (;) at the very front of the line.  To uncomment a line, remove the semicolon.  You can also add comments after data on a line:
+			variable = data		;assign data to variable
+
+		.script files: To comment a line, put a a pair of hyphens (--) at the front of the text.  To uncomment a line, remove the hyphen pair.
+		
+		.xml files: To comment a block of text, surround it with "<!--" and "-->" (without the quotes).
+
+	Some debugging support is provided in scripts\_z.script.  You can enable flag variables in other scripts that can result in the execution of the nvDebug() function to see how your reputation and faction relationships change in game.  (This is easily set via the Modifier -- see the Debug Options entry in the _ZRP.cfg configuration.)  You can use scripts\_g.script's dbglog() function to output statements that appear in the console and in the log file.
+
+	**** If your game "locks up" ****
+
+	You may be able to avoid hard lockups by using the -silent_error_mode command line parameter at the end of the target line in the shortcut you use to start STALKER.  The crash might still occur, but the game will simply exit to the desktop in most cases.  This is recommended even if you don't have hard lockup crashes.  There is also a command you can put into a batch file to shut down the game if it locks up or freezes your PC.
+
+	**** If your game crashes to desktop: ****
+
+	The saved games and logs are on the C: drive by default in the STALKER-SHOC subdirectory.  In Vista/Windows 7 this subdirectory is under \Users\Public\Documents while in XP this is found in \Documents and Settings\All Users\Documents.
+
+	The latest error log, called xray_<your_user_login>.log* is under STALKER-SHOC in the logs\ subdirectory, while the saved games are stored in the savedgames\ subdirectory.
+
+*<your_user_login> is usually your name, the one you see at the top of the menu when you click on the "start" button on the taskbar in XP.  If your user name is Robert, for example, then you would find a file named xray_Robert.log.
+
+At the end of that file is usually a section that starts with "FATAL ERROR" and has lines beginning with "[error]".  These lines are useful in identifying most script and configuration errors.
+
+Included in the docs subdirectory is a useful file called CrashesStillInTheGame.txt for interpreting your crashes.  The most recent version of this information can be found online at http://www.metacognix.com/stlkrsoc/CrashesStillInTheGame.html if the local file doesn't have what you are looking for.
+
+==================
+Optional Game Enhancements:
+
+There are some files included in the distribution that are not used by the game.  Look in the optional directories for files with extensions like .normal or .alt1.  The .normal files return more of the original game to you if you wish to use them.  Less quests and the usual auto-quests, for example, when you rename task_manager.ltx.normal to task_manager.ltx.
+
+The .alt1 files (config\system.ltx.alt1 and config\creatures\actor.ltx.alt1) must be used together, if used.  They give you slightly improved aim, 150/200 carry capacity, higher jump, less hunger, and a 10% longer reach.  Also, you might be fighting opponents that are 20% more accurate.  To use the files, remove the .alt1 extension.  (Or use the Modifier to install/remove them, via the Actor configuration.)
+
+***********************************************************************
+                           Some Changes
+***********************************************************************
+
+Here is an abbreviated list of SOME of the file changes over and above those done by bardak in his "Patch 1.0004 bug fix attempt" (also called the "bfa").
+
+***********************************************************************
+                          SPECIAL NOTE:
+
+                 Most of these items are optional,
+              and can be set via the Modifier program.
+***********************************************************************
+
+==================
+Ammo
+
+	The file config\misc\death_items_by_levels.ltx was tweaked to make AP ammo available on corpses in later levels.  The NPCs can also use AP ammo against you when alive via the character_desc_xxxx.xml files.  Previously these files were optional, but ZRP 1.07 uses them by default.
+	The file config\misc\death_items_count.ltx has been tweaked as well to set the range of ammo you will find.
+
+	If you don't like the quantities on the bodies, just edit them to change the values.
+
+==================
+Armor stats
+
+	There is an optional file that tells you what the armor protection values are, before you put the suit on.  It is useful for comparing outfits before you buy.  It is currently only for the default values in the vanilla game, so if you want to use it, rename string_table_outfit.xml.suit_stats to string_table_outfit.xml in the config\text\eng\ subdirectory.
+
+==================
+Body removal time limit:
+
+	See config\creatures\monsters.ltx and config\creatures\stalkers.ltx.
+	CAUTION:  You can make the time limit shorter at any time, but you will likely need to start a new game if you want a longer body-stay time.  The game may otherwise crash when loading a level with entities that were killed while the old short limit was in effect.
+
+==================
+Debug code:
+
+	There is some debug code which might prove useful to modders.  The on-screen code is located in scripts\_z.script, called from scripts\bind_stalker.script's update() function, and is toggled on/off via a _z.script function call in the scripts\ui_main_menu.script file when the main menu is displayed; see the OnKeyboard() function.  The <debug_task> definition for the on-screen display is in the config\ui\ui_custom_msgs.xml file.
+
+	This debug facility must first be enabled.  Either edit _z.script and set zrp_debug_enabled to true, or use the Debug Options configuration in the Modifier's ZRP configuration. 
+
+	Press ESC followed by Caps Lock while the menu is displayed to toggle rs_stats if you have enabled that in _z.script (rs_stats_toggle = true -- or use the Modifier), and press ESC followed by D to toggle the on-screen data in the upper right.  Adjust it for your own needs.  You can even set a "watch" on a specific variable or script function -- see the ZRP Support Utilities function documentation, as well as the DebugSupportChanges.txt file for very useful information.
+
+==================
+"Find Strelok" Mission Completion:
+
+	Files:
+		config\gameplay\tasks_escape.xml
+		config\text\eng\stable_storyline_info_deadcity.xml
+		scripts\db.script
+	I commented out one objective and added an <infoportion_complete> section to another, to allow the task to be completed.  I am reusing an existing infoportion entry, one that was supposed to be used for the actual event -- before the Dead City level was cut out of the game.
+	
+
+==================
+Fire Immunity for NPCs (non-playing characters):
+
+	config\creatures\immunities.ltx.  A 0.0 immunity means totally immune.  Note that this is probably not as important with bardak's 1.0004 bug fix attempt.
+
+==================
+Flashlight:
+
+	The default flashlight is not adequate.  There are many replacement flashlights available.  If you are using jjwalker's Float32 mod, I understand that Ceano's flashlight is very good.
+	A usable flashlight file is available in the mod to improve the flashlight if you don't have one of the mod flashlights.  To use it, rename or copy config\models\objects\light_night.ltx.zrp to config\models\objects\light_night.ltx.
+
+==================
+Gun Stashing on Death:
+
+		death_manager.script
+
+	Destruction of tossed weapons worked in 1.0001/1.0003 but causes problems in 1.0004.  The workaround, transferring the weapon to the backpack as often as possible (not 100%) sometimes causes the script engine to complain a bit, maybe due to NPC injury making the weapon independent prior to death.  This does not affect gameplay.
+	
+	The script has a toggle variable to switch between normal drop (store_weapon = false) and store-in-backpack (store_weapon = true) behavior.  Again, this is a Modifier entry in the ZRP configuration.
+
+==================
+Head-Bobbing:
+
+	To turn off head bobbing/view wobbling, rename or copy config\misc\effectors.ltx.no_bob to config\misc\effectors.ltx.
+
+	To adjust the head bobbing amount, you can edit the config\misc\effectors.ltx file.  Look at the first three items in that file to see what to adjust.  Just delete that file to restore the original behavior.
+
+
+==================
+Main Menu:
+
+	Files:
+		config\ui\ui_mm_main.xml
+		scripts\ui_main_menu.script
+
+	To re-arrange the menu items, look at config\ui\ui_mm_main.xml.
+
+	If you want the original "Quit to windows?" confirmation dialog, edit the scripts\ui_main_menu.script file and change the "local quit_without_asking = true" line to say "local quit_without_asking = false".
+
+	Additional changes:  You can stop the animations on the main window by commenting out the lines that contain "back_movie" and "fire_movie" text in the function "main_menu:InitControls()".  Use double hyphens to comment out a line here, so that it looks like this:
+
+    -- xml:InitStatic("back_movie", self)
+    xml:InitStatic("background", self)
+    -- xml:InitStatic("fire_movie", self)
+    self.shniaga = xml:InitMMShniaga("shniaga_wnd",self);
+
+==================
+News Display Time:
+
+	See scripts\news_manager.script.  The top of the file has a couple of variables that determine how long the news tips are displayed in the lower left (default is 5000 milliseconds) and how long the task announcement banners stay displayed centered at the top of the screen (default is 7 seconds).
+
+==================
+Nightvision:
+
+	See the config\misc\postprocess.ltx.all_good_nv file.  You can rename it or copy it to postprocess.ltx to get good nightvision for all the suits that have night vision.  This is accomplished by changing the pp_eff_name assignment in the [effector_nightvision_bad] section.
+	For the sounds, open config\misc\items.ltx and find the snd_night_vision_* entries.  Replace "weapons\nv_loop" with "ambient\silence, 0.0".  You can also change other sounds in a similar fashion.
+
+==================
+Quest Time Limits and Other Quest Management:
+
+	The main change is to scripts\task_manager.script.  There are three variables at the top of this file that control task time limits and determine whether or not to display the potential rewards for completing tasks.
+	Task time limits are in days.  Decimal fractions are permitted (e.g., 2.5).  A zero means no time limit.  When you change the limits, only future tasks will use the new limits.
+	For general tasks, set the quest_days variable to the number of days you want to complete a task.  The default is 3.
+	For auto-quest tasks (tasks given when you enter a level where the task can be carried out, like "Defend the stalkers" or "Protect border"), set the autoquest_days to the number of days you want to be able to complete the task and claim the reward.  It should generally be longer than quest_days because it might be out of the way to claim the reward.  Default is 0 (no time limit).
+	The show_quest_rewards variable tells the game whether to display the rewards for completing tasks in the dialog box.  The default is "true"; set it to "false" (without the quotes) if you don't want to know what you'll get.
+	Notes:  You can tweak the quests.  Set "need_return = false" for one-way quests, and set the reward_money to be the value you want.  Comment out any reward_item by prefixing the line with a semicolon.  "Prior" is only used on standard quests to determine when you will see that quest; lower numbered values are seen first.  If any previously-completed quest with a lower prior number than the next quest becomes active, it will appear before the next quest in the quest-giver's dialog.  Set the idle_time to determine the delay after a quest is completed before you see it again.  86400 = 1 day, 864000 = 10 days.
+
+	Finally, if you don't want any autoquests, simply comment out this line in scripts\bind_stalker.script, in the function actor_binder:update(delta):
+
+	task_manager.actor_update()
+
+	To comment out the line, put two consecutive hyphens in front of the text, like this:
+
+	-- task_manager.actor_update()
+
+	All this is more easily done through the Modifier.  ZRP 1.07 has newly-extended configuration options.
+
+
+==================
+Shotgun in first slot:
+
+	Rename the file config\weapons\w_bm16.ltx.1st_slot to config\weapons\w_bm16.ltx to make the shotgun a slot-1 weapon.  Before you do this, unequip the shotgun in game (move it out of slot 2) and save.
+
+==================
+Treasure Manager:
+
+	Files:
+		scripts\treasure_manager.script
+		config\misc\treasure_manager.ltx
+		config\text\eng\stable_treasure_manager.xml
+		scripts\news_manager.script
+
+	You can remove this line in the send_treasure() function in news_manager.script to keep the level abbreviation from showing in the history when you first get the secret:
+			string.sub(name,1,string.find(name,"_s",1,true)-1)..": "..
+
+	You can show a secret's stash contents on the tooltip pop-up by uncommenting out a line in the function CTreasure:give_treasure().  You'll see how to do this when you look at the function.
+
+	If you examine these files, you can see how to change the contents of new secrets.
+	
+	Yes, these are also things you can change with the Modifier.  See Secret Stash Stuff in the ZRP configuration.
+
+==================
+Weapons Changes:
+
+	Files:
+		config\misc\_custom_items.ltx
+		config\misc\unique_items.ltx
+		config\weapons\*.ltx
+		config\text\eng\string_table_enc_weapons.xml
+
+	The ammo names used by the default weapons are in the file config\text\eng\string_table_enc_weapons.xml.  There are also some typos and clarifications made there.  This file can be replaced by a Real Names mod file without problems.  One set is even included in the optional subdirectory; go by the extension.
+	If you want the old 1.0001 binoculars behavior (held lower on the screen while equipped but not used), rename or copy w_binoc.ltx.old_position to w_binoc.ltx in the config\weapons\ directory.  Or use the Modifier.
+
+	See also:  Gun Stashing on Death, Shotgun in first slot
+
+==================
+User Interface Changes:
+
+	Files:
+		config\text\eng\ui_st_inventory.xml
+		config\text\eng\ui_st_other.xml
+		config\ui\*.xml
+		textures\ui\ui_*.dds
+
+	Some hard spaces were added in menu and dialog text to increase the "hot spot" of the text.
+
+	The dragdrop_list and dragdrop_list_* items were tweaked in the other .xml ui files to make the grids show more items.  See the Modifier, or study the configuration files.
+
+	Note that ZRP 1.07 has a revised inventory layout, making use of changed .dds image files.

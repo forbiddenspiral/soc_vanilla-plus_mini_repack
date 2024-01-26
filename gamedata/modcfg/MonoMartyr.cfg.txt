@@ -1,0 +1,75 @@
+	The MonoMartyrs Seek Revenge
+	A free-play extension for the ZRP
+
+While in the Cordon after dealing with the Monolith at the 
+center of the Zone, you receive a transmission from the 
+Barkeep: 
+
+"Marked One! You're still alive! It was you, wasn't it? The 
+last I saw of your PDA signal was from the very center of 
+the Zone, and now the Zone is changing; there are no more 
+new anomalies forming. And some of the Monolith have been 
+giving up and turning themselves in, claiming no knowledge 
+of what they have been doing the past few months or years. 
+It's a miracle, something I don't believe in -- but that 
+doesn't change it! 
+
+"What did you do? Wait -- I must tell you something 
+important: Not all the Monolith have come to their senses, 
+and my agents have reported meeting several calling 
+themselves the Monolith's Martyrs. They move freely among 
+other stalkers, declaring openly their intent to kill the 
+destroyer of their life's purpose. That has to be you! 
+
+"One agent reported seeing one of these "MonoMartyrs" calmly 
+tear apart an attacking gray pseudodog with his hands, 
+taking very little damage in the encounter that should have 
+killed him. 
+
+"I'll let you know more as I learn it. I owe you that much, 
+and more. Please take care, Marked One!" 
+
+Followup transmission: 
+
+"Marked One - here's a bit of news: The MonoMartyrs can be 
+killed, although it might not seem possible. A stalker found 
+the body of one, surrounded by a large number of mutant 
+corpses. His weapon was useless, but it apparently worked 
+well enough to take out the mutants. But -- get this -- he 
+had an artifact on him! Now that the controlling agency is 
+no longer in place, maybe they have access to the Monolith 
+collection. 
+
+The Zone is definitely changing..." 
+
+=================================== 
+
+*Blast! It's not over. Now I find out the powers-that-were 
+were making super-soldiers, creatures with little or no 
+awareness of pain and a much greater tolerance for damage 
+before they succumb. Now they are just about everywhere, 
+with gauss weapons and sniper rifles and the toughest bodies 
+this side of hell.* 
+
+=================================== 
+
+The MonoMartyrs Seek Revenge is a mini-mod intended to show 
+that modders don't need to modify NPC mesh files with a hex 
+editor to create tougher NPCs. This first pass is more of a 
+proof-of-concept than a refined product, but it works well 
+enough as is. 
+
+You can modify some settings for the MonoMartyrs. You can 
+disable MonoMartyr spawning if you want to play without the 
+bother. Or you can set the maximum number that spawn on each 
+level, as well as the number that spawn in specific 
+locations. You can also set the amount of notifications you 
+receive -- how many alive on the level, and/or when each one 
+dies. 
+
+The MonoMartyrs add something new to the ZRP free play mode 
+beyond just toughness. You have a chance of finding a useful 
+artifact on their bodies in levels below Red Forest, and 
+they bring advanced weaponry ammo (e.g., gauss, sniper 
+rounds) to most of the early levels. Of course, to search 
+their bodies, they must be dead, first... :) 

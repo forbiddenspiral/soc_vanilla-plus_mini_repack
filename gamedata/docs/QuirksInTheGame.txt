@@ -1,0 +1,138 @@
+===========================
+Quirks in the vanilla game:
+===========================
+
+=========================================
+For the latest version of this list, see:
+http://www.metacognix.com/stlkrsoc/QuirksInTheGame.html
+=========================================
+
+Dying while the controller's roar is playing will not remove the 
+roar when you reload the last save made on that level. The 
+workaround is to exit the game completely and restart the game, 
+or go to another level. (As of ZRP 1.07 R3 the controller roar 
+will quiet down after you are killed. Wait a moment before 
+loading the last save if told to do so.)
+
+Conversely, the rain sound will be disabled if you change levels. 
+
+Going up or down ladders will put your assault weapon away on 
+most levels. If you are changing levels, then this means that you 
+will enter the new level with binoculars instead of the weapon 
+you were holding. To prevent this, equip a first-slot weapon or 
+jump into a hole to change levels. 
+
+Some NPC bodies will fly violently across the map when they die. 
+This is due to a collision detection correction performed by the 
+physics engine; it pushes the body violently away from the spot 
+of the collision. This can be caused by impact or the sudden 
+addition or removal of inventory from the NPC. 
+
+A related collision-detection issue can occur when you are struck 
+by a pseudodog on a leap. You might be flung violently into the 
+air. This can be reduced by lowering the pseudodog's 
+Accel_Aggressive parameter in config\creatures\m_pseudodog.ltx. 
+(This is already reduced in the ZRP. A Modifier program option 
+for Pseudodog Acceleration is planned.) 
+
+Some NPC bodies will drop through the ground when they die. They 
+might reappear moments later, or when you move over them. If not, 
+center your HUD white spot over the grey spot of the missing 
+stalker, crouch, and slowly rotate around while looking down. 
+When you are over the body, you will see a "Search body" prompt. 
+You can pick up the body and drag it to a spot where it will stay 
+above the surface, or you can simply search it. 
+
+Sometimes you will accomplish a quest without doing anything, as 
+targets die by other causes (e.g., mutants kill bandits or 
+mercs).
+
+Some autoquests will become completed due to gulag state 
+changes, as when the camp switches from daytime status to 
+nighttime. (Most if not all are fixed as of ZRP 1.07 R4.)
+
+Conversely, sometimes you will fail a quest because of Alife 
+traffic. For example, certain bandits might be escorting a 
+prisoner by design, but Alife bandits moving to another area see 
+that prisoner as an enemy and shoot him. Or you come upon the 
+Cordon bridge guards when they are engaged in battle, so they 
+shoot at you, too, even though they normally would let you speak 
+to them first. Workaround: Avoid the area for a while, to let the 
+threat pass by so that the game can return to normal. 
+
+There are also some arbitrary rules which can cause a task 
+failure. For example, going south of the farmstead west of the 
+Freedom base will automatically fail any pending Freedom tasks.
+(This last was fixed as of ZRP 1.07 R3 post Skull's group.) 
+
+Some places have invisible walls and ceilings. For examples, see 
+Pripyat, or throw a grenade from the hills north of the entrance 
+to the Agroprom level toward the tall trees. 
+
+It is possible to become afflicted with permanent radiation 
+sickness. It happens on the outer areas of the map where the devs 
+do not want you to go. It also happens on the south side of the 
+Garbage train tunnel. While you can eliminate the damage from 
+radiation, you will still receive a hitch in walking or running 
+every second. (This problem is now automatically fixed in ZRP 
+1.07 when you save then reload that save.)
+
+A grenade or other explosive might temporarily mess up the 
+animation of NPCs so that they appear to "slide" as they move -- 
+they're walking, but the animation isn't working. 
+
+Over time, some permanent corpses will stretch out. You can fix a 
+stretched NPC by picking up the body and dropping it. 
+
+Stuff that is "in boxes" is created when the box is broken -- 
+except that it might not become physical enough before dropping 
+through the floor where the box was resting. Electro artifacts 
+like the Moonlight can be created when some crates are broken, 
+but you won't know this if you break the crate between 5 a.m and 
+midnight. Sometimes items fall out of the level when spawned, but 
+will reappear when you return to the area later.
+
+(Note: These crate/box issues should be mostly a thing of the 
+past as of ZRP 1.07.)
+
+Related to this is the disappearance of items that are in contact 
+with the ground.  Examples are the RG6 grenade launcher and the 
+special artifacts in Red Forest.  You can pull them out of the 
+ground with a debug command as a temporary workaround. There is 
+also a debug command to bump bodies and boxes that are invisible 
+due to their contact with the ground.
+
+Sometimes stalkers go online in a "zone fugue" state; they just 
+stand there, usually near a campfire. Go out of "switch distance" 
+(default is 150 meters) to switch them offline. This usually 
+resets the problem stalker. (They snap out of it as of ZRP 
+1.07 R4.)
+
+Using a save made while in a psi-emission field (with that yellow 
+grainy screen) will double the audio and visual effect when it is 
+reloaded. (Fixed as of ZRP 1.07 R4.)
+
+On rare occasions you will not be able to select items in grids 
+when searching NPCs. A quicksave/quickload should fix this. 
+
+The Duty equivalent of the SEVA suit has a quirk that prevents 
+you from carrying bodies.  (Fixed as of ZRP 1.05 R11/ZRP 1.07)
+
+Active night vision is not preserved on level changes and reloads 
+of previous saves, and is turned off when you pick up a suit. 
+
+If you go back to the Bar after rescuing Kruglov (so that he 
+makes it to Yantar) without going to visit Sakharov first, you 
+won't get the "real scientist's suit". (Fixed as of ZRP 1.07 R3)
+
+Some resolutions (800x600 for sure, and maybe 1440x900) don't 
+display text announcements reliably. You can try a different 
+resolution to see if that helps. 
+
+NPCs as of patch 1.0004 will often hide a food or drink item 
+for a time.  If you search a body and remove its inventory, it 
+is possible to find a food or drink item on it later.  Likewise, 
+sometimes the first food item you store on a body will disappear 
+for a while.
+
+

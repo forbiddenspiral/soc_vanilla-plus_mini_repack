@@ -1,0 +1,51 @@
+-- zpawn_factory script for optional spawning
+name = "Spawn Something"
+description = "Save first! This function requires a valid item section parameter in the box below."
+author = "NatVac"
+revision = "1.0.2"
+number_of_parameters = 1
+
+local item_to_spawn = "wpn_eagle_m2"
+
+function spawn(item)
+	if item ~= nil then
+		item_to_spawn = item
+	else
+		if item_to_spawn == nil then
+			dbglog("Nothing to spawn")
+			return
+		end
+	end
+	if level.present() and (db.actor ~= nil) and db.actor:alive() then
+		local cur_pos = db.actor:position()
+		local cur_dir = device().cam_dir -- was db.actor:direction(), but that required movement in that direction
+		local spawn_pos = vector():set(cur_pos.x + cur_dir.x * 2,
+				cur_pos.y + cur_dir.y * 2 + 0.8, cur_pos.z + cur_dir.z * 2)
+		alife():create(item_to_spawn, spawn_pos, db.actor:level_vertex_id(), db.actor:game_vertex_id())
+	end
+end
+
+function main(item)
+	if item ~= nil then
+		-- local item_inv_name = system_ini():r_string(item,"inv_name")
+		dbglog("Attempting to spawn "..item)
+		local success, result = pcall(spawn,item)
+		if success == true then
+			_z.show_small_msg("Spawn attempt for ".._z.friendly_name(item))
+		else
+			return false, result
+		end
+	else
+		_z.show_blinking_msg("No item specified")
+	end
+end
+
+function validate(section)
+	if system_ini():section_exist(section) then
+		if system_ini():line_exist(section,"inv_name") then
+			return true, game.translate_string(system_ini():r_string(section,"inv_name"))
+		end
+		return false, "No inventory name found for '"..section.."'. Proceed anyway?", 2
+	end
+	return false, "No entry found in system for '"..section.."'.", 1
+end

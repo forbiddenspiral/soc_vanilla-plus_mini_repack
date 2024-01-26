@@ -1,0 +1,433 @@
+
+    What's New in ZRP 1.07?
+
+Changed files are noted in square brackets.  Scripts are in the 
+gamedata\scripts\ subdirectory.  You should also review the 
+earlier ZRP documentation in the docs\ subdirectory, including 
+other ZRP_Changes_*.txt files.
+
+
+=====================================
+Changes in 1.07 R5RC over ZRP 1.07 R5EE
+=====================================
+ZRP 1.07 R5RC changes (NatVac and others as noted):
+* Restored "Find out what happened to Ghost" informational 
+  task. [_dev.script, agroprom_tasks.script]
+* Added more "Patch to 1.0004 or later" info for 1.0 users.
+  Fixed crash on quit if _z.script was not valid.
+  [ui_main_menu.script]
+* Prevented "stuck" rs_stats console if not alive in game when 
+  Caps Lock pressed on main menu screen in debug mode. 
+  [_z.script]
+* Added mod crash prevention if logic count missing. (castl) 
+  [gulag_dark_valley.script]
+* Made "Kill the Stalker from Monolith" task optional, 
+  non-default. [config\misc\task_manager.ltx]
+* Made night music fix non-default. (See Modifier changes.)
+  [REMOVED config\game_levels_music.ltx]
+* Made NPC sawn-off evaluation priority change optional, 
+  non-default per Antarctico. [config\weapons\w_bm16.ltx, 
+  config\weapons\optional\w_bm16.*]
+* Reverted defend Agroprom stalkers task to autoquest. You 
+  could not get it otherwise. [config\misc\task_manager.ltx]
+* esc_bandits_die() function parameter sctor should be actor. 
+  (rkr5) [xr_conditions.script]
+* Corrected save/load hit_intensity compounding if you don't 
+  have a psy helmet. You can now die more slowly. (Decane) 
+  [sr_psy_antenna.script]
+* Fixed "Kill Vampire" PDA task description. (Storm Shadow)
+  [config\gameplay\storyline_info_taskmanager.xml]
+* Reduced flesh's wounded running speed; was faster than 
+  normal run speed. (MrSeyker) [config\creatures\m_flesh.ltx]
+* Added a couple of missing torches, removed unusable guitars 
+  and dialogs from various NPCs. (MrSeyker) 
+  [config\gameplay\character_desc_military.xml, 
+  character_desc_simulation.xml]
+* Removed unused bar_dolg_base_guard_acces dialog from Dutyers 
+  in Dark Valley. (MrSeyker)
+  [config\gameplay\character_desc_darkvalley.xml]
+* Removed unused esc_stalker_talk_level dialog from Monolith 
+  master for Army Warehouses if he is ever used. Also removed 
+  superfluous ammo from rad_dolg_master_default2 in Red Forest. 
+  (MrSeyker) [config\gameplay\character_desc_*.xml]
+* Removed unusable items, dialog from Monolith and military in 
+  NPP. (MrSeyker) [config\gameplay\character_desc_aes.xml]
+* Allowed Skull dialog option to complete Kill Lukash task 
+  even if delayed base attack already started.
+  [config\gameplay\dialogs_military.xml]
+* Hid the tunnel exit marker until you find the secret tunnel. 
+  [config\gameplay\tasks_yantar.xml]
+* Replaced comment line start's '#' with ';'. (MrSeyker)
+  [config\weapons\_custom_weapons.ltx]
+* Replaced EOL comment's "'" with ';'. (MrSeyker)
+  [config\weapons\weapons.ltx, optional\weapons.ltx.*]
+* Removed addons from weapons that don't support them in 
+  vanilla. [config\gameplay\character_desc_*.xml]
+* Gave Pavlik a guitar. If he lives he should use it.
+  [config\gameplay\character_desc_military.xml]
+* Free DV bandit guards from their role if sacrifice victim is 
+  dead. [config\scripts\val_sacrifice_guard*.ltx]
+* Minor tweak to ui_hud_frame_patron height for aesthetics.
+  [config\ui\ui_hud.xml]
+* More optimizations and general clean-up.
+  [config\gameplay\info_l01escape.xml,
+  config\text\eng\stable_storyline_info_sarcofag.xml,
+  _g.script, death_manager.script, gulag_dark_valley.script, 
+  gulag_general.script, gulag_pripyat.script, 
+  se_respawn.script, se_stalker.script, smart_terrain.script, 
+  smart_terrain_params.script, state_mgr_animation.script, 
+  task_manager.script, treasure_manager.script, 
+  ui_wpn_params.script, xr_box.script, xr_danger.script, 
+  xr_logic.script, xr_motivator.script, xr_gulag.script, 
+  xr_heli_hunter.script, optional\*\xr_*.script]
+* PDA aesthetic display formatting changes. (MrSeyker)
+  [config\ui\encyclopedia.xml, encyclopedia_item.xml, 
+  news.xml, pda_character.xml, pda_contacts_new.xml, 
+  pda_dialog_character.xml, pda_dialog_character_16.xml, 
+  pda_events.xml (can select only top third of last line in 
+  full list at left in encyclopedia, so vanilla is an option), 
+  stalkers_ranking.xml, stalkers_ranking_character.xml, 
+  stalkers_ranking_character_16.xml, talk.xml]
+* Added a few seconds of delay to the dog attack on Fox.
+  [config\misc\gulag_escape.ltx]
+* Restored Sid's vanilla starting speech animations. Added 
+  a small pause after he finishes before he claims he doesn't 
+  bite. See Modifier changes for the skippable version.
+  [config\scripts\optional\esc_trader.ltx]
+* Sid's remarks are a bit more random. [mob_sound.script]
+* Enabled inventory box population control at camps.
+  See also all.spawn changes. [bind_stalker.script,
+  optional\*\bind_stalker.script]
+* Forced corrupt game detection on load to display a dialog 
+  if the quit_on_abort flag is not set (default). 
+  [bind_stalker.script, optional\*\bind_stalker.script]
+* Enhanced Shaggy cell space restrictor processing to permit 
+  him to get back inside if spawn jitter puts him outside his 
+  cell before rescue. A small chance remains that he will 
+  spawn outside the factory -- he can get back but it is 
+  possible he'll die of bandit causes if online. See also 
+  all.spawn changes. [xr_conditions.script]
+* Used selective logic on Skull's group and the Freedom/Duty 
+  fighters in Red Forest. Once they reach camp, a save/reload 
+  should not put them back at the start of their locations.
+  [config\misc\gulag_mil_dolg.ltx, gulag_radar.ltx]
+* Inserted an aesthetic delay before Pripyat loner's "Go!".
+  [config\misc\gulag_pripyat.ltx]
+* Corrected the use of a stalker model for a freedom respawn. 
+  [config\creatures\spawn_sections.ltx]
+* Added more mapspots to MrFusion's spot remover code.
+  [_z.script]
+* Removed test changes to xr_camper.script per ZaGaR. Changed 
+  a global variable to local. [xr_camper.script]
+* Extended MM spawning support to include NPCs and mutants.
+  [_custom_ext_zrp_mm.script]
+* Added support for spawning non-standard mutants: burer, cat, 
+  chimera, fracture (izlom), zombie. They are not yet tweaked 
+  for damages to them or from them. The burer is one-hit 
+  lethal, for example. See ZRP Support Utilities Changes.
+  [config\creatures\m_*.ltx, config\ui\ui_npc_monster.xml,
+  config\models\capture\chimera_captures.ltx, _g.script, 
+  xr_statistic.script]
+* Restricted a Freedom secret to the Freedom faction.
+  [config\misc\treasure_manager.ltx]
+* Removed the non-vanilla ZRP legacy weapons from secrets. 
+  See the Modifier changes to restore them if desired.
+  [config\misc\treasure_manager.ltx]
+* A feeble attempt was made to further improve the sound 
+  management timings. [sound_theme.script, xr_sound.script]
+* More unused resource removal. [dialogs_military.script, 
+  gulag_bar.script, xr_conditions.script]
+
+
+All.spawn changes/fixes since R5EE (requires new game):
+* Reduced chance of encountering Poker before you could get 
+  the task to deal with him. [alife_l04_darkvalley.ltx]
+* Delayed a couple of bandit spawns; val_lager_bandits doesn't 
+  have enough jobs initially and the out-of-work bandits were 
+  not following any camp rules. [alife_l04_darkvalley.ltx]
+* Tweaked Shaggy cell space restrictor logic to better support 
+  spawn jitter hack. [alife_l04_darkvalley.ltx]
+* Added inventory box max_count to inventory boxes that 
+  kept filling up as replacement NPCs arrived. Repurposed one 
+  WT box to make it actually useful; original ST went offline 
+  before it could be used.
+  [alife_l04_darkvalley.ltx, alife_l06_rostok.ltx]
+* Restored inventory box max_count to mil_bandit (mercs at 
+  homestead). [alife_l07_military.ltx]
+* Made Freedom patrol leader look at player at entrance to 
+  Army Warehouses. [alife_l07_military.ltx]
+* Removed unsupported silencer flags from vanilla AK74S and 
+  AK74SU spawns. [alife_l07_military.ltx]
+* Removed the misused state checks for mil_lager, which can 
+  autocomplete the Lukash autoquest to defend the campsite 
+  from the mercs if there are no bloodsuckers in the village. 
+  [alife_l07_military.ltx]
+* Removed grenade launcher and silencer flags from NPP Obokan 
+  (AN-94 Abakan) spawn; vanilla weapon doesn't support them.
+  [alife_l12_stancia.ltx]
+* Corrected typos ("wawe"->"wave").
+  [way_l07_military.ltx]
+
+
+See the diffs\ subdirectory's *.diff files for details.
+
+
+Modifier configuration changes (MrSeyker and NatVac):
+* Some UI options have been updated. 
+  [config\ui\*.xml, modcfg\_ZRP.cfg]
+* Made "Create Save for First Level Access Post Progress" 
+  default for autosaves. [modcfg\_ZRP.cfg, bind_stalker.script]
+* Added option to enable "Kill the Stalker from Monolith" task.
+  [modcfg\_ZRP.cfg]
+* Added option to enable the ability of NPCs to upgrade to 
+  rifles if they have sawn-offs. [modcfg\Experimental_AI.cfg]
+* Added ability to adjust the amount of bleeding reduction 
+  provided by medkits. [modcfg\Tweaks.cfg]
+* Added note that Rulix "NPCs reload early" may crash if NPC 
+  dies while reloading if you are using patch 1.0006.
+  [modcfg\Experimental_AI.cfg]
+* Added option to disable/enable new progress-based level 
+  changers. [modcfg\Vanilla.cfg, scripts\optional\zlc.script]
+* Added the options to restore a couple of vanilla bugs:
+  Remove the ability to find high-end artifacts on NPCs, and 
+  make the game forget that you searched a body when you 
+  change levels, so you can have more chances at secrets if 
+  any are still available. [modcfg\Vanilla.cfg]
+* Added option to enable/disable night music.
+  [modcfg\_ZRP.cfg, config\optional\game_levels_music.ltx]
+* Moved Shadow State's skippable Sidorovich intro to new 
+  option. [config\scripts\optional\esc_trader.ltx.*, 
+  modcfg\_ZRP.cfg]
+* Added npc/mutant spawn utility installation as part of the
+  Spawn Tools entry. [modcfg\SupportUtilities.cfg]
+* Adjusted MonoMartyr config file to accommodate changes in 
+  the spawning script. [modcfg\MonoMartyr.cfg]
+* Added switch repair utility installation as part of the 
+  Fix Broken Doors/Switches group. Fix X16/X19 switches if 
+  needed. [modcfg\SupportUtilities.cfg]
+* Added Mark by CLSID utility. [modcfg\SupportUtilities.cfg]
+* Provided the ability to individually re-add the ZRP legacy 
+  weapons to certain secrets. [modcfg\_ZRP.cfg]
+
+
+Debug changes (NatVac):
+* Added functions to support body management:
+  move_body_to() - Move bodies to locations you recorded.
+  punt() - Toss bodies away from you.
+  dispose() - Move bodies into whirlygig and vortex anomalies 
+  if the level supports them. MAKE A HARD SAVE FIRST! (A hard  
+  save is any save made from the main menu.)
+  pull() - Complement to push(), good for bodies out of reach
+  move_body_to_nearest_lc() - use with pull() to place 
+  permabodies near level exits. move_body_to() might be 
+  more practical here; see z.script file for details.
+  [z.script]
+* Added crash protection to the unload_and_detach_addons() 
+  function. [zx.script]
+
+ZRP Support Utilities Changes (NatVac):
+* New spawn utility: Spawn Entities: NPCs and Mutants.
+  [optional\z_spawn_entities.script]
+* New repair utility: Repair X16/X19 Switches.
+  [optional\z_repair_level_switches.script]
+* Logging of script execution calls is now optional, 
+  not default. [ui_zrp_utils_dialog.script]
+* New marking utility: Mark by CLSID.
+  [optional\z_mark_by_CLSID.script]
+* New informational utility: Hunter Bloodsucker Lair Task Info. 
+  It demonstrates access to the task_manager innards, telling 
+  you when the task is available and if a bloodsucker target 
+  is present. Requires a manual install: just copy it up a 
+  directory. [optional\z_hunter_bloodsucker_task.script]
+
+
+=====================================
+Changes in 1.07 R5EE over ZRP 1.07 R4
+=====================================
+ZRP 1.07 R5EE changes (NatVac and others as noted):
+* Improved 1.0006 compatibility; fixed crash when trying to 
+  drop-a-medkit heal (reported by Nordom et al.), fixed rare 
+  bind_object crash during session change. (bamah) [_z.script]
+* Commented out ui\ui_nvidia reference to prevent crash 
+  when ZRP is installed on unpatched game.
+  [config\ui\ui_movies.xml]
+* Added check in main menu to prevent using ZRP on SoC not 
+  patched to at least 1.0004. [ui_main_menu.script]
+* Replaced colon with semicolon for comments. (Riddle)
+  [config\creatures\spawn_sections.ltx]
+* Corrected Freedom task relationship typos. (Riddle)
+  [config\misc\optional\task_manager.ltx.normal,
+  config\misc\task_manager.ltx]
+* Corrected bar_ecolog_guard class reference. (castl)
+  [config\gameplay\character_desc_bar.xml]
+* Corrected several panic_treshold typos. (castl)
+  [config\gameplay\character_desc_*.xml]
+* Commented out unused yan_tonnel_snorks references. (castl)
+  [gulag_yantar.script, config\misc\gulag_yantar.ltx]
+* Removed duplicate generic_object_binder:reload(). (castl)
+  [bind_monster.script]
+* Deleted extra "=" in secret's items assignment. (MrSeyker)
+  [config\misc\treasure_manager.ltx]
+* Changed requirement for adding AW-Yantar level changer; must 
+  have Scorcher task first. [zlc.script]
+* Added net_spawn() call to Grenadier's bind_stalker.script 
+  to clean up fake grenades as full AIPack already did.
+  (ZaGaR) [optional\grenadier\bind_stalker.script]
+* Fixed mil_dolg_task_report location marker for English.
+  [config\text\eng\string_table_mapspots_military.xml]
+* Removed remaining duplicate <terrain_sect> assignments.
+  (MrSeyker) [config\gameplay\character_desc_simulation.xml]
+* Updated Yantar character file includes. (MrSeyker)
+  [config\gameplay\character_desc_yantar.xml]
+* Unused baggage removal:
+  Removed unused Darkscape and DeadCity characters; see files
+  if needed. Removed unused tasks and articles as well.
+  Removed unused dialogs from zombies; uncomment if needed.
+  [config\gameplay\character_desc_*.xml, tasks_*.xml,
+  storyline_info_*.xml, config\gameplay\npc_profile.xml]
+* Eliminated some unused info_portions. [info_l08deadcity.xml, 
+  info_l12u_sarcofag.xml in config\gameplay\, _dev.script, 
+  bind_stalker.script, scripts\optional\*\bind_stalker.script, 
+  config\scripts\agr\agr_knockdown.ltx]
+* Tweaked Rulix weapon manager's update_weapon(). (castl)
+  [scripts\optional\ai_rx\rx_wmgr.script]
+* Prevented attempt to assign exclusive jobs to just anyone. 
+  Corrected gulag:set_goodwill() parameter. (castl)
+  [xr_gulag.script]
+* Adjusted item_used position to prevent text overlap on HUD.
+  (reported by romulous) [ui_custom_msgs.xml, _16.xml]
+* Surprise boxes (rare chance of good artifacts) are no longer 
+  default. (Also see Modifier changes) [xr_box.script]
+* Added guitars to initial Pripyat loners - they can use them.
+  (They may not.) [config\gameplay\character_desc_pripyat.xml]
+* Reduced game tutorial width for 1.0006 compatibility.
+  [config\ui\game_tutorials.xml, string_table_tutorial.xml]
+* Fixed Fanatic's merc attack behavior when you refuse to help. 
+  You can no longer get the task later. Fanatic/rookies prepare 
+  for attack either way. [config\gameplay\dialogs_escape.xml, 
+  gulag_escape.script, xr_effects.script]
+* Lowered NPC evaluation priority for sawn-off shotguns. They 
+  can now choose rifles if available and they have rifle ammo.
+  [config\weapons\w_bm16.ltx, config\weapons\optional\w_bm16.*]
+* Removed "selflight" glow from dynamite box. (Antarctico)
+  [meshes\physics\box\expl_dinamit.ogf]
+* Continued effort to optimize string usage and gulag logic.
+  [xr_logic.script, gulag_*.script, xr_gulag.script]
+* Optional rain sound fix has code for weather mod support. 
+  (Not default; see Modifier changes.) [zx.script]
+* Implemented workaround to prevent SMapLocation/CMapLocation 
+  errors (which corrupt games) at the end of arena matches.
+  (fix per BobBQ) [bar_dialogs.script, xr_effects.script]
+* Made a portion of Agroprom map slightly transparent to show 
+  underground markers, moved map a bit south on global map. 
+  With this change, all task and secret stash markers are 
+  visible on PDA maps. Removed mipmaps as well.
+  [config\game_maps_single.ltx, textures\map\map_agroprom.dds]
+* Removed mipmaps from map_aes_1.dds and map_aes_2.dds.
+  [textures\map\map_aes_*.dds]
+* Added pre-fill function to treasure_manager.script, removed 
+  corresponding optional\treasure_manager.scripts.*
+  [treasure_manager.script]
+* Modified one more camp for new xr_kamp.script management. 
+  [config\misc\gulag_mil_village.ltx]
+* Fixed scoring of psy_dog kill reported by MrSeyker.
+  [xr_statistic.script]
+* Deleted erroneous Lukash payment for barrier defense failure.
+  [config\gameplay\dialogs_military.xml]
+* Separated return task types for better map hint management.
+  [task_manager.script, config\ui\map_spots.xml]
+* Created config\ui\ui_custom_msgs_16.xml, added HUD clock 
+  support for widescreen. (MrSeyker)
+* Reworked UI interfaces for both standard and widescreen. 
+  (MrSeyker, NatVac) [config\ui\*.xml]
+* Added event structure init to permit event table reuse.
+  [_dev.script]
+* Added task interim info_portion to TZIO list. (MrSeyker) 
+  [_dev.script]
+* Replaced one of three ambient gunfire sounds with wind on 
+  the CNPP south side. The others are silenced after you 
+  complete the game. (If you want the original sound, just 
+  delete the file.) [levels\l12_stancia\level.snd_static]
+* Assigned location story_id instead of object story_id 
+  to Skinflint/Murk village bloodsucker task. It was possible 
+  to complete Voronin's RG6 task before bloodsucker task, so 
+  old task marker would erroneously show Duty base as target.
+  Requires new game to be visible, acts as vanilla otherwise.
+  [config\gameplay\tasks_military.xml, see all.spawn changes]
+* Supplied an invisible image file for hiding that flashing 
+  disk I/O icon at the lower right of the HUD. (See Modifier 
+  changes.) [textures\ui\ui_disk_io.dds.invisible]
+* Some Rulix weapon manager crash reduction. (bamah)
+  [scripts\optional\ai_rx\rx_wmgr.script]
+* Unified death_manager.script to simplify support. Added 
+  optional global ammo drop adjustment. 
+  [death_manager.script, deleted optional\*\death_manager.*]
+* Optimized proceed() and process_info_portion() code.
+  [bar_dialogs.script, level_tasks.script, *_tasks.script]
+* Tweak to support stealth a bit better: If your enemy didn't 
+  identify any enemy before they die, they now take that lack 
+  of knowledge with them to the grave in the save. (If they 
+  have identified an enemy, you're hosed just as before.) 
+  [xr_death.script, xr_effects.script]
+* Optional but recommended: New system.ltx files don't load 
+  some unused resources like multiplayer support, scripts and 
+  dialogs for unused levels, info_portions and the like. 
+  [config\optional\system.ltx.*]
+
+
+All.spawn changes/fixes since R4 (requires new game):
+* Locked out an overlapping camp spot at the exit to the 
+  Garbage. [way_l01_escape.ltx]
+* Assigned unused Mil_Controller story_id to space_restrictor 
+  for new Skinflint/Murk village bloodsucker task marker.
+  [alife_l07_military.ltx]
+
+See the diffs\ subdirectory's *.diff files for details.
+
+
+Modifier configuration changes (MrSeyker and NatVac):
+* Adjusted Alt1 actor.ltx crouch/low-crouch accuracy settings.
+  [config\creatures\optional\actor.ltx.alt1]
+* Updated Actor.cfg and FirstPersonShooter.cfg and their 
+  corresponding config notes. [modcfg\*.cfg, *.cfg.txt]
+* Added option to enable/disable rain sound fix when changing 
+  levels or loading previous save. [modcfg\Experimental.cfg]
+* Surprise boxes can be enabled and the odds of a surprise 
+  adjusted. [modcfg\ArtifactSwap.cfg and .cfg.txt]
+* Added option to use just-a-dot cursor for empty hands or 
+  binoculars. [modcfg\_ZRP.cfg]
+* You can adjust the healing properties of items per lowenz.
+  [modcfg\Tweaks.cfg, Tweaks.cfg.txt]
+* Added/changed SupportUtilities.cfg functionality.
+  Replaced "Force Possible Secret" with "Secret Script Stuff".
+  You can now populate all the secret stashes. This will 
+  introduce more lag until the stashes are cleared.
+  [modcfg\SupportUtilities.cfg]
+* Extended Freedom vs Duty configuration with optional faction 
+  relationship adjustments for player (e.g. Freedom player can 
+  be neutral with the scientists). 
+  [Freedom Vs. Duty.cfg, .cfg.txt]
+* You can toggle a background texture for the HUD time display.
+  [modcfg\_ZRP.cfg] (Obsolete optional files removed.)
+* Removed death_manager.script copying to support unified 
+  approach. [modcfg\ExperimentalAI.cfg]
+* Added entry to hide/unhide that flashing disk I/O icon at the 
+  lower right of the HUD. [modcfg\Tweaks.cfg, Tweaks.cfg.txt]
+* Unique weapons can now be dropped in pristine condition when 
+  NPC dies. [modcfg\_ZRP.cfg]
+  
+
+
+Debug changes (NatVac):
+* Fixed crash when attempting to bump a body lacking a physics shell.
+  (reported by belizarius) [zx.script]
+
+
+
+
+Please see ZRP_Changes_1.05_RC2_to_1.07_R4.txt for more 1.07 
+changes and the docs\ subdirectory files for details on utilizing the 
+support utilities and debugging support.
+
+
+Also see KnownIssues.txt.

@@ -1,0 +1,210 @@
+-- script for optional mutant spawning
+name = "Spawn Entities: NPCs and Mutants"
+description = "Use auto-complete: Type starting letters of entity name, then use arrow keys. up/down=prev/next, left/right=reset/use. Caps start NPC classes, use lower case for mutants."
+author = "NatVac"
+dik_key = DIK_keys.DIK_E
+hotkey = "E"
+revision = "1.0"
+number_of_parameters = 1
+
+-- sp_sorted = false
+current_str = ""
+cur_pos = 1
+
+local spawnables = {
+	-- mutants
+	{name = "bloodsucker", section="bloodsucker_normal", clsid=clsid.bloodsucker_s},
+	{name = "bloodsucker (strong)", section="bloodsucker_strong", clsid=clsid.bloodsucker_s},
+	{name = "bloodsucker (weak)", section="bloodsucker_weak", clsid=clsid.bloodsucker_s},
+	{name = "boar", section="boar_normal", clsid=clsid.boar_s},
+	{name = "boar (strong)", section="boar_strong", clsid=clsid.boar_s},
+	{name = "boar (weak)", section="boar_weak", clsid=clsid.boar_s},
+	{name = "burer (black coat)", section="m_burer_normal_black", clsid=clsid.burer_s},
+	{name = "burer (brown coat)", section="m_burer_normal", clsid=clsid.burer_s},
+	{name = "cat", section="m_cat_e", clsid=clsid.cat_s},
+	{name = "chimera", section="m_chimera_e", clsid=clsid.chimera_s},
+	{name = "controller", section="m_controller_normal", clsid=clsid.controller_s},
+	{name = "controller (fat)", section="m_controller_normal_fat", clsid=clsid.controller_s},
+	{name = "controller (old)", section="m_controller_old", clsid=clsid.controller_s},
+	{name = "controller (old and fat)", section="m_controller_old_fat", clsid=clsid.controller_s},
+	{name = "controller (tubeman)", section="controller_tubeman", clsid=clsid.controller_s},
+	-- {name = "crow", section="m_crow", clsid=clsid.crow},
+	{name = "dog", section="dog_normal", clsid=clsid.dog_s},
+	{name = "dog (strong)", section="dog_strong", clsid=clsid.dog_s},
+	{name = "dog (weak)", section="dog_weak", clsid=clsid.dog_s},
+	{name = "flesh", section="flesh_normal", clsid=clsid.flesh_s},
+	{name = "flesh (strong)", section="flesh_strong", clsid=clsid.flesh_s},
+	{name = "flesh (weak)", section="flesh_weak", clsid=clsid.flesh_s},
+	{name = "fracture", section="m_fracture_e", clsid=clsid.fracture_s},
+	{name = "poltergeist (flame)", section="m_poltergeist_normal_flame", clsid=clsid.poltergeist_s},
+	{name = "poltergeist (strong flame)", section="m_poltergeist_strong_flame", clsid=clsid.poltergeist_s},
+	{name = "poltergeist (tele)", section="m_poltergeist_normal_tele", clsid=clsid.poltergeist_s},
+	{name = "poltergeist (tele outdoor)", section="m_poltergeist_tele_outdoor", clsid=clsid.poltergeist_s},
+	{name = "pseudodog", section="pseudodog_normal", clsid=clsid.pseudodog_s},
+	{name = "pseudodog (strong)", section="pseudodog_strong", clsid=clsid.pseudodog_s},
+	{name = "pseudodog (weak)", section="pseudodog_weak", clsid=clsid.pseudodog_s},
+	{name = "pseudogiant", section="gigant_normal", clsid=clsid.gigant_s},
+	{name = "pseudogiant (strong)", section="gigant_strong", clsid=clsid.gigant_s},
+	{name = "psy_dog", section="psy_dog", clsid=clsid.psy_dog_s},
+	-- {name = "rat", section="m_rat_e", clsid=clsid.}, --not supported
+	{name = "snork", section="snork_normal", clsid=clsid.snork_s},
+	{name = "snork (strong)", section="snork_strong", clsid=clsid.snork_s},
+	{name = "snork (weak)", section="snork_weak", clsid=clsid.snork_s},
+	{name = "tushkano", section="tushkano_normal", clsid=clsid.tushkano_s},
+	{name = "zombie", section="zombie_normal", clsid=clsid.zombie_s},
+	{name = "zombie (strong)", section="zombie_strong", clsid=clsid.zombie_s},
+	{name = "zombie (weak)", section="zombie_weak", clsid=clsid.zombie_s},
+
+	{name = "Bandit master", section="val_bandit_respawn_4", clsid=clsid.script_stalker}, --sim_bandit_master
+	--{name = "", section="cit_bandit_respawn_2", clsid=clsid.script_stalker}, --sim_bandit_master
+	--{name = "", section="ros_bandit_respawn_4", clsid=clsid.script_stalker}, --sim_bandit_master
+	{name = "Bandit novice", section="val_bandit_respawn_1", clsid=clsid.script_stalker}, --sim_bandit_novice
+	--{name = "", section="agr_bandit_respawn_1", clsid=clsid.script_stalker}, --sim_bandit_novice
+	--{name = "", section="esc_bandit_respawn_1", clsid=clsid.script_stalker}, --sim_bandit_novice
+	--{name = "", section="gar_bandit_respawn_1", clsid=clsid.script_stalker}, --sim_bandit_novice
+	--{name = "", section="ds_bandit_respawn_1", clsid=clsid.script_stalker}, --sim_bandit_novice
+	{name = "Bandit regular", section="val_bandit_respawn_2", clsid=clsid.script_stalker}, --sim_bandit_general
+	--{name = "", section="agr_bandit_respawn_2", clsid=clsid.script_stalker}, --sim_bandit_general
+	--{name = "", section="gar_bandit_respawn_2", clsid=clsid.script_stalker}, --sim_bandit_general
+	--{name = "", section="esc_bandit_respawn_2", clsid=clsid.script_stalker}, --sim_bandit_general
+	--{name = "", section="ds_bandit_respawn_2", clsid=clsid.script_stalker}, --sim_bandit_general
+	{name = "Bandit veteran", section="val_bandit_respawn_3", clsid=clsid.script_stalker}, --sim_bandit_veteran
+	--{name = "", section="cit_bandit_respawn_1", clsid=clsid.script_stalker}, --sim_bandit_veteran
+	--{name = "", section="ds_bandit_respawn_3", clsid=clsid.script_stalker}, --sim_bandit_veteran
+	--{name = "", section="ros_bandit_respawn_3", clsid=clsid.script_stalker}, --sim_bandit_veteran
+	{name = "Duty master", section="bar_dolg_respawn_3", clsid=clsid.script_stalker}, --sim_dolg_master
+	{name = "Duty regular", section="bar_dolg_respawn_1", clsid=clsid.script_stalker}, --sim_dolg_regular
+	{name = "Duty regular Bar", section="dolg_regular", clsid=clsid.script_stalker}, --bar_dolg_regular
+	--{name = "", section="gar_dolg_respawn_1", clsid=clsid.script_stalker}, --sim_dolg_regular
+	{name = "Duty veteran", section="bar_dolg_respawn_2", clsid=clsid.script_stalker}, --sim_dolg_veteran
+	--{name = "", section="gar_dolg_respawn_2", clsid=clsid.script_stalker}, --sim_dolg_veteran
+	--{name = "Duty master Pripyat only", section="pri_respawn_dolg", clsid=clsid.script_stalker}, --custom logic
+	{name = "Ecologist", section="yan_ecolog_respawn_1", clsid=clsid.script_stalker}, --sim_ecolog
+	{name = "Freedom master", section="mil_freedom_respawn_3", clsid=clsid.script_stalker}, --mil_Svoboda_master
+	--{name = "Freedom master Barrier", section="mil_freedom_barier_respawn_1", clsid=clsid.script_stalker}, --mil_Svoboda_master
+	--{name = "Freedom master Pripyat only", section="pri_respawn_freedom", clsid=clsid.script_stalker}, --custom logic
+	--{name = "", section="rad_freedom_respawn_3", clsid=clsid.script_stalker}, --mil_Svoboda_master
+	--{name = "", section="sim_freedom_master_quest", clsid=clsid.script_stalker}, --mil_Svoboda_master
+	{name = "Freedom regular", section="mil_freedom_respawn_2", clsid=clsid.script_stalker}, --mil_Svoboda_regular
+	--{name = "", section="rad_freedom_respawn_2", clsid=clsid.script_stalker}, --mil_Svoboda_regular
+	{name = "Freedom veteran", section="mil_freedom_respawn_1", clsid=clsid.script_stalker}, --mil_Svoboda_specnaz
+	--{name = "", section="rad_freedom_respawn_1", clsid=clsid.script_stalker}, --was mil_Stalker_veteran, now mil_Svoboda_specnaz
+	{name = "Freedom veteran sniper", section="mil_freedom_respawn_sniper", clsid=clsid.script_stalker}, --sim_Svoboda_sniper
+	{name = "Merc master", section="mil_killer_respawn_4", clsid=clsid.script_stalker}, --sim_killer_master
+	--{name = "", section="cit_killer_respawn_3", clsid=clsid.script_stalker}, --sim_killer_master
+	--{name = "", section="ros_killer_respawn_4", clsid=clsid.script_stalker}, --sim_killer_master
+	{name = "Merc veteran", section="mil_killer_respawn_1", clsid=clsid.script_stalker}, --sim_killer_veteran
+	--{name = "", section="cit_killer_respawn_2", clsid=clsid.script_stalker}, --sim_killer_veteran
+	--{name = "", section="ros_killer_respawn_1", clsid=clsid.script_stalker}, --sim_killer_veteran
+	{name = "Merc veteran sniper", section="mil_killer_respawn_2", clsid=clsid.script_stalker}, --sim_killer_sniper
+	--{name = "", section="ros_killer_respawn_2", clsid=clsid.script_stalker}, --sim_killer_sniper
+	{name = "Merc regular", section="mil_killer_respawn_3", clsid=clsid.script_stalker}, --sim_killer_general
+	--{name = "", section="cit_killer_respawn_1", clsid=clsid.script_stalker}, --sim_killer_general
+	--{name = "", section="ros_killer_respawn_3", clsid=clsid.script_stalker}, --sim_killer_general
+	{name = "Monolith martyr", section="sim_stranger_master", clsid=clsid.script_stalker},
+	{name = "Monolith master", section="pri_monolith_respawn_3", clsid=clsid.script_stalker}, --sim_monolith_master
+	{name = "Monolith master Barrier", section="mil_monolit_rush_respawn_1", clsid=clsid.script_stalker}, --mil_Monolit_master
+	--{name = "", section="rad_monolith_respawn_3", clsid=clsid.script_stalker}, --sim_monolith_master
+	{name = "Monolith regular", section="pri_monolith_respawn_1", clsid=clsid.script_stalker}, --sim_monolith_regular
+	--{name = "", section="rad_monolith_respawn_1", clsid=clsid.script_stalker}, --sim_monolith_regular
+	{name = "Monolith veteran", section="pri_monolith_respawn_2", clsid=clsid.script_stalker}, --sim_monolith_specnaz
+	--{name = "", section="rad_monolith_respawn_2", clsid=clsid.script_stalker}, --sim_monolith_specnaz
+	--{name = "", section="sar_monolith_respawn", clsid=clsid.script_stalker}, -- custom logic
+	{name = "Stalker master", section="mil_stalker_respawn_3", clsid=clsid.script_stalker}, --sim_stalker_master
+	{name = "Stalker master Barrier", section="mil_neutral_barier_respawn_1", clsid=clsid.script_stalker}, --mil_Stalker_master
+	--{name = "", section="bar_stalker_respawn_2", clsid=clsid.script_stalker}, --sim_stalker_master
+	--{name = "Stalker master Pripyat only", section="pri_respawn_neutral", clsid=clsid.script_stalker}, --custom logic
+	{name = "Stalker novice", section="gar_stalker_respawn_1", clsid=clsid.script_stalker}, --sim_stalker_novice
+	--{name = "", section="bar_stalker_respawn_3", clsid=clsid.script_stalker}, --sim_stalker_novice
+	--{name = "", section="ds_stalker_respawn_1", clsid=clsid.script_stalker}, --sim_stalker_novice
+	--{name = "", section="esc_stalker_respawn_1", clsid=clsid.script_stalker}, --sim_stalker_novice
+	{name = "Stalker regular", section="mil_stalker_respawn_1", clsid=clsid.script_stalker}, --sim_stalker_general
+	{name = "Stalker regular Agroprom", section="agr_stalker_regular", clsid=clsid.script_stalker}, --agr_stalker_general
+	--{name = "", section="bar_stalker_respawn_4", clsid=clsid.script_stalker}, --sim_stalker_general
+	--{name = "", section="gar_stalker_respawn_2", clsid=clsid.script_stalker}, --sim_stalker_general
+	--{name = "", section="esc_stalker_respawn_2", clsid=clsid.script_stalker}, --sim_stalker_general
+	--{name = "", section="ds_stalker_respawn_2", clsid=clsid.script_stalker}, --sim_stalker_general
+	{name = "Stalker veteran", section="agr_stalker_veteran", clsid=clsid.script_stalker}, --sim_stalker_veteran
+	--{name = "", section="bar_stalker_respawn_1", clsid=clsid.script_stalker}, --sim_stalker_veteran
+	--{name = "", section="mil_stalker_respawn_2", clsid=clsid.script_stalker}, --sim_stalker_veteran
+	{name = "Soldier master", section="rad_soldier_master", clsid=clsid.script_stalker}, --sim_Soldier_master
+	--{name = "Soldier master Pripyat only", section="pri_respawn_military", clsid=clsid.script_stalker}, --custom logic
+	{name = "Soldier regular", section="esc_soldier_respawn_1", clsid=clsid.script_stalker}, --sim_soldier_regular
+	{name = "Soldier regular Agroprom", section="agr_soldier_regular", clsid=clsid.script_stalker}, --agr_soldier_regular
+	{name = "Soldier veteran", section="agr_soldier_veteran", clsid=clsid.script_stalker}, --sim_soldier_specnaz
+	--{name = "", section="esc_soldier_respawn_specnaz", clsid=clsid.script_stalker}, --sim_soldier_specnaz
+	--{name = "", section="val_soldier_respawn_1", clsid=clsid.script_stalker}, --sim_soldier_specnaz
+	--{name = "", section="rad_specnaz_respawn_specnaz", clsid=clsid.script_stalker}, --sim_soldier_specnaz
+	{name = "Zombified master", section="rad_zombied_respawn_3", clsid=clsid.script_stalker}, --sim_zombied_master
+	--{name = "", section="yan_zombied_respawn_3", clsid=clsid.script_stalker}, --sim_zombied_master
+	{name = "Zombified novice", section="rad_zombied_respawn_1", clsid=clsid.script_stalker}, --sim_zombied_novice
+	--{name = "", section="yan_zombied_respawn_1", clsid=clsid.script_stalker}, --sim_zombied_novice
+	{name = "Zombified veteran", section="rad_zombied_respawn_2", clsid=clsid.script_stalker} --, --sim_zombied_veteran
+	--{name = "", section="yan_zombied_respawn_2", clsid=clsid.script_stalker} --sim_zombied_veteran
+}
+
+function main(entity_section)
+	for i,v in ipairs(spawnables) do
+		-- if string.find(v.section,entity_section,1,true) == 1 then
+		if v.name == entity_section then
+			local success, result = pcall(_custom_ext_zrp_mm.spawn_,spawnables[i])
+			return success, result
+		end
+	end
+	-- pcall doesn't work on low-level engine crashes, unfortunately
+	local success, result = pcall(_custom_ext_zrp_mm.spawn_,{section = entity_section})
+	return success, result
+end
+
+function qualify(key, match_str)
+	-- if sp_sorted == false then
+		-- table.sort(spawnables)
+		-- sp_sorted = true
+	-- end
+	local handled = false
+	if key == DIK_keys.DIK_LEFT then
+		if match_str == "" then
+			current_str = ""
+			cur_pos = 1
+		end
+		handled = true
+	elseif key == DIK_keys.DIK_RIGHT then
+		handled = true
+	elseif key == DIK_keys.DIK_UP then
+		cur_pos = cur_pos - 1
+		if cur_pos < 1 then cur_pos = 1 end
+		handled = true
+	elseif key == DIK_keys.DIK_DOWN then
+		cur_pos = cur_pos + 1
+		if cur_pos > #spawnables then cur_pos = #spawnables end
+		handled = true
+	else
+		-- match the supplied string
+		for i,v in ipairs(spawnables) do
+			if string.find(v.name,match_str,1,true) == 1 then
+				cur_pos = i
+				handled = true
+				break
+			end
+		end
+	end
+	if handled then
+		current_str = spawnables[cur_pos].name
+		return current_str, spawnables[cur_pos].section
+	else
+		return nil, nil -- don't modify input
+	end
+end
+
+function validate(match_str)
+	for i,v in ipairs(spawnables) do
+		if match_str == v.name then
+			return true, "Input is valid"
+		end
+	end
+	-- might be a section name
+	if system_ini():section_exist(match_str) then
+		return true, match_str
+	end
+	return false, "No entry found in system for '"..match_str.."'.", 1
+end

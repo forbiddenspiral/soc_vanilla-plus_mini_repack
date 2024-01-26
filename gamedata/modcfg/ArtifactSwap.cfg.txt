@@ -1,0 +1,47 @@
+ File: ArtifactSwap.cfg
+
+The Artifact Swap minimod extends the vanilla gameplay by 
+providing a new set of goals involving the acquisition of 
+new and better artifacts.
+
+The idea is that there's a company providing Skinflint with 
+expensive artifacts that have been synthesized with existing 
+ones.  They are not only expensive, they require replacement 
+artifacts of the type used in their manufacture.
+
+Only someone with a lot of time will have the ability to 
+acquire both the money and the artifacts in order to swap 
+them for much better ones.  The new artifacts reduce the 
+micromanagement needed to protect against the various kinds 
+of Zone threats.
+
+To be able to swap artifacts, you need to keep Skinflint 
+alive.  The options will appear after you have completed 
+the village bloodsucker task, and the types of artifacts 
+along with the requirements will be listed in the dialog 
+and subsequently in your PDA log.
+
+If you have the Quest Overhaul enabled, there will 
+be a storage box under the nearby stairwell for your use.
+
+
+Skinflint Pricing
+
+Skinflint can offer you better pricing if you are friends 
+(green) with Freedom.
+
+
+Surprise Boxes
+
+You can enable the rare chance to find good artifacts in 
+certain boxes and cases (the kind known as def_box if you 
+are a modder). You can also change the odds. A value of 
+50 will result in your finding a surprise in about one 
+case or crate per game.
+
+Do not set the value lower than 1. That value will yield 
+a surprise out of every def_box in the game (about 50).
+
+You can change the surprise list in xr_box.script if you 
+are careful to use the correct section names of the 
+objects you want to spawn. See the box_treats table.

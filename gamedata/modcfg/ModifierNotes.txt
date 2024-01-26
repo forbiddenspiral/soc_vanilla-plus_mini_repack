@@ -1,0 +1,280 @@
+
+             Modifier Configuration File Notes
+
+Change History:
+    NatVac, 2010/10/07 - Support for ZRP 1.07 XR2 changes
+    NatVac, 2010/09/17 - Updated doc for ZRP 1.07 XR1
+    NatVac, 2009/01/25 - Field Alias support added
+    NatVac, 2008/11/01 - FileChoice warning added
+    NatVac, 2008/02/15 - Checkbox support added
+    NatVac, 2007/11/08 - Initial release
+
+The Modifier's configuration files can be placed either in 
+the same gamedata\ directory as the Modifier, or in a custom 
+gamedata\modcfg subdirectory (recommended).  The modcfg\ dir 
+is checked first.   If any config files are in that 
+subdirectory, then all must be there.
+
+This configuration file directory will be displayed in the 
+status bar when the Modifier program is launched.  For 
+convenience, this directory will be referred to below as the 
+ConfigFileDir.
+
+For each configuration there should be a mod customization 
+file with the extension ".cfg", and a corresponding text 
+file ending in .cfg.txt for the notes about the mod's 
+customization file. This file will be shown when the Config 
+Notes button is clicked. 
+
+All files in the ConfigFileDir that have the ".cfg" 
+extension will be shown in the dropdown combobox in the 
+upper left of the window when the program is launched. 
+
+The Modifier program uses a straightforward MS-DOS INI file 
+format, with each configurable item listed as a section name 
+surrounded by square brackets followed by the item's 
+parameters in "name=value" format.
+
+Lines that start with a semicolon (";") are comment lines, 
+ignored by the Modifier. 
+
+Configurable items can have spaces in their names. When the 
+configuration file is read, these items are listed (without 
+the enclosing brackets) in the listbox on the left side of 
+the program's window. 
+
+The "name=value" entries must not have spaces between the 
+end of the name and the start of the value. Spaces within 
+the value strings are fine. 
+
+Perhaps the best way to present the structure is via 
+explicit examples. There are currently three types of 
+entries, FileChoice, Field and LineToggle. (More types may 
+be added as needed.) 
+
+
+   The FileChoice Item:
+
+[Name Of Configurable Item]
+Title=Big Bold Short Description of Item
+Type=FileChoice
+NumberOfFiles=1
+Target=relative\path\under\gamedata\file.ext
+Choices=2
+Choice1=Original
+Choice1Source=
+Choice2=Alternative
+Choice2Source=relative\path\under\gamedata\file.ext.alternative
+ToolTip=The user sees this tip when he or she\nmoves the mouse over the radio group box.
+
+In the FileChoice example above, there is only one file 
+being transferred from two sources. An empty source means no 
+file; when such is chosen, the original is backed up if 
+possible, and then deleted if it exists. 
+
+Note that source and destination ("target") filepaths are 
+relative to the mod's gamedata\ directory.  Absolute paths, 
+paths with drive references, and paths using "..\" are not 
+allowed.
+
+At the moment, only one FileChoice item is allowed per 
+configurable item. You can have multiple destination files, 
+and more than two sources (currently, up to five). They 
+would look like this: 
+
+
+[Name Of Configurable Item]
+Title=Big Bold Short Description of Item
+Type=FileChoice
+NumberOfFiles=2
+Target1=relative\path\under\gamedata\file.ext
+Target2=relative\path\under\gamedata\file2.ext
+Choices=3
+Choice1=Original
+Choice1Source1=
+Choice1Source2=
+Choice2=New
+Choice2Source1=relative\path\under\gamedata\file.ext.alternative
+Choice2Source2=relative\path\under\gamedata\file2.ext.alternative
+Choice3=New
+Choice3Source1=relative\path\under\gamedata\file.ext.alternative
+Choice3Source2=relative\path\under\gamedata\file2.ext.alternative
+ToolTip=The user sees this tip when he or she\nmoves the mouse over the radio group box.
+
+NumberOfFiles is optional and assumed to be 1 if missing. 
+The Type value case is not important, but names to the left 
+of the equal sign should be camel-cased as shown. The 
+tooltip parameter is optional. Note the use of "\n" to break 
+up the displayed tooltip into multiple lines. 
+
+When the Apply button is clicked, the corresponding choice's 
+source files are copied to the target files after the 
+original target files are backed up to 
+"filename.ext.original" if possible. Be sure to keep the 
+source names synchronized with the destination names. 
+
+The "1" is optional in each occurrence on the left side of 
+the equal sign if there is only one corresponding item. For 
+a single file, single choice* you could have: 
+
+
+ChoiceSource=
+Choice1Source=
+ChoiceSource1=
+Choice1Source1=
+
+*A single choice is not normal here!
+
+However, you must have the character "1" for the first 
+choice when there are 2 or more choices, and the character 
+"1" for the first source when there are two or more source 
+files. 
+
+
+   The Field Item:
+
+[Quest Time Limits]
+Title=How Long Should Quests Take?
+Parameters=3
+Type1=Field
+File1=scripts\task_manager.script
+Name1=quest_days
+Value1=5
+DefaultValue1=5
+ToolTip1=Set the number of days to complete a normal quest.\nZero means no time limit.
+Type2=Field
+File2=scripts\task_manager.script
+Name2=autoquest_days
+Value2=0
+DefaultValue2=0
+ToolTip2=Set the number of days to complete an auto-quest.\nZero means no time limit.
+Type3=Field
+File3=scripts\task_manager.script
+Alias3=before task can repeat
+Name3=idle_time_days
+Value3=1
+DefaultValue3=1
+ToolTip3=Set the default number of days delay\nafter completing or rejecting a\nquest before you can get it again.\nZero means don't ever repeat a quest.
+
+You can have up to five fields for a Field-based 
+configuration entry. They can refer to five different files, 
+or the same file can be reused. The system is smart enough 
+to change and save just one instance. 
+
+The Parameters entry says how many fields will follow. If 
+missing, one field is assumed. 
+
+Fields are used to edit assignment values in both 
+configuration and script files, of the form "variable = 
+value". The variable is the text to the left of the "=" 
+sign, so it could be more than one word (e.g., "local 
+reload_time"). 
+
+The Name parameter is shown above the edit box, and it is 
+used to match the variable entry in the file to be changed. 
+
+Note the Alias entry for the third parameter in the example. 
+It is an optional entry, to help clarify the variable name. 
+The display will show the field label in the form "name 
+(alias)". 
+
+Right now, the Value field is normally not used; the actual 
+value will be taken from the file entry. 
+
+The DefaultValue is shown to the right of the edit box for 
+the field, and is the value that will be put into the edit 
+box when the Default button is clicked. 
+
+Here is a more complex field item example:
+
+[Carry Weight]
+Title=How much Marked One can carry
+Parameters=3
+Type1=Field
+File1=config\creatures\actor.ltx
+Section1=[actor]
+Name1=max_item_mass
+Value1=150.0
+DefaultValue1=50.0
+ToolTip1=Up to this amount, you won't tire as easily.
+Type2=Field
+File2=config\creatures\actor.ltx
+Section2=[actor_condition]
+Name2=max_walk_weight
+Value2=200.0
+DefaultValue2=60.0
+ToolTip2=If you weigh more than this,\nyou will not be able to move.
+Type3=Field
+File3=config\system.ltx
+Section3=[inventory]
+Name3=max_weight
+Value3=150.0
+DefaultValue3=50.0
+ToolTip3=This affects the color on the inventory screen.\nIt should be the same as max_item_mass.
+
+Note the use of Section here. You can also specify a 
+Subsection to further refine the match; it uses the same 
+form as Section. The brackets are required for the 
+right-hand side of both Section and Subsection. 
+
+The files to be changed must exist. You could specify a 
+FileChoice for the first configurable item, and note that in 
+your Mod.cfg.txt file. 
+
+
+   The LineToggle Item:
+
+New with the 1.1 release: Checkbox support via the 
+LineToggle item. It follows the same form as the Field item: 
+
+[_ZRP Mod Stuff]
+Title=Special _z.script Options
+Parameters=4
+Type1=LineToggle
+File1=scripts\_z.script
+Name1=Anomaly Evasion (Stalkers Are Not Blind 0.99)
+Unchecked1=sanb_enabled = false
+Checked1=sanb_enabled = true
+DefaultValue1=Unchecked
+ToolTip1=Enable/disable the ability of stalkers to avoid anomalies.\nRed75's famous mod.
+Type2=LineToggle
+File2=scripts\_z.script
+Name2=Automatic ammo boxing
+Unchecked2=ammo_aggregation = false
+Checked2=ammo_aggregation = true
+DefaultValue2=Checked
+ToolTip2=Enable/disable the automatic repackaging of ammo\ninto complete boxes (IG2007's Dunin ammo fix).
+Type3=LineToggle
+File3=scripts\_z.script
+Name3=Show Animations on Main Menu
+Unchecked3=mainmenu_anims = false
+Checked3=mainmenu_anims = true
+DefaultValue3=Checked
+ToolTip3=Enable/disable the animations or movies on screen menus.
+Type4=LineToggle
+File4=scripts\_z.script
+Name4=Antirad Hotkey
+Unchecked4=use_antirad_hotkey = false
+Checked4=use_antirad_hotkey = true
+DefaultValue4=Checked
+ToolTip4=If checked, pressing Esc followed by F1 will\nadminister a dose of antirad if you have one.
+
+There is a Checked entry and an Unchecked entry. The program 
+will look through the file and set the checkbox depending on 
+which of the entries is found, or it will show an error 
+message. You can use Section and Subsection here, just as 
+with Field items. 
+
+The DefaultValue is the state of the checkbox (Checked or 
+Unchecked). 
+
+================================================================
+
+Modders:  Before you distribute your mod with configuration 
+files, be sure to remove any files that end in ".orig_bkup". 
+These files are created by the Modifier to allow the player 
+to revert to a prior configuration, and this might not be 
+compatible with your mod.
+
+You want the ones using your mod to revert back to _your_ 
+original configuration.

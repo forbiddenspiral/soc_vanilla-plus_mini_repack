@@ -1,0 +1,1005 @@
+----------------------------------
+-- The ZRP Toolkit -- support variables and routines by NatVac
+-- mapspot management by Mr. Fusion, queueing by Natvac
+-- some code based on examples/comments by bardak, IG2007, barin, notanumber
+-- nv120229 - moved specialty functions to zx.script
+-- nv130315 - some debug info, HUD message changes
+-- nv140311 - added workarounds for 1.0006 quirks: drop-a-medkit, session change
+-- nv150325 - more mapspots removed
+----------------------------------
+
+-- Put your mod's name and version here
+mod_version_str = "ZRP 1.07 R5 RC"
+
+-- set this var true if you want debug and bug workaround support
+zrp_debug_enabled = false
+
+-- set this var false if you want to disable menu animations
+mainmenu_anims = true
+
+-- set this true/false to enable/disable IG2007's dunin_ammo_fix
+ammo_aggregation = false
+
+-- set this true/false to enable/disable Stalkers Are Not Blind anomaly evasion
+sanb_enabled = false
+
+-- set this false if you don't want to see "Stash emptied" notifications
+notify_on_stash_empty = true
+
+local disable_agroprom_cutscene = false
+local disable_rostok_cutscene = false
+local disable_stadium_cutscene = false
+
+local last_ondrop_timestamp = 0
+
+-- *** process_key() support variables ***
+
+-- set this true or false if you want/don't want ESC, F1 to administer antirad
+use_antirad_hotkey = true
+
+-- enable this if you want TAB to toggle stats. Requires zrp_debug_enabled
+rs_stats_toggle = false
+-- Change the rs_stats key if desired
+-- local rs_stats_key = DIK_keys.DIK_TAB
+local rs_stats_key = DIK_keys.DIK_CAPITAL
+
+-- colors are [alpha, red, green, blue], values 0-255
+local zc_ltred   = "%c[255,255,160,160]"
+local zc_red	 = "%c[255,255,0,0]"
+local zc_rose	= "%c[120,255,120,160]"
+local zc_orange  = "%c[255,255,127,0]"
+local zc_yellow  = "%c[255,238,155,23]"
+local zc_green   = "%c[255,0,255,0]"
+local zc_ltgreen = "%c[255,120,255,120]"
+local zc_cyan	= "%c[120,120,255,255]"
+local zc_ltblue  = "%c[120,80,120,255]"
+local zc_blue	= "%c[255,40,40,255]"
+local zc_magenta = "%c[120,255,120,255]"
+local zc_purple  = "%c[255,120,120,255]"
+local zc_white   = "%c[255,255,255,255]"
+local zc_gray	= "%c[255,160,160,160]"
+
+----------------------------------
+function nvDebug(dString)
+	local task_texture, task_rect = get_texture_info("ui_iconsTotal_found_thing")
+	local news_text = zc_ltred .. dString
+	-- local news_text = string.format("%s%s", zc_ltred, dString)
+	db.actor:give_game_news(news_text, task_texture, task_rect, 0, 5000)
+end
+----------------------------------
+function report_stash_emptied(stash_name)
+	if notify_on_stash_empty then
+		local task_texture, task_rect = get_texture_info("ui_iconsTotal_found_thing")
+		-- local news_text = zc_purple .. game.translate_string("st_stash_emptied")..
+				-- ":\\n" .. zc_yellow .. game.translate_string(stash_name)
+		local news_text = string.format("%s%s:\\n%s%s", zc_purple, game.translate_string("st_stash_emptied"),
+				zc_yellow, game.translate_string(stash_name))
+		db.actor:give_game_news(news_text, task_texture, task_rect, 0, 5000)
+	end
+end
+----------------------------------
+function friendly_name(section)
+	if system_ini():line_exist(section,"inv_name") then
+		return game.translate_string(system_ini():r_string(section,"inv_name"))
+	end
+	return section or "Unknown"
+end
+----------------------------------
+local current_game_version = -1
+local game_version_string = " none "
+
+function game_version()
+	if current_game_version < 0 then
+		local mm = _G.main_menu.get_main_menu()
+		if mm == nil then return -1 end
+		if type(mm.GetGSVer) ~= "function" then
+			game_version_string = "1.0"
+			current_game_version = 5
+			return current_game_version
+		end
+		game_version_string = mm:GetGSVer()
+		if game_version_string < "1.0005" then
+			if game_version_string < "1.0001" then
+				current_game_version = 5
+			else
+				current_game_version = 6
+			end
+		else
+			current_game_version = 7
+		end
+	end
+	return current_game_version
+end
+----------------------------------
+function remove_static(custom_static_str)
+	local hud = get_hud()
+	local custom_static = hud:GetCustomStatic(custom_static_str)
+	if custom_static ~= nil then
+		hud:RemoveCustomStatic(custom_static_str)
+	end
+end
+----------------------------------
+function remove_debug_static()
+	remove_static("debug_task")
+end
+----------------------------------
+function remove_time_static()
+	remove_static("main_time_static")
+end
+----------------------------------
+function show_time()
+	-- enable the "if device().fov" line for Gnomus or other transparent-outside scopes
+	-- change the "35" to suit your FOV if it is not default 67.5
+	-- if device().fov < 35 then remove_time_static() return end
+	local hud = get_hud()
+	local custom_static = hud:GetCustomStatic("main_time_static")
+	if custom_static == nil then
+		custom_static = hud:AddCustomStatic("main_time_static", true)
+		-- custom_static = hud:GetCustomStatic("main_time_static")
+		if custom_static == nil then return end
+	end
+	local current_time = string.format("%02d:%02d",level.get_time_hours(),level.get_time_minutes())
+	custom_static:wnd():SetText(current_time)
+end
+---------------------------------
+custom_watch_var = nil
+exec_func = nil
+
+-- nv130315 reworked to use string.format() instead of ".."
+function show_coords(delta) --, last_delta)
+-- these can be set here or via Modifier options
+	local show_fps = false
+	local show_gvid = false
+	-- debug output
+	local sf = string.format
+	local hud = get_hud()
+	local custom_static = hud:GetCustomStatic("debug_task")
+	if custom_static == nil then
+		custom_static = hud:AddCustomStatic("debug_task", true)
+		-- custom_static = hud:GetCustomStatic("debug_task")
+	end
+	local actor = db.actor
+	local acpos = actor:position()
+	local acdir = device().cam_dir --actor:direction()
+	local actor_gvid = actor:game_vertex_id()
+	local myPos = sf("lv=%d  gv=%d\\nx=%10.6f\\ny=%10.6f\\nz=%10.6f\\n\\ndx=%f\\ndy=%f\\ndz=%f\\n", --\\ngx=%f\\ngy=%f\\ngz=%f\\ndist_gvid=%f",
+		actor:level_vertex_id(), actor_gvid,
+		acpos.x, acpos.y, acpos.z,
+		acdir.x, acdir.y, acdir.z)
+	if show_gvid then
+		local gpos = game_graph():vertex(actor_gvid):level_point()
+		myPos = sf("%s\\ngx=%f\\ngy=%f\\ngz=%f\\ndist_gvid=%f",
+			myPos, gpos.x, gpos.y, gpos.z, acpos:distance_to(gpos))
+	end
+	if show_fps then myPos = sf("ticks/FPS =%4d /%4d\\n%s", delta, 1000/delta, myPos) end
+		-- 1000/last_delta, --"pFPS=%4d\\n"
+	if custom_watch_var then
+		-- moved loadstring to z_variable_watch.script
+		-- local exec_func = loadstring(sf("return %s",custom_watch_var))
+		local result, answer = pcall(exec_func)
+		if result == true then
+			local answer_type = type(answer)
+			if answer_type == "number" then
+				myPos=sf("%s\\n%s = %g",myPos,custom_watch_var,answer)
+			elseif answer_type == "string" or answer_type == "boolean" then
+				myPos=sf("%s\\n%s = %s",myPos,custom_watch_var,tostring(answer))
+			else
+				myPos=sf("%s\\n%s is %s",myPos,custom_watch_var,answer_type)
+			end
+		else
+			myPos=sf("%s\\n\\n%s",myPos,tostring(answer))
+		end
+	end
+	custom_static:wnd():SetText(myPos)
+end
+----------------------------------
+function on_npc_body_search(actor, npc)
+	if zx then zx.on_npc_body_search(actor, npc) end
+end
+----------------------------------
+function on_mutant_body_search(actor, mutant)
+	if zx then zx.on_mutant_body_search(actor, mutant) end
+end
+----------------------------------
+function on_item_take(obj, bind_object)
+	-- process item acquisition here
+	-- dbglog("%s takes %s", bind_object:name(), obj:section())
+	if ammo_aggregation and obj:clsid() == clsid.wpn_ammo and not xr_box.need_box_contents_xfer then
+		if dunin_ammo.on_take(obj) then
+			bind_stalker.nv_need_update = true
+		end
+	end
+end
+----------------------------------
+function item_drop_is_intentional(obj, bind_object)
+	-- return false if in dialogs or quitting game or programmatic drop
+	-- process intentional item drops here
+	local this_ondrop_timestamp = time_global()
+	if this_ondrop_timestamp < last_ondrop_timestamp then return false end
+	last_ondrop_timestamp = this_ondrop_timestamp + 1000
+	-- nv140311 prevent 1.0006 crash by checking bind_object because it can be nil on session change
+	if not bind_object or bind_object:is_talking() or xr_box.need_box_contents_xfer then return false end
+	return true
+end
+----------------------------------
+function on_item_drop(obj, bind_object)
+	if string.find(obj:section(),"medkit",1,true) == 1 then
+	-- dbglog("%s dropped %s", bind_object:name(), obj:section())
+		local actor_pos = db.actor:position()
+		for id_=1,65534,1 do
+			local thing=level.object_by_id(id_)
+			if thing then
+				if thing:clsid() == clsid.script_stalker then
+					if actor_pos:distance_to(thing:position()) < 3 then
+						if thing:alive() then
+							local npc_health = math.floor(thing.health*100)
+							dbglog("%s's health is %d",thing:character_name(), npc_health)
+							if xr_wounded.is_wounded(thing) or npc_health < 80 then
+								local npc_name = thing:name()
+								if npc_name == xr_motivator.last_npc_used then
+									xr_motivator.last_npc_used = nil
+									-- dbglog("can't drop medkit to %s in conversation", thing:name())
+									return false
+								end
+								if npc_name == "esc_fox" and not has_alife_info("escape_fox_heal") then
+									return false
+								end
+								if npc_name == "esc_vagon_wounded" and not has_alife_info("tutorial_wounded_help") then
+									return false
+								end
+								if npc_name == "val_sos_wounded" and not has_alife_info("val_sos_got_medkit") then
+									return false
+								end
+								-- nv140311 workaround for 1.0006 crash on NPC using item not in his inventory
+								--thing:eat(obj)
+								thing.health = 1.0 -- adds 1.0 to current npc health
+								_dev.queue_item_for_deletion(obj:name())
+								bind_stalker.nv_need_update = true
+								if thing:relation(db.actor) == game_object.enemy then
+									thing:set_relation(game_object.neutral, db.actor)
+								elseif npc_health < 71 then
+									thing:set_relation(game_object.friend, db.actor)
+									db.actor:change_character_reputation(10);
+								end
+		dbglog("Dropped %s near %s (%s)", obj:section(), thing:character_name(), thing:name())
+								show_small_msg(string.format("%s -- Health was %s%%",thing:character_name(),tostring(npc_health)))
+								-- break
+								return true
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+	return false
+end
+----------------------------------
+-- bind_stalker's actor_binder:update() calls this when nv_need_update is set
+-- it is used to complete processing on complex operations.
+local zcount = 0
+function do_update(bind_object)
+	-- execute workaround for possible secret stash loss
+	treasure_manager.get_treasure_manager():loss_workaround()
+	if xr_box.need_box_contents_xfer then
+		zcount = zcount + 1
+		-- if math.fmod(zcount, 2) == 0 then
+		if zcount % 2 == 0 then
+			xr_box.delay_workaround()
+		else
+			bind_stalker.nv_need_update = true
+		end
+	elseif ammo_aggregation and not bind_object:is_talking() then
+		-- aggregate ammo if not trading
+		dunin_ammo.on_update()
+	end
+	if _dev then
+		_dev.do_update()
+	end
+end
+----------------------------------
+function show_HUD_msg(static_id_string, msg_text)
+	local hud = get_hud()
+	local custom_static = hud:AddCustomStatic(static_id_string, true)
+	custom_static:wnd():SetTextST(msg_text)
+	custom_static.m_endTime = time_global()/1000 + 7
+end
+----------------------------------
+function show_large_msg(dString)
+	show_HUD_msg("main_task", dString)
+end
+----------------------------------
+function show_small_msg(dString)
+	show_HUD_msg("item_used", dString)
+end
+----------------------------------
+function show_blinking_msg(dString)
+	show_HUD_msg("big_blink_text", dString)
+end
+----------------------------------
+function script_file_exists(file_name)
+	local dir = "$game_scripts$"
+	local f = getFS();
+	local flist = f:file_list_open_ex(dir, bit_or(FS.FS_ListFiles,FS.FS_RootOnly), file_name)
+	return flist:Size() > 0
+end
+----------------------------------
+-- this is reset on each level change or saved game load
+local previous_jump_point = nil
+function save_current_pos_dir()
+	local actor_dir = device().cam_dir -- was db.actor:direction(), but that required movement in that direction
+	local actor_pos = db.actor:position()
+	if _custom_zrp then
+		_custom_zrp.set_temp_vector(actor_pos, actor_dir, 0)
+	end
+	previous_jump_point = {}
+	previous_jump_point.pos = actor_pos
+	previous_jump_point.dir = actor_dir
+end
+----------------------------------
+function spawn_in_inventory(item_to_spawn, quantity)
+	local actor = db.actor
+	local alive_on_level = level.present() and (actor ~= nil) and actor:alive()
+	if not alive_on_level then return end
+	local cur_pos = actor:position()
+	-- if quantity == nil then quantity = 1 end
+	if type(quantity) ~= "number" or quantity < 1 then quantity = 1 end
+	for i = 1, quantity do
+		alife():create(item_to_spawn, cur_pos, actor:level_vertex_id(), actor:game_vertex_id(), actor:id())
+	end
+	show_small_msg(string.format("%s spawned in player's inventory",friendly_name(item_to_spawn)))
+end
+----------------------------------
+function kill_online_controllers()
+	local kill_count = 0
+	for id_ = 0, 65534, 1 do
+		local lobj = level.object_by_id(id_)
+		if lobj ~= nil then
+			if lobj:clsid() == clsid.controller_s then
+				if lobj:alive() then
+					lobj:kill(lobj)
+					kill_count = kill_count + 1
+					-- level.map_add_object_spot(id_, "red_location", "Controller")
+				end
+			end
+		end
+	end
+	return kill_count
+end
+----------------------------------
+-- this variable is set true/false when ESC, TAB pressed for rs_stats toggle
+local nv_show_stats = false
+local basic_time_factor, new_time_factor
+----------------------------------
+function resume_game()
+	get_console():execute("main_menu off")
+end
+----------------------------------
+function process_key(mmw, dik, keyboard_action)
+	local actor = db.actor
+	local sf = string.format
+	local alive_on_level = level.present() and (actor ~= nil) and actor:alive()
+	if use_antirad_hotkey and dik == DIK_keys.DIK_F1 then
+		if alive_on_level then
+			if actor:object("antirad") ~= nil and actor.radiation > 0 then
+				actor:eat(actor:object("antirad"))
+				local used_antirad_msg = sf("%s: %s",game.translate_string("st_item_used"),game.translate_string("Antirad"))
+				show_small_msg(used_antirad_msg)
+			end
+			resume_game()
+		end
+		return true
+	elseif not zrp_debug_enabled then return true end --should return false but no other function will use this key
+
+-- these require zrp_debug_enabled set true
+	if dik == DIK_keys.DIK_D then
+		bind_stalker.nv_debug = not bind_stalker.nv_debug
+		if bind_stalker.nv_debug == false then
+			remove_debug_static()
+			resume_game()
+		end
+		return true
+	end
+	if rs_stats_toggle and dik == rs_stats_key then
+		nv_show_stats = not nv_show_stats
+		get_console():execute(sf("rs_stats %s",if_then_else(nv_show_stats, "on", "off")))
+		if alive_on_level then resume_game() end -- nv140831 prevent stuck console if not alive in game
+		return true
+	end
+
+	if not alive_on_level then return true end
+
+	-- the following key processing requires that the player be alive
+
+	if not bind_stalker.nv_debug then -- opportunity to check for macro functions
+		if zx then zx.process_key(mmw, dik, keyboard_action) end
+		return true
+	end
+
+	-- the following require debug mode (Esc D) active and the player still alive
+
+	local fix_performed = false
+
+	local actor_dir = device().cam_dir --actor:direction()
+	local cur_pos = actor:position() --vector():set(x,y,z)
+	-- F = fix a problem or move forward
+	if dik == DIK_keys.DIK_F then
+		-- check level and locale to see which fix to deploy
+		if level.name() == "l04_darkvalley" then
+			local prisoner_door = vector():set(48.0, -2.5, -53.0)
+			if actor:position():distance_to(prisoner_door) < 2 then
+				if not has_alife_info("val_prisoner_door_unlocked") then
+					actor:give_info_portion("val_prisoner_door_unlocked")
+					xr_effects.smart_terrain_force_update(nil, nil, {val_prisoner})
+					if not has_alife_info("val_prisoner_free") then
+						actor:give_info_portion("val_prisoner_free")
+					end
+					show_blinking_msg("Use knife to open cell door")
+					fix_performed = true
+				end
+			else
+				--local x_18_entrance_door = vector():set(22.64,-2.743,-259.22)
+				local x_18_entrance_door = vector():set(123.33,-2.84,-260.5)
+				if actor:position():distance_to(x_18_entrance_door) < 2 then
+					local obj = alife():story_object("426") --val_door_underground
+					if obj ~= nil then
+						local real_obj = level.object_by_id(obj.id)
+						if real_obj ~= nil then
+							-- make the door disappear
+							alife():set_switch_online(obj.id,false)
+							alife():set_switch_offline(obj.id,true)
+							fix_performed = true
+						end
+					end
+					if has_alife_info("val_actor_has_barman_key") and
+						has_alife_info("val_actor_has_borov_key") and
+						not has_alife_info("val_x18_door_open") then
+						actor:give_info_portion ("val_x18_door_open")
+						if not has_alife_info("dar_run_quest") then
+							actor:give_info_portion("dar_run_quest")
+						end
+						fix_performed = true
+					end
+				end
+			end
+		end
+		if not fix_performed then
+			save_current_pos_dir()
+			local move_pos = vector():set(cur_pos.x + actor_dir.x * 2,
+				cur_pos.y + actor_dir.y * 2, cur_pos.z + actor_dir.z * 2)
+			actor:set_actor_position(move_pos)
+			fix_performed = true
+		end
+	elseif dik > 1 and dik < 11 then
+		save_current_pos_dir()
+		local move_pos = vector():set(cur_pos.x + actor_dir.x * 2,
+			cur_pos.y + (dik-1)*5+3, cur_pos.z + actor_dir.z * 2)
+		actor:set_actor_position(move_pos)
+		fix_performed = true
+	elseif dik == DIK_keys.DIK_0 then
+		save_current_pos_dir()
+		local move_pos = vector():set(cur_pos.x + actor_dir.x * 2,
+			cur_pos.y + 6, cur_pos.z + actor_dir.z * 2)
+		actor:set_actor_position(move_pos)
+		fix_performed = true
+	elseif dik == DIK_keys.DIK_MINUS then
+		save_current_pos_dir()
+		local move_pos = vector():set(cur_pos.x, cur_pos.y - 2, cur_pos.z)
+		actor:set_actor_position(move_pos)
+		fix_performed = true
+	elseif dik == DIK_keys.DIK_K then
+		local kill_count = kill_online_controllers()
+		if kill_count > 0 then
+			show_large_msg(sf("Controllers killed:  %d",kill_count))
+		else
+			show_small_msg("No online controllers found")
+		end
+		fix_performed = true
+	elseif dik == DIK_keys.DIK_BACKSLASH or dik == DIK_keys.DIK_R then
+		-- try to return to previous position
+		if previous_jump_point ~= nil then
+			actor:set_actor_position(previous_jump_point.pos)
+			actor:set_actor_direction(-previous_jump_point.dir:getH())
+		end
+		fix_performed = true
+	elseif dik == DIK_keys.DIK_NUMPADENTER then
+		if basic_time_factor == nil then
+			basic_time_factor = level.get_time_factor()
+		else
+			level.set_time_factor(basic_time_factor)
+		end
+		show_large_msg(sf("Basic time factor = %f",basic_time_factor))
+		fix_performed = true
+	elseif dik == DIK_keys.DIK_DIVIDE then
+		if basic_time_factor == nil then
+			basic_time_factor = level.get_time_factor()
+		end
+		new_time_factor = level.get_time_factor()
+		if new_time_factor > 1 then new_time_factor = new_time_factor/10 end
+		level.set_time_factor(new_time_factor)
+		show_large_msg(sf("Time factor = %f",new_time_factor))
+		fix_performed = true
+	elseif dik == DIK_keys.DIK_MULTIPLY then
+		if basic_time_factor == nil then
+			basic_time_factor = level.get_time_factor()
+		end
+		new_time_factor = level.get_time_factor()
+		if new_time_factor < 10000 then new_time_factor = new_time_factor*10 end
+		level.set_time_factor(new_time_factor)
+		show_large_msg(sf("Time factor = %f",new_time_factor))
+		fix_performed = true
+	elseif dik >= DIK_keys.DIK_NUMPAD1 and dik <= DIK_keys.DIK_NUMPAD0 or dik == DIK_keys.DIK_NUMPAD4  then
+		if basic_time_factor == nil then
+			basic_time_factor = level.get_time_factor()
+		end
+		-- keys are DIK_NUMPAD0=82, DIK_NUMPAD1=79, DIK_NUMPAD2=80, DIK_NUMPAD3=81, DIK_NUMPAD4=75
+		if dik == DIK_keys.DIK_NUMPAD4 then
+			new_time_factor = 10000
+		else
+			new_time_factor = 10^((dik - DIK_keys.DIK_NUMPAD1 + 1) % 4)
+		end
+		level.set_time_factor(new_time_factor)
+		show_large_msg(sf("Time factor = %f",new_time_factor))
+		fix_performed = true
+	elseif dik == DIK_keys.DIK_L then
+		if zlc then
+			zlc.add_fp_level_changers()
+		else
+			show_large_msg("zlc.script not found or not valid")
+		end
+		fix_performed = true
+	elseif dik == DIK_keys.DIK_X then --toggle display of hit damage
+		xr_motivator.show_hit_damage = not xr_motivator.show_hit_damage
+		show_small_msg(sf("show_hit_damage = %s",tostring(xr_motivator.show_hit_damage)))
+		fix_performed = true
+	elseif zx then -- zx functions need to be last to avoid locking out non-zx keys
+		 fix_performed = true
+		if dik == DIK_keys.DIK_P then -- this makes Esc P work when debug show_coords() is active
+			zx.write_position_to_console()
+		elseif dik == DIK_keys.DIK_B then
+			-- you can go to all the unsearched bodies but you can end up in an anomaly or fight
+			zx.jump_to_closest_unsearched_body()
+		elseif dik == DIK_keys.DIK_HOME then
+			-- remotely grab any secret and contents from nearest unchecked body
+			--if it is otherwise unsafe to visit it.  Mark as searched
+			zx.grab_remote_body_property()
+		elseif dik == DIK_keys.DIK_W then
+			-- you can go to all the wounded but you can end up in an anomaly or fight
+			zx.jump_to_closest_wounded_body()
+		elseif dik == DIK_keys.DIK_O then
+			zx.obtain_mutant_parts()
+		elseif dik == DIK_keys.DIK_A then
+			-- you can go to all the unsearched bodies but you can end up in an anomaly or fight
+			zx.jump_to_any_unsearched_body()
+		elseif dik == DIK_keys.DIK_G or dik == DIK_keys.DIK_C then
+			zx.remote_object_grab(dik)
+		elseif dik == DIK_keys.DIK_SPACE then
+			zx.bump_bodies_and_boxes()
+		elseif dik == DIK_keys.DIK_H then --check health of NPC closest to your line of sight
+			zx.check_npc_health()
+		elseif dik == DIK_keys.DIK_M then
+			zx.mark_monomartyr_bodies()
+		elseif dik == DIK_keys.DIK_N or dik == DIK_keys.DIK_END then
+			zx.destroy_weapons_on_body()
+		elseif dik == DIK_keys.DIK_SLASH then
+			zx.move_loose_guns_to_bodies()
+		elseif dik == DIK_keys.DIK_DELETE then
+			zx.hide_anomaly()
+		else
+			fix_performed = false -- we didn't match any keys
+		end
+	end
+	if fix_performed then
+		bind_stalker.nv_debug = false
+		remove_debug_static()
+		resume_game()
+	end
+	return true
+end
+----------------------------------
+function on_add_actor(actor)
+	local sf = string.format
+	local savegame_script_version = alife():object(actor:id()).script_version
+	local game_engine_version = game_version()
+	local cur_svr_entity_version = script_server_object_version()
+	-- local incompatible_save = sf("Saved game is incompatible with game version %s",game_version_string)
+	-- dbglog("savegame=%s,game_engine_version=%s,current_server_entity_version=%s",
+		-- savegame_script_version, game_engine_version, cur_svr_entity_version)
+	local alarm_reason = nil
+	-- assert(game_version_string > "1.0003", "ZRP needs patch 1.0004 or later")
+	if game_version_string < "1.0004" then
+		alarm_reason = sf("ZRP needs patch 1.0004 or later -- this is version %s",game_version_string)
+	-- assert(game_engine_version == cur_svr_entity_version, "Mod's system.ltx doesn't match game version "..game_version_string)
+	elseif game_engine_version ~= cur_svr_entity_version then
+		alarm_reason = sf("A mod's system.ltx's current_server_entity_version (%s) doesn't match the one for game version %s (%s)",
+			cur_svr_entity_version, game_version_string, game_engine_version)
+	-- assert(savegame_script_version > 5, incompatible_save)
+	elseif savegame_script_version < 6 or savegame_script_version > cur_svr_entity_version then
+		alarm_reason = sf("Saved game (%s) is incompatible with game version %s (%s)", 
+		savegame_script_version, game_version_string, cur_svr_entity_version)
+	-- assert(savegame_script_version <= cur_svr_entity_version, incompatible_save)
+	-- elseif savegame_script_version > cur_svr_entity_version then
+		-- alarm_reason = incompatible_save
+	end
+	if alarm_reason then ExecutePoliteCTD(alarm_reason) end
+
+	-- bardak's old fixes -- not needed for new games, but benign; fixes games in progress
+	-- Poker fix
+	--' Разбудим Кочергу. Дурацкое место для этого кода, конечно. Куда бы его переместить?
+	if has_alife_info("val_actor_has_borov_key") and
+		not has_alife_info("val_borov_dead") then
+			actor:give_info_portion("val_borov_dead")
+	end
+	--' Включим гулаг кабанов на Свалке. По-хорошему надо исправлять
+	--' условия активации в логике рестриктора gar_boars_territory2.
+	if has_alife_info("agroprom_military_case_done") and
+		not has_alife_info("gar_kill_boars_done") then
+			actor:give_info_portion("gar_kill_boars_done")
+	end
+
+	-- fix "took wrong exit from Agroprom tunnels" (fixable via all.spawn change)
+	if not has_alife_info("agr_find_gunslinger_cache_final") and
+		has_alife_info ("agr_gunslinger_flash_have") and
+		level.name() ~= "l03u_agr_underground" then --has_alife_info("val_actor_has_barman_key")
+			actor:give_info_portion ("agr_find_gunslinger_cache_final")
+	end
+
+	-- fly-by cutscene management
+	if disable_agroprom_cutscene then
+		if not has_alife_info("agr_rush_start") then
+			dbglog("disabling Agroprom flyby")
+			db.actor:give_info_portion("agr_rush_start")
+		end
+	elseif has_alife_info("agr_rush_start") then
+		dbglog("re-enabling Agroprom flyby")
+		db.actor:disable_info_portion("agr_rush_start")
+	end
+	if disable_rostok_cutscene then
+		if not has_alife_info("rostok_camera_start") then
+			dbglog("disabling Kruglov/mercs flyby")
+			db.actor:give_info_portion("rostok_camera_start")
+		end
+	elseif has_alife_info("rostok_camera_start") then
+		dbglog("re-enabling Kruglov/mercs flyby")
+		db.actor:disable_info_portion("rostok_camera_start")
+	end
+	if disable_stadium_cutscene then
+		if not has_alife_info("pri_cat_dog_start") then
+			dbglog("disabling Pripyat stadium flyby")
+			db.actor:give_info_portion("pri_cat_dog_start")
+		end
+	elseif has_alife_info("pri_cat_dog_start") then
+		dbglog("re-enabling Pripyat stadium flyby")
+		db.actor:disable_info_portion("pri_cat_dog_start")
+	end
+
+	-- hack fix for relationship problems for "freedom", "dolg" (Duty), "stalker"
+	-- relation_registry.set_community_goodwill ("freedom", actor:id(), 0)
+	-- relation_registry.set_community_goodwill ("dolg", actor:id(), 0)
+	-- relation_registry.set_community_goodwill ("stalker", actor:id(), 0)
+	if _custom_ext then _custom_ext.on_add_actor(actor) end
+	if _custom_ext_zrp_mm then _custom_ext_zrp_mm.on_add_actor(actor) end
+
+	-- deletion may not be 100% safe; possible xrGame.dll crashes when a fire-affected creature dies after fire removal
+	-- so we just disable them for now
+	if level.name() == "l06_rostok" then -- remove helicopter fire if post-Yantar stuff
+		-- if not has_alife_info("yantar_scientists_talk_end") and has_alife_info("yantar_scientists_talk") then
+		if has_alife_info("yantar_scientists_talk") then
+			_dev.queue_delayed_event({delay=10,event="_z.disable_rostok_heli_fires()"})
+			-- db.actor:give_info_portion ("yantar_scientists_talk_end")
+		end
+	end
+end
+----------------------------------
+-- based on bardak's acdc.pl and comments by IG2007
+function read_anomaly_struct(anom_obj)
+	local pkt = net_packet()
+	local as = {}  -- anomaly structure for the organized data
+	anom_obj:STATE_Write(pkt) -- put the anomaly structure into a readable "packet"
+	-- cse_alife_object
+	as.game_vertex_id = pkt:r_u16() --default => 0xffff
+	as.distance = pkt:r_float() --f32, default => 0.0
+	as.direct_control = pkt:r_u32() --default => 1
+	as.level_vertex_id = pkt:r_u32() --default => 0xffffffff
+	as.object_flags = pkt:r_u32() --h32, default => 0, net says s32
+	as.custom_data = pkt:r_stringZ() --default => ''
+	as.story_id = pkt:r_s32() --default => -1
+	as.spawn_story_id = pkt:r_s32() --default => -1
+	-- cse_shape -- it's an array
+	as.num_shapes = pkt:r_u8()
+	--name => 'shapes', type => 'shape', default => {}
+	as.shape_array = {}
+	for i=1, as.num_shapes do
+		as.shape_array[i] = {}
+		as.shape_array[i].type = pkt:r_u8()
+		if as.shape_array[i].type == 0 then
+			-- sphere
+			as.shape_array[i].offset = pkt:r_vec3()
+			as.shape_array[i].radius = pkt:r_float()
+			local offset = as.shape_array[i].offset
+			-- dbglog("Shape is sphere, radius %s, offset = %s,%s,%s",as.shape_array[i].radius,offset.x,offset.y,offset.z)
+		else -- box
+			as.shape_array[i].box = pkt:r_matrix()
+		end
+	end
+	-- cse_alife_space_restrictor
+	as.restrictor_type = pkt:r_u8() --default => 0xff
+	-- cse_alife_custom_zone
+	as.max_power = pkt:r_float() --f32, default => 0.0
+	-- dbglog("max_power = %s", tostring(as.max_power))
+	as.owner_id = pkt:r_u32() --h32, default => 0xffffffff, net says s32
+	as.enabled_time = pkt:r_u32() --default => 0
+	as.disabled_time = pkt:r_u32() --default => 0
+	as.start_time_shift = pkt:r_u32() --default => 0
+	-- cse_alife_anomalous_zone
+	as.offline_interactive_radius = pkt:r_float() --f32, default => 0.0
+	as.artefact_spawn_count = pkt:r_u16() --default => 0
+	as.artefact_position_offset = pkt:r_s32() --h32, default => 0
+	-- se_zone_anom
+	as.last_spawn_time_present = pkt:r_u8() --default => 0
+	return as, pkt
+end
+
+function write_anomaly_struct(as, pkt, anom_obj)
+	-- as has the organized anomaly structure data - put it into a packet
+	-- local pkt = net_packet()
+	-- pkt:w_u16(as.game_vertex_id)
+	pkt:w_begin(as.game_vertex_id) -- from Ru TEAM
+	pkt:w_float(as.distance)
+	pkt:w_u32(as.direct_control)
+	pkt:w_u32(as.level_vertex_id)
+	pkt:w_u32(as.object_flags) -- net says s32
+	pkt:w_stringZ(as.custom_data)
+	pkt:w_s32(as.story_id)
+	pkt:w_s32(as.spawn_story_id)
+	-- cse_shape -- it's an array
+	pkt:w_u8(as.num_shapes)
+	for i=1, as.num_shapes do
+		pkt:w_u8(as.shape_array[i].type)
+		if as.shape_array[i].type == 0 then
+			-- sphere
+			local offset = as.shape_array[i].offset
+			pkt:w_vec3(offset)
+			pkt:w_float(as.shape_array[i].radius)
+			-- dbglog("New radius %s, offset = %s,%s,%s",as.shape_array[i].radius,offset.x,offset.y,offset.z)
+		else -- box
+			pkt:w_matrix(as.shape_array[i].box)
+		end
+	end
+	-- cse_alife_space_restrictor
+	pkt:w_u8(as.restrictor_type)
+	-- cse_alife_custom_zone
+	pkt:w_float(as.max_power)
+	pkt:w_u32(as.owner_id) -- net says s32
+	pkt:w_u32(as.enabled_time)
+	pkt:w_u32(as.disabled_time)
+	pkt:w_u32(as.start_time_shift)
+	-- cse_alife_anomalous_zone
+	pkt:w_float(as.offline_interactive_radius)
+	pkt:w_u16(as.artefact_spawn_count)
+	pkt:w_s32(as.artefact_position_offset)
+	-- se_zone_anom
+	pkt:w_u8(as.last_spawn_time_present)
+	pkt:r_seek(0) -- rewind to beginning
+	local pkt_size = pkt:w_tell()
+	anom_obj:STATE_Read(pkt, pkt_size) -- load data into orig obj
+	return anom_obj
+end
+----------------------------------
+local fp_anomalies_to_remove = {
+--Cordon
+"esc_zone_mosquito_bald_weak_0010", -- on road near Fox
+--Garbage
+"gar_zone_mincer_strong_0006", -- on road to Bar
+"gar_zone_mosquito_bald_weak_0002", -- in front of hangar
+--Army Warehouses
+"mil_zone_gravi_zone0020",
+"mil_zone_gravi_zone0018",
+--Red Forest:
+"rad_zone_witches_galantine_0010",
+"rad_zone_witches_galantine_0048",
+"rad_zone_mincer_0006",
+"rad_zone_mincer_0007",
+--Pripyat:
+"pri_zone_gravi_zone_strong_secret_1", -- in freedom lair
+"pri_zone_mincer_strong_secret_1", -- in freedom lair
+-- not sure about these two, but should be okay
+"pri_zone_mosquito_bald_strong_secret_1",  --rc2b Freedom's bane
+"gar_zone_mincer_0005",  --rc2b stadium
+"pri_zone_witches_galantine", -- big radius one
+"pri_zone_witches_galantine_0004", -- the underground carpark group
+"pri_zone_witches_galantine_0008",
+"pri_zone_witches_galantine_0010",
+"pri_zone_witches_galantine_0012",
+"pri_zone_witches_galantine_0013",
+"pri_zone_witches_galantine_0014",
+"pri_zone_witches_galantine_0015",
+"pri_zone_witches_galantine_0016",
+"pri_zone_witches_galantine_0017", -- last one still troubles npcs
+"pri_zone_gravi_zone_average_secret_2", -- near Fang's grave
+"pri_zone_mosquito_bald_average_secret_2", -- near Fang's grave
+"pri_zone_gravi_zone_average",
+"pri_zone_gravi_zone_average_0000",
+"pri_zone_gravi_zone_average_0001",
+"pri_zone_mincer_strong", --west side; kills military a lot
+"gar_zone_mincer_0001", -- hopefully works on this one
+"gar_zone_mincer_0003",
+"gar_zone_mincer_0004"
+}
+
+function remove_anomaly_set(anomalies_to_remove)
+	dbglog("-- begin anomaly removal")
+	for k,v in pairs(anomalies_to_remove) do
+		local gg = game_graph()
+		local sim = alife()
+		for id_ = 0, 40000, 1 do -- no need to look at later entities
+			local anom_obj = sim:object(id_)
+			if anom_obj ~= nil then
+				if anom_obj:name() == v then
+					local as, pkt = _z.read_anomaly_struct(anom_obj)
+					as.max_power = as.max_power/1000
+					if as.shape_array[1].type == 0 then --sphere
+						if as.shape_array[1].radius ~= 0 then -- not yet updated
+							as.shape_array[1].radius = 0
+							as.shape_array[1].offset.y = as.shape_array[1].offset.y + 20
+							_z.write_anomaly_struct(as, pkt, anom_obj)
+							dbglog("removed %s",tostring(v))
+						else
+							dbglog("%s already removed",tostring(v))
+						end
+					end
+					break
+				end
+			end
+		end
+	end
+	dbglog("-- end anomaly removal")
+end
+----------------------------------
+function remove_anomalies_for_free_play()
+	remove_anomaly_set(fp_anomalies_to_remove)
+	if not has_alife_info("aes2_monolit_teleport_ready_final") then
+		db.actor:give_info_portion("aes2_monolit_teleport_ready_final")
+	end
+end
+----------------------------------
+-- can't seem to remove these without some risk, but can disable them
+local rostok_heli_fires = {
+	-- "zone_flame_small", --these three are Freeman's fire
+	-- "zone_flame_small_0004",
+	-- "zone_flame_small_0009",
+	"zone_flame_small_0005",
+	"zone_flame_small_0006",
+	"zone_flame_small_0007",
+	"zone_flame_small_0008",
+	"zone_flame_small_0010",
+	"zone_flame_0000", -- the three big ones
+	"zone_flame_0001",
+	"zone_flame_0002"
+}
+
+function disable_rostok_heli_fires()
+	if level.name() ~= "l06_rostok" then return end
+	local clsid_fire = clsid.zone_mosquito_bald
+	for id_ = 1, 10000, 1 do
+		local lobj = alife():object(id_)
+		if lobj ~= nil then
+			if lobj:clsid() == clsid_fire and string.find(lobj:name(),"zone_flame",1,true) then
+				for k,v in pairs(rostok_heli_fires) do
+					if lobj:name() == v then
+						local lobj = level.object_by_id(id_)
+						if lobj ~= nil then
+							lobj:disable_anomaly()
+							-- alife():release(alife():object(id_),false)
+							-- dbglog("disabled %s:%s, id=%s",k,v,tostring(lobj:id()))
+							break
+						end
+					end
+				end
+			end
+		end
+	end
+end
+
+----------------------------------
+-- Mr. Fusion's spot remover code
+local sticky_mapspots = {
+	["esc_flash_task"] = {
+		["2"] = {sid = 9, type = "green_location"},	-- Wolf's scouts
+		["3"] = {sid = 17, type = "green_location"},	-- Bandits at factory (kill)
+		["4"] = {sid = 4, type = "green_location"}	-- Nimble
+	},
+	["agroprom_find_gunslinger_cache"] = {
+		["3"] = {sid = 307, type = "green_location"}	-- "preferred" underground exit
+	},
+	["val_captive_help"] = {
+		["2"] = {sid = 400, type = "green_location"}	-- Dutyer to rescue in ambush
+	},
+	["yan_find_scientist"] = {
+		["3"] = {sid = 902, type = "green_location"}	-- Sakharov (return to bunker)
+	},
+	["yan_find_scientist_semenov"] = {
+		["3"] = {sid = 902, type = "green_location"}	-- Sakharov (return to bunker)
+	},
+	["yan_find_vasilyev_task"] = {
+		["2"] = {sid = 907, type = "green_location"}	-- lab entrance
+	},
+	["yan_kill_brain_task_2"] = {
+		["2"] = {sid = 921, type = "green_location"}	-- secret tunnel exit
+	},
+	["mil_kill_sniper"] = {
+		["2"] = {sid = 708, type = "blue_location"}	-- Skull (reward)
+	},
+	["mil_kill_lukash"] = {
+		["4"] = {sid = 707, type = "green_location"},	-- Lukash (kill)
+		["5"] = {sid = 774, type = "blue_location"}	-- Duty farmstead (reward)
+	},
+	["mil_mad_job"] = {
+		["2"] = {sid = 702, type = "blue_location"}	-- Max (reward)
+	},
+	["mil_lukash_job"] = {
+		["2"] = {sid = 708, type = "crlc_mdl"},		-- Skull (kill)
+		["3"] = {sid = 707, type = "reward_location"}	-- Lukash (reward)
+	},
+	["mil_courier_job"] = {
+		["2"] = {sid = 710, type = "crlc_big"},		-- Pavlik (wait)
+		["3"] = {sid = 710, type = "green_location"},	-- Pavlik (kill)
+		["4"] = {sid = 719, type = "green_location"},	-- Pavlik's contact (kill)
+		["5"] = {sid = 707, type = "reward_location"}	-- Lukash (reward)
+	},
+	["mil_blockpost_job"] = {
+		["2"] = {sid = 770, type = "crlc_big"}		-- Cap's barrier
+	},
+	["mil_freedom_rg6_task"] = {
+		["2"] = {sid = 728, type = "green_location"},	-- Cook
+		["3"] = {sid = 706, type = "green_location"}	-- Bulldog 6 in village
+	},
+	["bar_radar_deactivate"] = {
+		["2"] = {sid = 1005, type = "green_location"},	-- bunker entrance
+		["3"] = {sid = 1006, type = "green_location"}	-- radar switch
+	},
+	["cit_doctor_task"] = {
+		["2"] = {sid = 822, type = "green_location"}	-- hotel room with decoder
+	},
+	["rad_get_to_aes"] = {
+		["3"] = {sid = 830, type = "green_location"},	-- Stadium entrance
+		["4"] = {sid = 1102, type = "green_location"}	-- Sarcophagus entrance
+	},
+	["sar_monolith"] = {
+		["2"] = {sid = 1300, type = "green_location"}	-- Monolith
+	},
+	["sar_secret_lab"] = {
+		["2"] = {sid = 1303, type = "green_location"}	-- C-Con lab door
+	}
+}
+
+function task_mapspot_cleanup(task_id, objective, status)
+	local task_needs_cleanup = sticky_mapspots[task_id]
+	if task_needs_cleanup then
+		local objective_needs_cleanup = task_needs_cleanup[tostring(objective)]
+		if objective_needs_cleanup then
+			if status == task.completed or status == task.fail then
+				-- level_tasks.remove_location_safe(objective_needs_cleanup.sid, objective_needs_cleanup.type)
+				if _dev then
+					_dev.queue_mapspot_for_removal(objective_needs_cleanup)
+					bind_stalker.nv_need_update = true
+				end
+			end
+		end
+	end
+end
+----------------------------------
+function ExecutePoliteCTD(alarm_msg)
+	dbglog(alarm_msg)
+	get_console():execute("flush")
+	if _dev then
+		_dev.set_alarm_message(alarm_msg)
+		bind_stalker.nv_need_update = true
+	else
+		get_console():execute("quit") -- extra insurance
+		dbglog("***Emergency Shutdown invoked!***")
+		dbglog("Quit command issued--ignore any subsequent errors")
+	end
+end
+----------------------------------
+-- dbglog("_z is valid")

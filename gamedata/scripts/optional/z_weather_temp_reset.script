@@ -1,0 +1,12 @@
+name = "Weather Reset (Temporary)"
+description = "This function resets the weather to the 'test' preset (all good weather).  Use it to reset the rainy weather if flashing triangles appear and 'vid_restart' doesn't work in the console."
+author = "NatVac"
+dik_key = DIK_keys.DIK_W
+hotkey = "W"
+revision = "1.0"
+number_of_parameters = 0
+
+function main()
+	level.set_weather("test", true)
+	_z.show_small_msg("Weather preset 'test' applied.")
+end

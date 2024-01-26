@@ -1,0 +1,521 @@
+================================================================
+ZRP Support Utility: The Execute Lua Command Function
+================================================================
+
+Execute Script Command: This is for advanced use. You can enter 
+a Lua statement in the parameter edit box, and the utility will 
+execute it. You should save your game before using this function 
+because an invalid statement can cause the game to exit to the 
+desktop if the error occurs in the C++ engine.  (Lua script 
+errors are caught and reported without CTD.)
+
+You can enter multiple statements on the same line by separating 
+them with semicolons.
+
+Select the Execute Script Line function, then click in the edit 
+box.  Note that you will see helpful information just above the 
+edit box as you go.
+
+You can press F4 to clear the line, F8 to restore the last line 
+entered, and F9 to prepend "print " to the last line entered.
+
+You can enter function calls, object references, global variables 
+-- anything you could put in a Lua statement block, if it will 
+fit -- as well as commands like "print " or "echo " to view data. 
+There are some shortcuts in the preprocessor to make your life a 
+bit easier, and you can provide constructive feedback to me 
+(NatVac) at either the GSC SoC forum, Mod Discussion section, or 
+the SoC Mods section at the Zone Survival Guide 3.0 forum.
+
+Press the Enter key to tell the game to parse the line and try 
+to execute it. The dialog will close if the attempt is successful 
+and you will be returned to the game, unless you are inspecting 
+data (examples below).
+
+To view/set script variables, the variables must have global 
+scope (that is, not marked 'local').  You must specify the 
+complete qualifier to access the variable.  If the variable is 
+in _z.script, you need '_z.' in front of the variable name.
+
+To view the value of a variable, just enter it in the field:
+
+script_name.variable
+
+... and press Enter or click 'OK'.  (This last step will be 
+assumed from now on, for brevity.)
+
+If it is a boolean (true/false), string (of characters), or 
+number, it will be displayed as such.  More complicated types 
+are displayed as "userdata" (usually an object) or "table".  
+Nil values are "nil", and that may mean the variable does not 
+exist -- check for typos.
+
+To change its value, use the '=' assignment operator:
+
+script_name.variable = newvalue
+
+Because this is a valid statement, if there is a script_name 
+object, the dialog will close and return you to the game when 
+you click the OK button or press the Enter key.
+
+To execute functions, you need the '()' symbols after the 
+function references, with any parameters they might need.
+
+myfunc()
+_z.game_version()
+
+Note that the last function returns a value, but the dialog 
+will close.  You need to prefix a special keyword like "echo"
+or "print" followed by a space to see the results of functions. 
+
+show _z.game_version()
+
+If you forget the keyword and the dialog closes, re-enter the 
+dialog and press F9.
+
+
+More examples: 
+
+_VERSION
+
+This shows the Lua scripting engine version particulars.
+
+
+_z.mainmenu_anims = false 
+
+This sets the variable 'mainmenu_anims' in the _z.script object 
+to false, which disables the background animations on some of the 
+menu dialogs. Setting it to 'true' re-enables them. In this 
+manner you can see changes immediately without having to exit and 
+restart the game.
+
+
+xr_motivator.show_hit_damage = true
+
+This will set the variable 'show_hit_damage' to true in the file 
+xr_motivator.script.  With the ZRP version, that will enable the 
+on-screen (and in-PDA) display of the damage you do when you 
+shoot someone.
+
+
+dbglog("Your health is "..tostring(db.actor.health*100)) 
+
+This shows the player's health on a scale from 0 to 100. A 
+convenience function allows you to just enter a variable, and 
+see the result printed on the dialog:
+
+
+db.actor.health
+echo db.actor.health
+show db.actor.health
+print db.actor.health
+
+These will all show the health of the actor.  Internally, the 
+"non-statement" (didn't parse completely) is turned into a 
+Lua statement by prepending "return " and echoing any result 
+to the dialog.
+
+This permits the use of the utility as a calculator:
+
+3 * (1000 - 650)
+
+will display the result of the calculation.
+
+echo db.actor:mass()
+print alife():switch_distance()
+
+You can use functions here, too, but understand that you will 
+need one of the keywords "echo", "show", or "print" to display 
+the results of a function.  Otherwise the dialog window will 
+close, returning you to the game.  If you did that, you can 
+re-open the dialog and press F9 to try again with "print " in 
+front.
+
+NOTE:  Passing in an argument where none is expected or omitting 
+a required argument may result in a crash.  You did save, right?
+
+
+Quick note:  Anything after a pair of hyphens (--) is considered 
+a comment.
+
+
+relation_registry.set_community_goodwill("dolg", db.actor:id(), 1000)
+
+This makes you friends with Duty. 
+
+
+db.actor:give_money(-db.actor:money())
+
+This empties your wallet.
+
+
+TIP:  To execute a command without returning to the game (if 
+successful), use "exec".
+
+print db.actor:money()
+exec db.actor:give_money(-db.actor:money())
+print db.actor:money()
+
+This should show that you now have 0 Ru.
+
+
+treasure_manager.fill_all_stashes()
+
+This gives you all the undiscovered secrets. If you want all 
+these secrets already marked, use this:
+
+treasure_manager.get_treasure_manager():check()
+
+
+
+"Wreck Riches" stash:
+treasure_manager.get_treasure_manager():give_treasure("esc_secret_truck_goods")
+"Lucky One" stash:
+treasure_manager.get_treasure_manager():give_treasure("ros_secret_0015")
+
+These give you just the specific secrets, from the [list] section 
+in config\misc\treasure_manager.ltx.
+
+A shortcut for getting secrets:  z.give_secret("level_secret_identifier")
+See the z.script helper script info below.
+
+"Lucky One" stash:
+z.give_secret("ros_secret_0015")
+
+
+game.start_tutorial("mov_desire_5")
+
+Show the "I want immortality" ending.  Note that this effectively 
+ends the game, showing the credits after the cutscene movie, then 
+disconnecting from your current game. You did save first, right?
+
+
+sim_statistic.mark_all_respawns() 
+
+This turns on debugging info about spawn sites, visible in your 
+PDA maps.
+
+sim_statistic.unmark_all_respawns() 
+
+This turns OFF debugging info about spawn sites. You must be 
+using a fixed version of sim_statistic.script, included in this 
+version of ZRP but not installed by default.  The game's internal 
+version of the script (loaded by default if no external one 
+exists) works to turn on the markers.
+
+
+Some functionality is not available, simply because it is not 
+adjustable via script.  For example, you can examine some alife() 
+data but you may not be able to change it.  So
+
+alife():switch_distance(175)
+
+fails with a crash, but
+
+alife():switch_distance()
+
+works.  You can't change switch_distance during the game.
+
+
+Remember that object() is different for different contexts.
+
+alife():release(db.actor:object("medkit"), false) -- crash
+
+While "db.actor:object()" returns an object if it exists, it is 
+not the kind of object needed by alife():release().  You need to 
+use alife():object() on the ID number of the object:
+
+alife():release(alife():object(db.actor:object("medkit"):id()),false)
+
+You can safely perform an object deletion in three script executions:
+
+my_obj = db.actor:object("decoder")  -- or "medkit" (or whatever)
+my_obj  --> says it's userdata, which means it's a valid object
+alife():release(alife():object(my_obj:id()),false)
+
+What this does:  First, you create a global variable called 
+"my_obj" and assign it to the object found by "db.actor:object()". 
+If entering "my_obj" (second command) returns nil, then you don't 
+have the object, so don't execute the third command.  The third 
+command removes the object from the game.
+
+It might be easier to write script functions that do what you 
+want and then call them with this utility.
+
+
+Fix for Kruglov saying "Now is not the time to talk" leaving you 
+with only "See you!" as a response, or stuck at burner tunnel 
+(should not happen in ZRP, but eh):
+
+npc_kruglov = level_object_by_sid(503)
+xr_gulag.resetJob(npc_kruglov)
+
+Just execute those two lines in Rostok near Kruglov, either one 
+at a time or both on one line separated by a semicolon (;).  
+Afterward, Kruglov's comment won't change, but his behavior will. 
+
+Tip: This bug is already fixed in 1.07, and is mainly shown here 
+for educational purposes.
+
+================================================================
+The z.script Helper Script
+================================================================
+
+When you install the Execute Script Command script, you also copy 
+the z.script support utility script which contains some helpful 
+routines to make some tasks easier.
+
+These functions are accessed by typing "z." followed by the 
+function name followed by either "()" or by any required 
+parameters inside of parentheses.  In the examples below, stuff 
+in square brackets is optional.
+
+STRONGLY RECOMMENDED:  Save first.  You'll thank me later.
+
+¯¯¯¯¯¯¯¯¯¯
+go(x,y,z)
+
+Teleport to a location on the current level.  If you fall out of 
+the level or appear in a bad place, use Esc D R to return to the 
+original position.
+
+Example:
+  z.go(75,100,50)
+
+¯¯¯¯¯¯¯¯¯¯
+jump([distance, [height]])
+
+Teleport ahead "distance" meters (default 10), and move "height"
+meters up or down (default 0).  You must set the direction by 
+moving slightly toward your objective before executing this 
+command.  If you fall out of the level, use Esc D R to return 
+to the original position.
+
+Examples:
+  z.jump() --jumps ahead 10 meters
+  z.jump(100)
+  z.jump(100,10) -- jumps ahead 100 meters and up 10
+  z.jump(200, -20) -- jumps ahead 200 meters and down 20
+
+¯¯¯¯¯¯¯¯¯¯
+give_secret("secret_string")
+
+This is just a shortcut for:
+treasure_manager.get_treasure_manager():give_treasure("secret_string")
+Identifiers are found in gamedata\config\misc\treasure_manager.ltx.
+
+Example:
+  z.give_secret("pri_secret_0003") --Fang's goodies
+
+¯¯¯¯¯¯¯¯¯¯
+this_object([view_angle, [max_distance]])
+
+Returns the object directly ahead, within the view_angle (default 
+0.2 radians either side) up to the max_distance (default 10 
+meters).  This object can be used in other commands.
+
+Examples:
+	print z.this_object(0.1,100):name()
+	print z.this_object():condition()
+
+¯¯¯¯¯¯¯¯¯¯
+this_npc([view_angle, [max_distance]])
+
+Returns the object directly ahead, within the view_angle (default 
+0.2 radians either side) up to the max_distance (default 10 
+meters).  This NPC object can be used in other commands.
+
+Examples:
+	print z.this_npc(0.1,100):character_name()
+	print z.this_npc():character_name()
+
+¯¯¯¯¯¯¯¯¯¯
+push([radius, [force]])
+
+The force is with this one.  Push NPCs, mutants, or bodies away 
+from you.  Unfortunately, only the bodies will react by moving. 
+Default radius is 10 meters, default force is 100.  Internally, 
+this value is multiplied by 1000.  See output in console log.
+
+Examples:
+  z.push()
+  z.push(20,1000)
+
+¯¯¯¯¯¯¯¯¯¯
+bump([radius, [impulse]])
+
+This operates the same as the Esc D Space debug function, except 
+that 1) it only acts on NPC and mutant bodies, and 2) you can set 
+your own radius (default 10) and impulse (default 100).  Anything 
+pushed is noted in the console log.
+
+Examples:
+  z.bump()
+  z.bump(20,1000)
+
+¯¯¯¯¯¯¯¯¯¯
+bumpbox([radius, [impulse]])
+
+This is also similar to the Esc D Space debug function, except 
+that 1) it only acts on boxes and metal crates, and 2) you can 
+set your own radius (default 10) and impulse (default 200).
+
+Note:  This function bumps nearby obj_phys_destroyable objects, 
+which happen to include items like cabinet doors.  They do not 
+seem to be affected.  See output in console log.
+
+Examples:
+  z.bumpbox()
+  z.bumpbox(20,1000)
+
+¯¯¯¯¯¯¯¯¯¯
+object_by_name(name)
+
+This function returns the first object found that has the name 
+you supply, or nil if not found.  The object is a server object; 
+that is, it won't have all the info that alife():object() has, 
+but it works for offline as well as online objects.
+
+Example:
+  -- this returns "userdata" if Friar in game
+  echo z.object_by_name("sim_stalker_fraer")
+  -- if above not nil, click in the edit box and edit the string
+  echo z.object_by_name("sim_stalker_fraer").position.x
+  echo z.object_by_name("sim_stalker_fraer").position.y
+  echo z.object_by_name("sim_stalker_fraer").position.z
+
+¯¯¯¯¯¯¯¯¯¯
+switch_this_npc_offline()
+
+Walk up to someone and execute this command.  If they are not 
+held online by something important (e.g., Fanatic before the 
+Merc attack), they'll disappear.  Use the switch_that_npc_online() 
+command to bring them back.
+
+This can be useful if Kruglov/Semenov gets stuck at the bunker 
+door, for example.
+
+Example:
+  z.switch_this_npc_offline()
+
+¯¯¯¯¯¯¯¯¯¯
+switch_that_npc_online()
+
+After switching an NPC offline, restore them to virtual reality 
+with this command.  It relies on the variable that_npc to be set 
+by the previous execution of switch_this_npc_offline() during the 
+same game session.
+
+Example:
+  z.switch_that_npc_online()
+
+¯¯¯¯¯¯¯¯¯¯
+number_online(section)
+
+Use this command to find out how many objects of a certain type 
+are online near you.  View the PDA map to see where these objects 
+are.  View the console to see info about each.
+  
+Note that items can be in your inventory; these are NOT marked 
+but the count returned by the function includes them.  These red 
+map markers are temporary, lasting only during the current game 
+session.
+
+Example:
+  show z.number_online("af_soul") --mark the Soul artifacts nearby
+  show z.number_online("vodka") --mark the online vodka
+
+Note: Items like vodka in a trader's inventory will not yet have 
+unique identifiers, so you will see multiple "vodka" entries. The 
+associated markers won't move even when the object is traded.
+
+Execute the second example at the Cordon rookie camp.  You might 
+find a couple of vodka bottles embedded in the ground.  Can you 
+get them?
+
+¯¯¯¯¯¯¯¯¯¯
+remove_from_inventory(section)
+
+This convenience function can be used to eliminate extra items 
+from inventory once they become unneeded.
+
+Examples:
+  z.remove_from_inventory("decoder")
+  z.remove_from_inventory("good_psy_helmet")
+  z.remove_from_inventory("bad_psy_helmet")
+  z.remove_from_inventory("pri_decoder_documents")
+  z.remove_from_inventory("gunslinger_flash")
+
+¯¯¯¯¯¯¯¯¯¯
+print_table(table, [sub])
+
+This can be used to recursively dump the contents of tables used 
+by the game.
+
+"sub" is an optional leading string of characters for the output. 
+Normally omitted, it is used to nest the recursive calls to show 
+tables within the table.
+
+Example:
+
+  -- this gets the loner campsite gulag in Army Warehouses
+  exec mil_camp = xr_gulag.get_gulag_by_name("mil_lager")
+  -- this prints the name
+  mil_camp.name
+  -- this says "table"
+  mil_camp.state_switch_1
+  -- this says the first numbered element is also a table
+  mil_camp.state_switch_1[1]
+  -- we can print this table with the print_table() function
+  exec z.print_table(mil_camp.state_switch_1)
+
+The above produces this output in the log (note the hard spaces):
+
+~ Unknown command:  dbg: 1:
+~ Unknown command:  dbg:     infop_check:
+~ Unknown command:  dbg:         1:
+~ Unknown command:  dbg:             expected: true
+~ Unknown command:  dbg:             func: gulag_population_ge
+~ Unknown command:  dbg:             params:
+~ Unknown command:  dbg:                 1: mil_lager
+~ Unknown command:  dbg:                 2: 5
+~ Unknown command:  dbg:         2:
+~ Unknown command:  dbg:             expected: false
+~ Unknown command:  dbg:             func: gulag_empty
+~ Unknown command:  dbg:             params:
+~ Unknown command:  dbg:                 1: mil_village_lair
+~ Unknown command:  dbg:     infop_set:
+~ Unknown command:  dbg:     section: 
+
+This is the parsed form of the assigned switch for the mil_lager
+smart terrain in all.spawn's alife_l07_military.ltx:
+
+switch_1 = {=gulag_population_ge(mil_lager:5) !gulag_empty(mil_village_lair)}
+
+We can print just one element by specifying it:
+
+  exec z.print_table(mil_camp.state_switch_1[1])
+
+That omits the "1:" above and the table is less indented.
+
+¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+This z.script file is very subject to change as more shortcuts 
+are deployed in future releases.  Let us know what you'd like.
+
+Tip:  Create your own script.  Call it something simple like 
+u.script or my.script, then populate it with your own convenience 
+functions.
+
+================================================================
+See the ZRP_SupportUtilities_ModdingNotes.txt file for more info.
+================================================================
+
+Finally, a limitation of note:  You won't be able to use the tilde 
+key (~) if you have it bound to the console (the default binding). 
+You can work around "a ~= b" with "(not (a == b))", or you can 
+put your code in an external script and execute that.
+
+
+Please consider what you have seen to be a work in progress, and 
+contribute your constructive comments and wishes to me (and 
+others) at the previously-mentioned forum sites.  --NatVac

@@ -1,0 +1,424 @@
+-- nv121012 some optimizations
+-- nv100326 fixed broken chance of surprise in def_box
+-- nv091204 added max_workaround_dist to limit reach of workaround
+-- nv090805 fixes for box and crate spawns, right time, right location
+-- nv140311 surprise box default is now false
+-- nv150404 some cleanup
+
+-- set this true if you want to temporarily use your inventory for box/crate contents
+local use_workaround = true
+-- boxes broken beyond this distance are handled the old way
+local max_workaround_dist = 10
+-- set this true if you want to leave moved box/crate spawns in your inventory
+local keep_spawns_in_pack = false
+-- set this if you want a rare chance of goods from otherwise-empty def_boxes
+local surprise_boxes = false
+-- the odds are one in surprise_odds of getting a good artifact when a def_box is broken
+-- must be integer >= 1, can be tweaked by difficulty or rank
+surprise_odds = 50
+-- put the section names of possible rare surprises here
+local box_treats = {
+	"af_dummy_battery",
+	"af_dummy_spring",
+	"af_dummy_glassbeads",
+	"af_fuzz_kolobok",
+	"af_dummy_pellicle",
+	"af_dummy_dummy"
+}
+
+-- these are set by the routines
+need_box_contents_xfer = false
+local box_delay_workaround_queue = {}
+
+-- set this if you want to know if box had any contents
+local notify_on_stuff_found = false
+
+-- set this if you want a sound played when an artifact is detected
+local notify_on_artifact = false
+
+-- set this if you want to know full details about the case or crate
+-- (overrides notify_on_stuff_found)
+local box_debug = false
+
+local broken_container_contents_string = "Broken container contents:"
+
+--' Ключем является группировка персонажа. Значением является таблица, содержашая имена секций предметов.
+local item_by_community = {}
+
+--' Множители и минимаксы для выпадения вещей в зависимости от уровня
+local mul_by_level = {}
+local count_by_level = {}
+
+--' Предметы, относящиеся к патронам. Их надо спаунить другим методом.
+local ammo_sections = {}
+
+local ready = nil
+
+-- nv121012 create box tables only once per session
+function full_init()
+	-- dbglog(".. full init")
+	local n, result, id, value --nv150404 reuse as locals
+	local death_ini = ini_file("misc\\ph_box_generic.ltx")
+	local community_list = { "def_box", "small_box_generic", "small_box_ussr", "small_box_nato", "small_box_army", "small_box_science", "big_box_generic", "big_box_dungeons", "big_box_arsenal"}
+
+	for k,v in pairs(community_list) do
+		--' Необходимо заполнить таблицу
+		-- printf("pl: community = %s",v )
+		item_by_community[v] = {}
+		if death_ini:section_exist(v) then
+			n = death_ini:line_count(v)
+			-- local id, value = "", ""
+			for i=0,n-1 do
+				result, id, value	= death_ini:r_line(v,i,"","")
+				-- nv080514 adjust multiplier to allow for 0.00n values
+				item_by_community[v][id] = 1000*tonumber(value)
+				-- printf("PL : id=%s  value=%s",id, value)
+			end
+		end
+	end
+
+	--' Множители и минимаксы для выпадения вещей в зависимости от уровня
+	local level_name = level.name()
+	
+	if not death_ini:section_exist(level_name) then
+		level_name = "default"
+	end
+
+	n = death_ini:line_count(level_name)
+	-- local id, value = "", ""
+	for i=0,n-1 do
+		result, id, value	= death_ini:r_line(level_name,i,"","")
+		mul_by_level[id] = tonumber(value)
+	end        
+
+	local item_count_section = "item_count_" .. level.get_game_difficulty()
+	n = death_ini:line_count(item_count_section)
+	for i=0,n-1 do
+		result, id, value	= death_ini:r_line(item_count_section,i,"","")
+		--' Нужно распарсить value в два значения
+		local t = parse_nums(value)
+		if t[1] == nil then
+			abort("Error on [death_ini] declaration. Section [%s], line [%s]", item_count_section, tostring(id))
+		end
+		local min = t[1]
+		local max = t[2]
+		if max == nil then
+			max = min
+		end
+		
+		if mul_by_level[id] == nil then
+			mul_by_level[id] = 0
+		end
+
+		min = tonumber(min) * mul_by_level[id]
+		max = tonumber(max) * mul_by_level[id]
+
+		count_by_level[id] = {min = min, max = max}
+	end        
+	--' Предметы, относящиеся к патронам. Их надо спаунить другим методом.
+	ammo_sections = {}
+	n = death_ini:line_count("ammo_sections")
+	-- local id, value = "", ""
+	for i=0,n-1 do
+		result, id, value	= death_ini:r_line("ammo_sections",i,"","")
+		ammo_sections[id] = true
+	end
+end
+
+local stuff_found = false
+local af_spawned = false
+local spawn_str = nil
+
+class "ph_item_box"
+
+function ph_item_box:__init(obj)
+	self.obj = obj
+	-- dbglog("initializing "..obj:name())
+	if not ready then
+		full_init()
+		ready = true
+	end
+end
+
+function ph_item_box:spawn_items()
+	stuff_found = false
+	spawn_str = "\\n"
+	local box_type_str
+	local spawn_items = {}
+	local item_ids = {}
+	local ini = self.obj:spawn_ini()
+	local community	= utils.cfg_get_string(ini, "drop_box", "community", self.obj, false, "", "def_box")
+	local items = r_items(ini, "drop_box", "items")
+
+	local pos, lvid, gvid, pid
+	local obj = self.obj
+	local actor_pos = db.actor:position()
+	local okay_to_use_wa = use_workaround and actor_pos:distance_to(obj:position()) < max_workaround_dist
+	-- if use_workaround then
+	if okay_to_use_wa then
+		pos = actor_pos
+		lvid = db.actor:level_vertex_id()
+		gvid = db.actor:game_vertex_id()
+		pid = db.actor:id()
+	else
+		pos = obj:position()
+		lvid = obj:level_vertex_id()
+		gvid = obj:game_vertex_id()
+		pid = 65535 --fake obj.id
+	end
+	
+	if items ~= nil then
+		box_type_str = "\\nObligatory"
+		for k,v in pairs(items) do
+			item_ids = create_obligatory_items(self.obj, v.section, v.count, okay_to_use_wa, pos, lvid, gvid, pid, item_ids)
+		end
+		-- return
+	else
+		box_type_str = "\\nCommunity = "..community
+		-- printf(" community = %s", community)
+		--' Доспавниваем необходимое количество итемов:
+		--' Необходимо составить список объектов которые могут быть заспавнены для персонажа
+		spawn_items = item_by_community[community]
+		--' Если комьюнити задана не верно, то ставим дефолт и срем в лог.
+		if spawn_items == nil then 
+			dbglog("xr_box: wrong community -- %s setting default def_box ", community)
+			spawn_items = {}
+			spawn_items = item_by_community["def_box"]
+		end
+
+		for k,v in pairs(spawn_items) do
+			if v > 0 then
+				--' По каждому объекту необходимо получить количество
+				local number = math.ceil(math.random(count_by_level[k].min, count_by_level[k].max))
+				--' Необходимо заспавнить нужное количество.
+				if number > 0 then
+					item_ids = create_items(self.obj, k, number, v, okay_to_use_wa, pos, lvid, gvid, pid, item_ids)
+				end
+			end
+		end
+	end
+	if surprise_boxes and community == "def_box" then
+		local num_surprises = #box_treats
+		if num_surprises > 0 then
+			-- odds are one in surprise_odds -- vanilla all.spawn has 80 def_boxes
+			-- could be tweaked by game difficulty and/or rank
+			local roll = math.random(num_surprises * surprise_odds) --1000
+			box_type_str = box_type_str.." - roll = "..roll
+			if roll <= num_surprises then
+				item_ids = create_items(self.obj, box_treats[roll], 1, 1000, okay_to_use_wa, pos, lvid, gvid, pid, item_ids)
+			end
+		end
+	end
+	if need_box_contents_xfer then
+		local box_name = self.obj:name()
+		box_delay_workaround_queue[box_name] = {}
+		box_delay_workaround_queue[box_name].pos = self.obj:position()
+		box_delay_workaround_queue[box_name].items = {}
+		box_delay_workaround_queue[box_name].items = item_ids
+		bind_stalker.nv_need_update = true
+	end
+	if af_spawned then
+		if notify_on_artifact then news_manager.pda_news:play(db.actor, 0, sound_object.s2d) end
+		af_spawned = false
+	end
+	if box_debug then
+		local pos = self.obj:position()
+		dbglog("Container %s at %f, %f, %f", self.obj:name(), pos.x, pos.y, pos.z)
+		_z.nvDebug(self.obj:name()..box_type_str..spawn_str)
+	elseif stuff_found and notify_on_stuff_found then
+		_z.nvDebug(broken_container_contents_string..spawn_str)
+	end
+end	
+
+function friendly_name(section)
+	return game.translate_string(system_ini():r_string(section,"inv_name"))
+end
+
+--' Функция спавнит необходимое число предметов
+function create_items(obj, section, number, rnd, okay_to_use_wa, pos, lvid, gvid, pid, item_ids_)
+	-- printf("create %s of %s", tostring(number), tostring(section))
+	-- nv delay_workaround support
+	local new_obj
+	local sim = alife()
+	if ammo_sections[section] == true then
+		-- nv080514 adjust range to allow for 0.00n values
+		if math.random(1000) <= rnd	then
+			-- if number > 0 then -- done on function call
+			if okay_to_use_wa then
+				if not keep_spawns_in_pack then need_box_contents_xfer = true end
+				-- spawn the ammo in inventory first
+				local left, box_size = number, system_ini():r_u32(section, "box_size")
+				while left > box_size do
+					new_obj = sim:create_ammo(section, pos, lvid, gvid, pid, box_size)
+					-- dbglog(section.." "..tostring(new_obj.id))
+					table.insert(item_ids_, new_obj.id)
+					left = left - box_size
+				end
+				if left > 0 then
+					new_obj = sim:create_ammo(section, pos, lvid, gvid, pid, left)
+					-- dbglog(section.." "..tostring(new_obj.id))
+					table.insert(item_ids_, new_obj.id)
+				end
+			else
+				local position = vector():set(0,0,0)
+				position.x = pos.x + math.random(-30,30)/100
+				position.z = pos.z + math.random(-30,30)/100
+				-- nv071216 - attempt to fix crate spawns dropping through floor
+				-- position.y = obj:position().y + math.random(30,50)/100
+				position.y = pos.y	-- + 0.6
+				se_respawn.create_ammo(section, position, lvid, gvid, pid, number)
+			end
+			if stuff_found then
+				spawn_str = spawn_str .. ", " .. friendly_name(section)
+			else
+				spawn_str = spawn_str .. friendly_name(section)
+				stuff_found = true
+			end
+			-- end
+		end
+	else
+		for i=1,number do
+			--' Проверяем вероятность появить каждый объект в отдельности
+			-- nv080514 adjust range to allow for 0.00n values
+			if math.random(1000) <= rnd then -- 1000; use 500 to double the chances
+				if okay_to_use_wa then
+					if not keep_spawns_in_pack then need_box_contents_xfer = true end
+					new_obj = sim:create(section, pos, lvid, gvid, pid)
+					table.insert(item_ids_, new_obj.id)
+					-- dbglog(section.." "..tostring(new_obj.id))
+				else
+					local position = vector():set(0,0,0)
+					position.x = pos.x + math.random(-30,30)/100
+					position.z = pos.z + math.random(-30,30)/100
+					-- position.y = pos.y + math.random(30,50)/100
+					position.y = pos.y	-- + 0.6
+					sim:create(section, position, lvid, gvid)
+				end
+				if string.find(section,"af_",1,true) == 1 then -- found artifact
+					af_spawned = true
+					-- dbglog("found %s",section)
+					if not okay_to_use_wa and string.find(section,"af_electra_",1,true) == 1 then
+						_z.show_large_msg("Electro artifact detected")
+						_z.show_small_msg("Visible between midnight and 5 a.m.")
+					end
+				end
+				if stuff_found then
+					spawn_str = spawn_str .. ", " .. friendly_name(section)
+				else
+					spawn_str = spawn_str .. friendly_name(section)
+					stuff_found = true
+				end
+			end
+		end
+	end
+	return item_ids_
+end
+
+function parse_names( s )
+	local t = {}
+	for name in string.gfind( s, "([%w_%-.\\]+)%p*" ) do
+		table.insert( t, name )
+	end
+	return t
+end
+
+function r_items( spawn_ini, section, line)
+	if spawn_ini:line_exist( section, line ) then
+		--' если default-ов больше, чем значений в ini, то забить недостающие последним значением из ini
+		local t = parse_names( spawn_ini:r_string( section, line ) )
+		local n = #t
+		
+		local ret_table = {}
+		local k = 1
+		while k <= n do
+			local item = {}
+			item.section = t[k]
+			-- Проверяем что это не последняя запись
+			if t[k+1] ~= nil then
+				local p = tonumber(t[k+1])
+				-- проверяем что вторым числом задана вероятность, а не другая секция спавну
+				if p then
+					-- забиваем число
+					item.count = p
+					k = k + 2
+				else
+					-- забиваем дефолт 1
+					item.count = 1
+					k = k + 1
+				end
+			else
+				item.count	 = 1
+				k = k + 1
+			end
+			table.insert(ret_table, item)
+		end
+		return ret_table
+	end
+	return nil
+end
+
+function create_obligatory_items(obj, item, count, okay_to_use_wa, pos, lvid, gvid, pid, item_ids_)
+	-- nv delay_workaround support
+	local new_obj
+	local sim = alife()
+	for i = 1,count do
+		if okay_to_use_wa then
+			if not keep_spawns_in_pack then need_box_contents_xfer = true end
+			new_obj = sim:create(item, pos, lvid, gvid, pid)
+			table.insert(item_ids_, new_obj.id)
+			-- dbglog(item.." "..tostring(new_obj.id))
+		else
+			local position = vector():set(0,0,0)
+			position.x = pos.x + math.random(-30,30)/100
+			position.z = pos.z + math.random(-30,30)/100
+			-- position.y = pos.y + math.random(30,50)/100
+			position.y = pos.y	-- + 0.6
+			sim:create(item, position, lvid, gvid)
+		end
+		if string.find(item,"af_",1,true) == 1 then -- found artifact
+			af_spawned = true
+			-- dbglog("found %s",item)
+			-- no obligatory electro artifacts in vanilla
+			-- if not okay_to_use_wa and string.find(item,"af_electra_",1,true) == 1 then
+				-- _z.show_large_msg("Electro artifact detected")
+				-- _z.show_small_msg("Visible between midnight and 5 a.m.")
+			-- end
+		end
+		if stuff_found then
+			spawn_str = spawn_str .. ", " .. friendly_name(item)
+		else
+			spawn_str = spawn_str .. friendly_name(item)
+			stuff_found = true
+		end
+	end
+	return item_ids_
+end
+
+function delay_workaround()
+	-- dbglog("delay workaround")
+	for k,v in pairs(box_delay_workaround_queue) do
+		local box_location = v.pos
+		-- dbglog(k)
+		if box_location == nil then
+			abort(k.." - crate or box location is nil for deferred spawn")
+			return
+		end
+		for kk,vv in ipairs(v.items) do
+			-- dbglog(tostring(kk).." "..tostring(vv))
+			local item_pos = vector():set(0,0,0)
+			item_pos.x = box_location.x + math.random(-15,15)/100
+			item_pos.y = box_location.y + 0.05 -- + math.random(20,40)/100
+			item_pos.z = box_location.z + math.random(-15,15)/100
+			local obj_to_drop = level.object_by_id(vv)
+			if obj_to_drop then
+				-- dbglog(obj_to_drop:section())
+				db.actor:drop_item_and_teleport(obj_to_drop, item_pos)
+			else
+				dbglog("obj_to_drop is nil -- spawn kept in inventory")
+			end
+		end
+		-- may need to nil .items here if garbage collector is slow
+	end
+	box_delay_workaround_queue = {}
+	need_box_contents_xfer = false
+end

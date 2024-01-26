@@ -1,0 +1,54 @@
+ File: QuestOverhaul_2.cfg - English version
+
+This is an updated Quest Overhaul, based on Decane's original 
+effort.  Due to the nature of the ZRP, this version has been 
+streamlined for compatibility.
+
+The original version had repair support that required custom 
+localization files.  Since the ZRP has optional Duty/Freedom 
+repair individuals, this support is omitted.  See below.
+
+Do not use this 1.07 version of the ZRP or its QO with any 
+prior QO version, including the one that was part of ZRP 
+1.05.  Saves made with prior QO versions are not compatible. 
+
+The original QO package changed some quest timings and moved 
+some autoquests to standard quests.  It also "unlocked" quite 
+a few extra quests, most of which are included here.  Some 
+additional modifications exist; stealing the sniper rifle 
+is more difficult and has expected consequences as well, for 
+example.
+
+There are a couple of new tasks not in vanilla nor in the 
+original QO.  Some QO quests are now part of the standard 
+ZRP package.  Some quests require the addition of new items 
+to the game, and that's where this configuration file enters 
+the picture.
+
+This version of the QO uses the newer ui_icon_equipment.dds 
+included with ZRP 1.07, which also has support for the ABC 
+sleeping bag, a couple of different Explosives Carry mods, 
+(one of which is included as an option) and the Artifact 
+Swap minimod.
+
+There are two configuration options, one to add additional 
+quest items (thus enabling the quests) and one to add a 
+couple of "special" weapons.  Warning: These weapons are a 
+bit overpowered and their addition may spoil gameplay. 
+One will run out of special ammo and the replacement stuff 
+is not currently available, but the other can make dealing 
+with MonoMartyrs a little too easy.
+
+These options can be enabled at any time.  However, once 
+the quest items are added, they cannot be removed through 
+normal means.  Unchecking the checkboxes will have no 
+effect on a game loaded when the options were enabled. 
+
+Note: One of the items added is a special scope for a 
+couple of the weapons, one a quest reward and the other a 
+"special" weapon.  But the scope itself must first be found 
+somewhere in the game.  Please don't spoil it for others 
+by blurting out the location when you find it!
+
+
+

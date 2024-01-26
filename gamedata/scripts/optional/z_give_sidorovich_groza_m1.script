@@ -1,0 +1,25 @@
+name = "Give Sidorovich The 5x45mm Groza"
+description = "If you have not yet talked to Wolf after the Nimble quest, you can give the Cordon trader that special weapon."
+author = "NatVac"
+revision = "1.1"
+number_of_parameters = 0
+
+function main()
+	local sidorovich_pos = vector():set(-244.7,-25,-133.96)
+	if level.name() ~= "l01_escape" or db.actor:position():distance_to_sqr(sidorovich_pos) > 10000 then
+		return false, "You must be in the Cordon within 100 meters of the trader."
+	end
+	if has_alife_info("esc_kill_bandits_quest_done") then
+		-- comment out the following line if you want to be able to buy the weapon at any time
+		return false, "You already talked to Wolf after getting Nimble's flash drive."
+	end
+	local lobj = level_object_by_sid(3) -- Sidorovich has story_id 3
+	if lobj then
+		if lobj:object("wpn_groza_m1") then return false, "Sid already has one." end
+		alife():create("wpn_groza_m1",lobj:position(), lobj:level_vertex_id(),	lobj:game_vertex_id(), lobj:id())
+		_z.show_small_msg("Sid should have it now.")
+	else
+		return false, "Could not find Sid online."
+	end
+end
+

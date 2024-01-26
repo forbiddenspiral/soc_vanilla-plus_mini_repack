@@ -1,0 +1,89 @@
+ File: Vanilla.cfg 
+
+This particular configuration group can be used to restore 
+vanilla characteristics to most of the ZRP mod.
+
+For the most vanilla experience, repeat these instructions 
+for each entry in the list box:
+
+	Select an entry.
+	Click the Default button.
+	Click the Apply button.
+
+The defaults for each entry in the Vanilla configuration are 
+preset to the original values. Clicking the Default button 
+restores these vanilla settings, and clicking the Apply 
+button then changes the game files.
+
+One set of exceptions are the FileChoice entries, described 
+below. There is no default for FileChoice options, so you 
+will need to select the "Vanilla" or the "Do not enable" 
+choices.
+
+For the Trade and Search Screens entry, select 
+"Vanilla Screens (10x6x2)" and click the Apply button 
+to revert to the vanilla screen settings.
+
+For Extra Level Changer, select the "Do not add level 
+changers" choice and click Apply.
+
+The extra level changers are new shortcut pathways that open 
+up to you once you have completed a certain amount of 
+progress in the game. You might want to trek the long way 
+around at all times.
+
+Note that increasing the body stay time for NPCs and mutants 
+may require a new game. The ZRP value is four hours, the 
+vanilla default is 36. 
+
+Hover the mouse pointer over the edit boxes, radio buttons 
+and checkboxes to see pop-up tips on the use of the selected 
+item. 
+
+While most changes can be applied to a game in progress, 
+changed settings may not affect existing tasks and secrets. 
+For example, task delays for existing tasks won't change, 
+nor will the contents of secrets already given.
+
+Some of these entries can be found in other Modifier .cfg 
+configuration files, although their defaults are more likely 
+to reflect the ZRP settings rather than the vanilla ones.
+
+At any time you can use the Modifier to put back features 
+that you might wish to try.
+
+===========================================================
+
+The ZRP is a complex bug-fix patch/mod, with many changes 
+not found in vanilla.  While the vast majority are bug fixes, 
+some changes are enhancements meant to improve the player's 
+personal experience with the game.
+
+Some features of the ZRP were legacy: when the first version 
+was released, there was no free play option, so a late-game 
+weapon (normally only available once you were past the point 
+of no return) was added to a secret. (This and other weapons 
+are no longer default in the latest ZRP releases; see the 
+ZRP Legacy entries in the _ZRP configuration.)
+
+Some features are convenient, like the ability to start a 
+new game and jump into the story at any point in the game, 
+or even to the end of the story (AKA "free play").  Or one 
+can jump across a level with the quick-travel feature.
+
+Other ZRP default conveniences are the inclusion of the level 
+abbreviation on secrets and the notification when you have 
+emptied a stash.  You can also reject certain side tasks if 
+you do not want to do them, and view the rewards offered. 
+In vanilla, you will not be able to get to a later task if 
+you don't do the current one offered.
+
+Despite the fact that one can view the credits after the end 
+of the normal game (or at any time, really) via a main menu 
+button, some were upset that the final cutscene didn't 
+immediately go to the credits.
+
+While most like the ability to continue playing, the ZRP is 
+about having the experience one wishes.  To that end, this 
+configuration file can recreate the purest vanilla experience 
+for those who want it while still retaining the ZRP bug fixes. 

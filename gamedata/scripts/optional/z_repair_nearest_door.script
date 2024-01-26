@@ -1,0 +1,63 @@
+name = "Repair Nearest Door"
+description = "This function reattaches the door scheme if necessary. You must be within 10 meters of the broken door."
+author = "NatVac"
+revision = "1.0"
+number_of_parameters = 0
+
+-- set this higher if desired
+local max_distance = 10
+
+function main()
+	local door = nil
+	local acpos = db.actor:position()
+	if max_distance == nil then max_distance = 10 end
+	local sim = alife()
+	for idb_ = 0, 65534, 1 do
+		local lobj = sim:object(idb_)
+		if lobj ~= nil then
+			if lobj:section_name() == "physic_object" and
+				string.find(lobj:name(),"door",1,true) ~= nil then
+				local real_obj = level.object_by_id(lobj.id)
+				if real_obj ~= nil then
+					local real_obj_pos=real_obj:position()
+					local real_obj_dist = acpos:distance_to(real_obj_pos)
+					if real_obj_dist < max_distance and real_obj_dist > 0.01 then
+						door = real_obj
+						max_distance = real_obj_dist
+					end
+				end
+			end
+		end
+	end
+	if door ~= nil then
+		local door_storage = db.storage[door:id()]
+		local dname = door:name()
+		if door_storage["ph_door"] == nil then -- scheme is detached
+			xr_logic.initialize_obj(door, door_storage, false, db.actor, modules.stype_item)
+			_z.show_small_msg("Attempt made to fix door '"..dname.."'")
+		else
+			_z.show_small_msg("Nearest door '"..dname.."' already has a scheme attached")
+		end
+		if dname == "val_prisoner_jail_door" then
+			-- check the button just in case
+			for idb_ = 0, 65534, 1 do
+				local lobj = sim:object(idb_)
+				if lobj ~= nil then
+					if lobj:name() == "val_prisoner_button" then
+						local vpbutton = level.object_by_id(lobj.id)
+						if vpbutton ~= nil then
+							local button_storage = db.storage[vpbutton:id()]
+							if button_storage["ph_button"] == nil then
+								xr_logic.initialize_obj(vpbutton, button_storage, false, db.actor, modules.stype_item)
+								_z.show_blinking_msg("If button is orange, use it!")
+							end
+						end
+					end
+				end
+			end
+		end
+	else
+		_z.show_small_msg("No nearby door found")
+	end
+end
+

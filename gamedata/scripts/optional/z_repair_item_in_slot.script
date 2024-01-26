@@ -1,0 +1,32 @@
+name = "Repair Weapon or Armor"
+description = "Press the key corresponding to the slot number of the equipped item you wish to repair.\\n1 = Pistol, 2 = Rifle, 6 = Outfit."
+author = "NatVac"
+dik_key = DIK_keys.DIK_R
+hotkey = "R"
+revision = "1.1"
+number_of_parameters = "key"
+
+--DIK_1 = 2, DIK_2 = 3, DIK_6 = 7
+keys = {
+	["1"] = {dik_key=DIK_keys.DIK_1,keystroke="1"},
+	["2"] = {dik_key=DIK_keys.DIK_2,keystroke="2"},
+	["6"] = {dik_key=DIK_keys.DIK_6,keystroke="6"}
+}
+
+function main(slot_string)
+	local obj = nil
+	local obj_name = "nothing -- try 1, 2, or 6"
+	local this_slot = tonumber(slot_string)
+	if this_slot == 1 then
+		obj = db.actor:item_in_slot(1)
+	elseif this_slot == 2 then
+		obj = db.actor:item_in_slot(2)
+	elseif this_slot == 6 then
+		obj = db.actor:item_in_slot(6)
+	end
+	if obj then
+		obj:set_condition(1.0)
+		obj_name = _z.friendly_name(obj:section())
+	end
+	_z.show_small_msg("Repaired "..obj_name)
+end

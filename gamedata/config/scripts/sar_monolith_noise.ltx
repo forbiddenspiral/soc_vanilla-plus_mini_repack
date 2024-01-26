@@ -1,0 +1,24 @@
+[logic]
+active = sr_psy_antenna@check
+
+; nv090411 support free play
+[sr_psy_antenna@check]
+eff_intensity = 0
+hit_intensity = 0
+play_visual = false
+mute_sound_threshold = 0
+on_info = {+sar_monolith_destroy} nil
+on_info2 = {-sar_monolith_destroy} sr_psy_antenna
+
+[sr_psy_antenna]
+eff_intensity = 100
+hit_intensity = 0
+play_visual = false
+mute_sound_threshold = 1
+on_info = {+sar_monolith_destroy} sr_psy_antenna@end
+
+[sr_psy_antenna@end]
+eff_intensity = 0
+hit_intensity = 0
+play_visual = false
+mute_sound_threshold = 0

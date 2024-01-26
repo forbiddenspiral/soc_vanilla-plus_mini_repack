@@ -1,0 +1,16 @@
+name = "Keep Nearby NPC Online"
+description = "Force the nearest NPC within 5 meters to remain online.  This is useful for certain Dark Valley NPCs that tend to reset once they go beyond switch_distance from you."
+author = "NatVac"
+revision = "1.0.1"
+number_of_parameters = 0
+
+function main()
+	local nearby_npc = zx.best_npc_within_view_angle(3.1,5)
+	if nearby_npc == nil then
+		_z.show_small_msg("No NPC found within 5 meters")
+	else
+		_g.switch_online(nearby_npc)
+		_z.show_small_msg("Told "..nearby_npc:character_name().." to keep alert.")
+	end
+end
+

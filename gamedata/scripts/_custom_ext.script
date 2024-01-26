@@ -1,0 +1,74 @@
+-- custom external script support by NatVac
+
+-- set true for Decane/NatVac Quest Overhaul extensions
+local add_custom_qo_weapons = false
+
+-- set true for more hidden weaponry/goods
+local add_additional_custom_weapons = false
+
+-- spawn only in inventory boxes or npc backpacks
+function spawn_item_in_level_box(item_section,box_level,box_name)
+	local gg = game_graph()
+	local sim = alife()
+	for id_ = 1, 65534, 1 do
+		local lobj = sim:object(id_)
+		if lobj ~= nil then
+			if lobj:name() == box_name then
+				local glevel = gg:vertex(lobj.m_game_vertex_id):level_id()
+				if sim:level_name(glevel) == box_level then
+						alife():create(item_section, lobj.position, lobj.m_level_vertex_id, lobj.m_game_vertex_id, lobj.id)
+					break
+				end
+			end
+		end
+	end
+end
+
+function on_add_actor(actor)
+	-- dbglog("_custom_ext.script - on_add_actor()")
+	if add_custom_qo_weapons then
+		if not has_alife_info("spawn_vintorez_coll_once") then
+			db.actor:give_info_portion("spawn_vintorez_coll_once")
+			-- inside Red Forest sniper bunker
+			local cur_pos=vector():set(306.675476,-39.15,-22.730177)
+			alife():create("wpn_mp5_niphty_m2",cur_pos,69058,1930)
+			spawn_item_in_level_box("wpn_vintorez_coll","l10_radar","level_prefix_inventory_box")
+			alife():create("inventory_box", vector():set(-26.1595,-7.363,-23.96), 283377, 1593)
+			-- spawn "folly" suit in Electro anomaly
+			local milsuit = alife():create("outfit_specnaz_m2", vector():set(-331.652,-21.8359,286.407), 18491, 1840)
+			-- if _dev then _dev.set_condition_deferred(milsuit, 0.0) end
+			local pos=vector():set(-123.4522,19.1,-24.36)
+			alife():create("wpn_sig_m3", pos,83,1529)
+			-- psi protection ecologist's suit
+			spawn_item_in_level_box("ecolog_outfit_psi_coll","l04u_labx18","level_prefix_inventory_box_0001")
+			spawn_item_in_level_box("wpn_svd_m1","l05_bar","level_prefix_inventory_box_0001")
+			spawn_item_in_level_box("wpn_addon_scope_m1","l06_rostok","level_prefix_inventory_box_0001")
+			spawn_item_in_level_box("af_dummy_glassbeads","l11_pripyat","level_prefix_inventory_box_0005")
+			spawn_item_in_level_box("wpn_rg6_m1","l11_pripyat","level_prefix_inventory_box_0006")
+			alife():create("af_dummy_glassbeads", vector():set(109.492912,3.999738,113.448944),220953,2182)
+			alife():create("af_dummy_glassbeads", vector():set(-296.146545,-14.974108,291.721802),47566,1833)
+			alife():create("af_night_star", vector():set(-306.000092,-27.604424,207.481445),39932,1788)
+			-- alife():create("wpn_addon_extender", vector():set(-2.6,-5.167521,200.1744),96188,2195)
+		end
+	end
+	if add_additional_custom_weapons then
+		if not has_alife_info("spawn_psi_outfit_once") then
+			db.actor:give_info_portion("spawn_psi_outfit_once")
+			spawn_item_in_level_box("wpn_val_m2","l12u_sarcofag","level_prefix_inventory_box")
+			spawn_item_in_level_box("wpn_eagle_m2","l06_rostok","level_prefix_inventory_box_0028")
+		end
+	end
+	-- available info_portion: "spawn_svd_m1_once"
+	-- dbglog("_custom_ext.script - on_add_actor() end")
+end
+
+function on_take_item_from_box(box, item, story_id)
+	if story_id == 2021 then --blue chest near Ivantsov
+		if item:section() ~= "wpn_svd_m1" then return end
+		local ivantsov = level_object_by_sid(505)
+		if ivantsov and ivantsov:alive() and ivantsov:see(db.actor) then
+			ivantsov:set_relation(game_object.enemy, db.actor) 
+		end
+		return
+	end
+end

@@ -1,0 +1,42 @@
+name = "Repair Bar Relationships"
+author = "NatVac"
+revision = "1.0"
+description = "Run this if you hurt Duty or Loners in the Bar. You must first be on the Bar level."
+number_of_parameters = 0
+
+function main()
+	if level.name() == "l05_bar" then
+		if db.actor:character_community() == "actor_freedom" then
+			_z.show_large_msg("Not applicable to members of Freedom.")
+			return
+		end
+		db.actor:disable_info_portion("bar_dolg_territory_kill")
+		db.actor:disable_info_portion("bar_dolg_territory_2_hit")
+		db.actor:disable_info_portion("bar_territory_nodolg_kill")
+		db.actor:disable_info_portion("bar_territory_nodolg_2_hit")
+		-- Omega-13 on the faction (enable if needed)
+		-- relation_registry.set_community_goodwill ("dolg", db.actor:id(), 1000)
+		-- Omega-13 on the groups
+		xr_gulag.setGulagRelation("bar_dolg_general", game_object.friend, db.actor)
+		xr_gulag.setGulagRelation("bar_dolg_veterans", game_object.friend, db.actor)
+		xr_gulag.setGulagRelation("bar_dolg_bunker", game_object.friend, db.actor)
+		xr_gulag.setGulagRelation("bar_zastava", game_object.friend, db.actor)
+		xr_gulag.setGulagRelation("bar_zastava_2", game_object.friend, db.actor)
+		xr_gulag.setGulagRelation("bar_visitors", game_object.neutral, db.actor)
+		-- Omega-13 on the individual
+		for id_=1,65534,1 do
+			local thing=level.object_by_id(id_)
+			if thing then
+				if thing:clsid() == clsid.script_stalker then
+					if thing:alive() and thing:character_community() == "dolg" then
+						thing:set_relation(game_object.friend, db.actor)
+						--thing:set_community_goodwill(1000, db.actor)
+					end
+				end
+			end
+		end
+		_z.show_large_msg("Bar relationships repaired.")
+	else
+		_z.show_large_msg("Must be in Bar first.")
+	end
+end

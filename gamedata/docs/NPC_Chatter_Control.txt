@@ -1,0 +1,42 @@
+
+NPC Chatter Control by NatVac, 2010/08/15
+
+This is pretty much a rewrite of the original STALKER NPC 
+chatter management software written by Stohe and Chugai. 
+
+Why? Well, because most of the original chatter support is 
+not properly used by the game. Despite the presence of 
+minimum and maximum delays for folks like Mr. "Get out of 
+here, stalker!" and Hunter and Snitch, the player is 
+inundated with the trite repetition of the same phrases over 
+and over during the same game session. 
+
+Annoying sound fix (ASF) mods and other mods like the ZRP 
+have workarounds to address the problem, but the workarounds 
+are not really that satisfactory, usually because they go to 
+the opposite extreme and you don't hear anything or you hear 
+something less annoying -- yet the original quirky sound is 
+gone. 
+
+NPC Chatter Control implements working delays for those 
+NPCs that sorely need it, and includes features like 
+greeting probabilities for folks like Snitch and Voronin. 
+There is also a logical reduction in available phrases for 
+NPCs (there's no need to add Sakharov's "Hello, hello!" to 
+every stalker's playlist, nor the AW crazy's ramblings, for 
+instance), with about 60% fewer sounds to (not) play. 
+
+This fix attempt is not compatible with ASF mods and may 
+have issues with some sound overhaul mods. Any attempt to 
+merge this fix with ASF mods is an exercise in futility; 
+don't bother. You may have an easier time with overhaul mods 
+that don't include ASF tweaks, or those that permit you to 
+disable the ASF part. 
+
+Otherwise, this rewrite should operate seamlessly with your 
+current game. There may be minor issues with some choices, 
+like the timing delays might be too long or too short for 
+your taste, or a certain sound theme may be misclassified 
+(e.g., as a soliloquy rather than a random greeting), but 
+these are very easily corrected if necessary. 
+

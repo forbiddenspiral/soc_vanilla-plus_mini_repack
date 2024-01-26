@@ -1,0 +1,814 @@
+----------------------------------
+-- Helper functions for execute script command
+-- author: NatVac
+-- nv 100913 - more helper functions
+-- nv 100615 - protection for go() and better number_online() functionality
+-- nv 130118 - use device().cam_dir for db.actor:direction()
+----------------------------------
+that_npc = nil
+that_object = nil
+
+function go(x,y,z)
+	if type(x) ~= "number" or type(y)  ~= "number" or type(z) ~= "number" then
+		_z.show_small_msg("nil parameter entered - need 3 numbers (x,y,z)")
+		return
+	end
+	_z.save_current_pos_dir()
+	db.actor:set_actor_position(vector():set(x,y,z))
+end
+----------------------------------
+function give_secret(secret_string)
+	if secret_string ~= nil then
+		treasure_manager.get_treasure_manager():give_treasure(secret_string)
+	else
+		_z.show_small_msg("nil string, nil treasure")
+	end
+end
+----------------------------------
+function absolute_view_angle_offset(target_pos)
+	local dir1 = device().cam_dir -- was db.actor:direction(), but that required movement in that direction
+	local dir2 = utils.vector_copy_by_val(target_pos):sub(db.actor:position())
+	local look_angle = math.atan2(dir1.x,dir1.z)
+	local obj_angle = math.atan2(dir2.x,dir2.z)
+	local net_angle = math.abs(look_angle - obj_angle)
+	if net_angle > math.pi then return math.pi * 2 - net_angle end
+	return net_angle
+end
+----------------------------------
+function this_object(view_angle, max_distance)
+	local best_obj = nil
+	if view_angle == nil then view_angle = 0.2 end
+	local smallest_angle = view_angle
+	local acpos = db.actor:position()
+	if max_distance == nil then max_distance = 10 end
+	local lbobj, lbobj_pos, lbobj_dist, view_angle_offset
+	for idb_ = 1, 65534, 1 do
+		lbobj = level.object_by_id(idb_)
+		if lbobj ~= nil then
+			-- if lbobj:clsid() == clsid.script_stalker then
+				-- if lbobj:alive() then
+					lbobj_pos=lbobj:position()
+					lbobj_dist = acpos:distance_to(lbobj_pos)
+					if lbobj_dist < max_distance and lbobj_dist > 0.01 then
+						view_angle_offset = absolute_view_angle_offset(lbobj_pos)
+						if view_angle_offset <= smallest_angle then 
+							best_obj = lbobj
+							smallest_angle = view_angle_offset
+						end
+					end
+				-- end
+			-- end
+		end
+	end
+	if best_obj == nil then
+		if view_angle > 0.7 and max_distance > 30 then return nil end
+		best_obj = this_object(view_angle*2,max_distance*2)
+	end
+	return best_obj --, smallest_angle
+end
+----------------------------------
+function this_npc(view_angle, max_distance)
+	local best_obj = nil
+	if view_angle == nil then view_angle = 0.2 end
+	local smallest_angle = view_angle
+	local acpos = db.actor:position()
+	if max_distance == nil then max_distance = 10 end
+	local lbobj, lbobj_pos, lbobj_dist, view_angle_offset
+	for idb_ = 1, 65534, 1 do
+		lbobj = level.object_by_id(idb_)
+		if lbobj ~= nil then
+			if lbobj:clsid() == clsid.script_stalker then
+				-- if lbobj:alive() then
+					lbobj_pos=lbobj:position()
+					lbobj_dist = acpos:distance_to(lbobj_pos)
+					if lbobj_dist < max_distance then
+						view_angle_offset = absolute_view_angle_offset(lbobj_pos)
+						if view_angle_offset <= smallest_angle then 
+							best_obj = lbobj
+							smallest_angle = view_angle_offset
+						end
+					end
+				-- end
+			end
+		end
+	end
+	if best_obj == nil then
+		if view_angle > 0.7 and max_distance > 30 then return nil end
+		best_obj = this_npc(view_angle*2,max_distance*2)
+	end
+	that_npc = best_obj
+	if best_obj ~= nil then that_npc_id = best_obj:id() else that_npc_id = nil end
+	return best_obj --, smallest_angle
+end
+----------------------------------
+function push(radius, impulse, srcpos, invert)
+	if radius == nil then radius = 10 end
+	if impulse == nil then impulse = 100 end
+	if srcpos == nil then srcpos = db.actor:position() end
+	local lbobj, obj_clsid, lbobj_pos, lbobj_dist, dir, force, physicsShell, h
+	for idb_ = 1, 65534, 1 do
+		lbobj = level.object_by_id(idb_)
+		if lbobj ~= nil then
+			obj_clsid = lbobj:clsid()
+			if obj_clsid == clsid.script_stalker or
+				obj_clsid >= clsid.bloodsucker_s and obj_clsid <= clsid.zombie_s then
+				-- if not lbobj:alive() then
+					lbobj_pos=lbobj:position()
+					lbobj_dist = srcpos:distance_to(lbobj_pos)
+					if lbobj_dist <= radius then -- bump this body
+						if invert then
+							srcpos.y = srcpos.y + 1 -- get some height to source to lift object a bit
+							dir = utils.vector_copy_by_val(srcpos):sub(lbobj_pos)
+						else
+							lbobj_pos.y = lbobj_pos.y + 1 -- get some height to lift object a bit
+							dir = utils.vector_copy_by_val(lbobj_pos):sub(srcpos)
+						end
+						force = 1000*impulse
+						physicsShell = lbobj:get_physics_shell()
+						if physicsShell ~= nil then
+							-- physicsShell:apply_force(0,1000*impulse,0)
+							physicsShell:apply_force(dir.x*force,dir.y*force,dir.z*force)
+						else
+							h = hit()
+							h.draftsman = lbobj --db.actor
+							h.type = hit.fire_wound
+							h.direction = dir --vector():set(0,1,0)
+							h:bone("pelvis")
+							h.power = 0.01
+							h.impulse = 100*force --10000000
+							lbobj:hit(h)
+						end
+						dbglog("Pushed %s",lbobj:name())
+					end
+				-- end
+			end
+		end
+	end
+end
+----------------------------------
+function pull(radius, impulse, srcpos)
+	push(radius, impulse, srcpos, true)
+end
+----------------------------------
+function bump(radius, impulse)
+	if radius == nil then radius = 10 end
+	if impulse == nil then impulse = 100 end
+	local acpos = db.actor:position()
+	local lbobj, obj_clsid, lbobj_pos, lbobj_dist, physicsShell
+	for idb_ = 1, 65534, 1 do
+		lbobj = level.object_by_id(idb_)
+		if lbobj ~= nil then
+			obj_clsid = lbobj:clsid()
+			if obj_clsid == clsid.script_stalker or
+				obj_clsid >= clsid.bloodsucker_s and obj_clsid <= clsid.zombie_s then
+				if not lbobj:alive() then
+					lbobj_pos=lbobj:position()
+					lbobj_dist = acpos:distance_to(lbobj_pos)
+					if lbobj_dist <= radius then -- bump this body
+						physicsShell = lbobj:get_physics_shell()
+						if physicsShell ~= nil then
+							physicsShell:apply_force(0,1000*impulse,0)
+							dbglog("Bumped %s",lbobj:name())
+						else
+							dbglog("Unable to bump %s, no physics shell",lbobj:name())
+						end
+					end
+				end
+			end
+		end
+	end
+end
+----------------------------------
+-- don't call this function directly! See move_body_to()
+local lbobj_
+local dest_pos_
+local radius_, impulse_, dest_height_, last_pos_height_
+local delta_height_ = 30
+local move_timer_delay = 400
+local move_timer = {delay=move_timer_delay,event="z.move_body()"}
+local up = vector():set(0,1,0)
+
+function move_body()
+	local lbobj_pos, dest_dist, dir, force, physicsShell
+	local dest_pos = dest_pos_
+	local force_time = 250
+	force = 1000*impulse_
+	if not lbobj_ then return end
+	lbobj_pos = lbobj_:position()
+	dest_dist = dest_pos:distance_to_xz(lbobj_pos)
+	if dest_dist > radius_ then -- bump this body
+		if dest_dist > 50 then
+			force_time = 250
+		elseif dest_dist > 10 then
+			-- force = 100*impulse_
+			force_time = 50
+		else
+			-- force = 40*impulse_
+			force_time = 20
+		end
+		dest_pos.y = dest_height_
+		dir = vector():set(dest_pos):sub(lbobj_pos)
+		dir:normalize()
+		dir.y = dir.y + 0.5
+		-- physicsShell = lbobj_:get_physics_shell()
+		if lbobj_pos.y < dest_pos.y - 5 then
+			-- physicsShell:apply_force(dir.x*force,2*force,dir.z*force) -- move it up first and as needed
+			-- physicsShell:apply_force(0,2*force,0) -- move it straight up first and as needed
+			if last_pos_height_ == nil then
+				last_pos_height_ = lbobj_pos.y
+			elseif lbobj_pos.y < last_pos_height_ + 0.1 then
+				_z.show_small_msg("Move terminated due to lack of vertical progress")
+				return
+			end
+			lbobj_:set_const_force(up, force, 150) -- direction, force, time in msec (ph_appforce.script)
+		else
+			-- physicsShell:apply_force(dir.x*force,dir.y*force,dir.z*force)
+			lbobj_:set_const_force(dir, force, force_time)
+			last_pos_height_ = nil
+		end
+		move_timer.done = false
+		move_timer.delay = move_timer_delay
+		_dev.queue_delayed_event(move_timer)
+	else
+		_z.show_small_msg(lbobj_:name().." is at X/Z destination +/- "..tostring(radius_))
+	end
+end
+---------------------------------- helper functions
+function is_underground()
+	local underground = { indoor=true, indoor_x18=true, sarkofag=true }
+	return underground[level.get_weather()]
+end
+----------------------------------
+function get_target_for_move_body()
+	--if bind_stalker.nv_timer_pending then
+	if _dev.cancel_delayed_event(move_timer) then -- disable any current move
+		return false, "Disabled current move_timer processing"
+	end
+	if is_underground() then return nil, "Not while underground." end
+	local target = z.this_entity(false) -- actually nil has same result as false
+	if target then
+		return target, "OK"
+	end
+	return false, "No valid dead target found"
+end
+----------------------------------
+-- v_pos = _custom_zrp.custom_zip_points.l08_yantar.l08_yantar0.pos
+
+-- To use this function, first make a save and ensure debug mode is enabled, then:
+-- At the position of the body you wish to move, press Esc P to record the position.
+-- Move to the location where you wish the body to land. Press Esc then J and select the Fn position you just recorded.
+-- Line up so that you are facing the body's feet. It's best if the body's head is directly ahead. :| >-+o
+-- Press Esc then Z then X, click in the edit box.
+-- Type this:  z.move_body_to()
+-- Press the Enter key and wait a moment. The body should rise about 30 meters then move to the destination.
+-- NOTE that using this function is risky. Don't use underground or if the body is obstructed.
+-- Repeat the function with no target to cancel an existing move
+function move_body_to(lbobj, dest_pos, impulse, radius)
+	local underground = { indoor=true, indoor_x18=true, sarkofag=true }
+	if is_underground() then _z.show_small_msg("While underground? Yeah, right.") return end
+	local msg_str
+	radius_ = radius
+	if radius_ == nil then radius_ = 5 end
+	impulse_ = impulse
+	if impulse_ == nil then impulse_ = 100 end
+	if dest_pos == nil and _custom_zrp then
+		dest_pos = _custom_zrp.zrp_temp_pos --use snapshot position (could be default 0,0,0)
+	end
+	if lbobj == nil then lbobj = z.this_guy() end
+	local obj_clsid, lbobj_pos, dest_dist, dir, force, physicsShell
+	-- lbobj = level.object_by_id(idb_)
+	if lbobj ~= nil and dest_pos and dest_pos.x then
+		obj_clsid = lbobj:clsid()
+		if obj_clsid == clsid.script_stalker or
+			obj_clsid >= clsid.bloodsucker_s and obj_clsid <= clsid.zombie_s then
+			if not lbobj:alive() then
+				dest_pos_ = vector():set(dest_pos) --utils.vector_copy_by_val(dest_pos)
+				lbobj_ = lbobj
+				lbobj_pos=lbobj:position()
+				dest_dist = dest_pos:distance_to_xz(lbobj_pos)
+				if dest_dist > radius_ then -- bump this body
+					if dest_pos.y > lbobj_pos.y then
+						dest_height_ = dest_pos.y + delta_height_
+					else
+						dest_height_ = lbobj_pos.y + delta_height_
+					end
+					-- dir = vector():set(dest_pos):sub(lbobj_pos)
+					-- force = 1000*impulse_
+					-- dest_pos.y = dest_pos.y + dest_dist * 0.5 -- get some height to lift object a bit
+					physicsShell = lbobj:get_physics_shell()
+					if physicsShell ~= nil then
+						-- physicsShell:apply_force(0,1000*impulse,0)
+						-- physicsShell:apply_force(dir.x*force,dir.y*force,dir.z*force)
+						last_pos_height_ = nil
+						move_timer.done = false
+						move_timer_delay = 100
+						move_timer.delay = move_timer_delay -- bind_stalker.script loop check is only every 200 msec
+						_dev.queue_delayed_event(move_timer)
+						-- dbglog("Bumped %s",lbobj:name())
+						msg_str = string.format("Moving %s to %f, %f, %f", lbobj:name(), 
+							dest_pos_.x, dest_pos_.y, dest_pos_.z)
+					else
+						msg_str = "Unable to bump %s, no physics shell",lbobj:name()
+					end
+				else
+					msg_str = "Destination not far enough from body"
+				end
+			else
+				msg_str = lbobj:name()..": Target not yet dead"
+			end
+		else
+			msg_str = "Nothing moveable here"
+		end
+	else
+		msg_str = "move_body_to() is missing argument(s): body and/or destination"
+	end
+	_z.show_small_msg(msg_str)
+end
+----------------------------------script_phys
+function bumpbox(radius, impulse)
+	if radius == nil then radius = 10 end
+	if impulse == nil then impulse = 200 end
+	local acpos = db.actor:position()
+	-- dbglog("%d=obj_phys_destroyable, %d=obj_physic, %d=obj_breakable", tonumber(clsid.obj_phys_destroyable),tonumber(clsid.obj_physic),tonumber(clsid.obj_breakable))
+	local lbobj, obj_clsid, lbobj_pos, lbobj_dist, h
+	for idb_ = 1, 65534, 1 do
+		lbobj = level.object_by_id(idb_)
+		if lbobj ~= nil then
+			obj_clsid = lbobj:clsid()
+			if obj_clsid == clsid.obj_phys_destroyable
+				--or obj_clsid == clsid.obj_physic or obj_clsid == clsid.obj_breakable
+				then
+				lbobj_pos=lbobj:position()
+				lbobj_dist = acpos:distance_to(lbobj_pos)
+				if lbobj_dist <= radius then -- bump this body
+					h = hit()
+					h.draftsman = db.actor
+					h.type = hit.fire_wound
+					h.direction = vector():set(0,1,0)
+					-- h:bone("pelvis")
+					h.power = 0.0
+					-- h.impulse = 10000000
+					h.impulse = impulse
+					lbobj:hit(h)
+					-- local physicsShell = lbobj:get_physics_shell()
+					-- physicsShell:apply_force(0,25000,0)
+					dbglog("Bumped %s",lbobj:name()) --..", clsid="..tostring(obj_clsid))
+				end
+			end
+		end
+	end
+end
+----------------------------------
+function nearest_object_by_clsid(clsid_)
+	local nearest_obj = nil
+	local nearest_obj_dist = nil
+	local lbobj, obj_clsid, lbobj_pos, lbobj_dist
+	local acpos = db.actor:position()
+	for idb_ = 1, 65534, 1 do
+		lbobj = level.object_by_id(idb_)
+		if lbobj ~= nil then
+			obj_clsid = lbobj:clsid()
+			if clsid_ == lbobj:clsid() then
+				lbobj_pos=lbobj:position()
+				lbobj_dist = acpos:distance_to(lbobj_pos)
+				if nearest_obj == nil or lbobj_dist < nearest_obj_dist then
+					nearest_obj = lbobj
+					nearest_obj_dist = lbobj_dist
+				end
+			end
+		end
+	end
+	return nearest_obj
+end
+----------------------------------
+function object_by_name(name)
+	if type(name) ~= "string" then return nil end
+	local sim = alife()
+	local lobj
+	for idb_ = 0, 65534, 1 do
+		lobj = sim:object(idb_)
+		if lobj and lobj:name() == name then
+			that_object = lobj
+			return lobj
+		end
+	end
+	return nil
+end
+----------------------------------
+function punt(distance) --, height)
+	if type(distance) ~= "number" then distance = 50 end
+	-- if type(height) ~= "number" then height = 0 end
+	-- we do the vector thing
+	local target, message = get_target_for_move_body()
+	if not target then _z.show_small_msg(message) return end
+	local dest_pos = target:position()
+	local dest_dir = device().cam_dir
+	-- dbglog("direction=%f,%f,%f",dest_dir.x, dest_dir.y, dest_dir.z)
+	-- dest_dir.x, dest_dir.z are cosine and sine
+	dest_dir.x = dest_dir.x * distance
+	dest_dir.z = dest_dir.z * distance
+	-- determine the dest position
+	dest_pos = dest_pos:add(dest_dir)
+	move_body_to(target, dest_pos, 300) -- use this body
+end
+----------------------------------
+function move_body_to_nearest_lc()
+	local target, message = get_target_for_move_body()
+	if not target then _z.show_small_msg(message) return end
+	local nearest_lc = nearest_object_by_clsid(clsid.level_changer)
+	if nearest_lc then
+		move_body_to(target, nearest_lc:position(), 50, 2)
+	end
+end
+----------------------------------
+function dispose()
+	if is_underground() then _z.show_small_msg() return end
+	local target, message = get_target_for_move_body()
+	if not target then _z.show_small_msg(message) return end
+	local cur_pos = target:position()
+	local this_anomaly, this_anomaly_id = nil, nil
+	local min_distance = 2
+	local target_is_not_human = target:clsid() ~= clsid.script_stalker and target:clsid() ~= clsid.zombie_s
+	for id_=1,40000,1 do
+		local obj=level.object_by_id(id_)
+		if obj then
+			if obj:clsid()==clsid.zone_galant_s or obj:clsid()==clsid.zone_mincer_s then
+				local obj_pos = obj:position()
+				 -- don't want critical CMap/SMap unbinded errors
+				if target_is_not_human or db.actor:position():distance_to(obj_pos) > 50 then
+					if cur_pos:distance_to(obj_pos) > min_distance then
+						if this_anomaly == nil then
+							this_anomaly = obj
+							this_anomaly_id = id_
+						else
+							if cur_pos:distance_to(obj:position()) < cur_pos:distance_to(this_anomaly:position()) then
+								this_anomaly = obj
+								this_anomaly_id = id_
+							-- else keep previous as closest > 50 meters
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+	if this_anomaly == nil or level.name() == "l06_rostok" then --Rostok's sole vortex is not usable here
+		_z.show_small_msg("No valid disposal anomaly found")
+		return
+	end
+	dbglog("Moving ".. target:name().. " to ".. this_anomaly:name())
+	move_body_to(target, this_anomaly:position(), 50, 2)
+end
+----------------------------------
+function switch_this_npc_offline()
+	local this_guy = this_npc()
+	if this_guy then
+		if that_npc then _z.show_small_msg("'that_npc' - name is "..that_npc:name()) end
+		switch_offline(this_guy)
+	end
+end
+----------------------------------
+function switch_that_npc_online()
+	if that_npc_id ~= nil then
+		_g.switch_online(that_npc_id)
+	else
+		_z.show_small_msg("'that_npc' not set")
+	end
+end
+----------------------------------
+function jump(distance, height)
+	if type(distance) ~= "number" then distance = 10 end
+	if type(height) ~= "number" then height = 0 end
+	-- we do the vector thing
+	local cur_pos = db.actor:position()
+	local cur_dir = device().cam_dir -- was db.actor:direction(), but that required movement in that direction
+	dbglog("direction=%f,%f,%f",cur_dir.x, cur_dir.y, cur_dir.z)
+	_z.save_current_pos_dir()
+	-- cur_dir.x, cur_dir.z are cosine and sine
+	cur_dir.x = cur_dir.x * distance
+	cur_dir.z = cur_dir.z * distance
+	-- determine the new position and jump there
+	cur_pos = cur_pos:add(cur_dir)
+	cur_pos.y = cur_pos.y + height
+	db.actor:set_actor_position(cur_pos)
+end
+----------------------------------
+function number_online(section)
+	if type(section) ~= "string" then return -1 end
+	local count = 0
+	local lbobj, pos, pid, pobj
+	for idb_ = 1, 65534, 1 do
+		lbobj = level.object_by_id(idb_)
+		if lbobj ~= nil then
+			if lbobj:section() == section then
+				pos = lbobj:position()
+				pid = nil
+				if type(lbobj.parent) == "function" then
+					pobj = lbobj:parent()
+					if pobj ~= nil then pid = pobj:id() end
+				end
+				if pid == nil then pid = 65535 end
+				if pid == db.actor:id() then
+					dbglog("Found %s in player inventory",lbobj:name())
+				else
+					dbglog("Found %s at %f,%f,%f",lbobj:name(),pos.x,pos.y,pos.z)
+					level.map_add_object_spot(idb_, "red_location", lbobj:name())
+				end
+				count = count + 1
+			end
+		end
+	end
+	return count
+end
+----------------------------------
+function remove_from_inventory(section)
+	--helper function to ease removal of unneeded stuff
+	if type(section) ~= "string" then return false end
+	local my_obj = db.actor:object(section)
+	if my_obj == nil then return false end
+	alife():release(alife():object(my_obj:id()), false)
+	return true
+end
+----------------------------------
+function kill_entity(object_name)
+	local sobj = object_by_name(object_name)
+	if sobj then
+		if sobj:alive() then
+			local lobj = level.object_by_id(sobj.id)
+			if lobj then
+				lobj:kill(lobj)
+				_z.show_small_msg(object_name.." is dead")
+			else
+				_z.show_small_msg(object_name.." not online")
+			end
+		end
+	else
+		_z.show_small_msg(object_name.." not found online")
+	end
+end
+----------------------------------
+function switch_entity_offline(object_name)
+	local sobj = object_by_name(object_name)
+	if sobj then
+		local lobj = level.object_by_id(sobj.id)
+		if lobj then
+			switch_offline(lobj)
+			_z.show_small_msg(object_name.." told to switch offline")
+		end
+	end
+end
+----------------------------------
+--convenience functions for variable watch
+----------------------------------
+function this_thing(live)
+	local best_obj = nil
+	local smallest_angle = 0.2
+	local acpos = db.actor:position()
+	local max_distance = 150
+	local lbobj, pid, pobj, lbobj_pos, view_angle_offset, lbobj_dist
+	for idb_ = 1, 65534, 1 do
+		lbobj = level.object_by_id(idb_)
+		if lbobj ~= nil then
+			pid = nil
+			if type(lbobj.parent) == "function" then
+				pobj = lbobj:parent()
+				if pobj ~= nil then pid = pobj:id() end
+			end
+			-- if pid == nil then pid = 65535 end
+			if pid == nil or pid == 65535 then
+			-- if lbobj:clsid() == clsid.script_stalker then
+				-- if lbobj:alive() then
+					lbobj_pos=lbobj:position()
+						view_angle_offset = absolute_view_angle_offset(lbobj_pos)
+						if view_angle_offset <= smallest_angle then 
+							lbobj_dist = acpos:distance_to(lbobj_pos)
+							if lbobj_dist < max_distance and lbobj_dist > 0.1 then
+								if live ~= true or lbobj:alive() then
+									best_obj = lbobj
+									max_distance = lbobj_dist
+								end
+								-- smallest_angle = view_angle_offset
+							end
+						end
+					-- end
+				-- end
+			end
+			-- end
+		end
+	end
+	return best_obj --, smallest_angle
+end
+----------------------------------
+function this_entity(alive)
+	local best_obj = nil
+	local smallest_angle = 0.2
+	local acpos = db.actor:position()
+	local max_distance = 150
+	local lbobj, lbobj_pos, obj_clsid, view_angle_offset, lbobj_dist
+	for idb_ = 1, 65534, 1 do
+		lbobj = level.object_by_id(idb_)
+		if lbobj ~= nil then
+			obj_clsid = lbobj:clsid()
+			if obj_clsid == clsid.script_stalker or
+					(obj_clsid >= clsid.bloodsucker_s and obj_clsid <= clsid.zombie_s) then
+				lbobj_pos=lbobj:position()
+				view_angle_offset = absolute_view_angle_offset(lbobj_pos)
+				if view_angle_offset <= smallest_angle then 
+					lbobj_dist = acpos:distance_to(lbobj_pos)
+					if lbobj_dist < max_distance and lbobj_dist > 0.1 then
+						if alive ~= true or lbobj:alive() then
+							best_obj = lbobj
+							max_distance = lbobj_dist
+						end
+						-- smallest_angle = view_angle_offset
+					end
+				end
+			end
+		end
+	end
+	return best_obj --, smallest_angle
+end
+----------------------------------
+function this_guy()
+	local best_obj = nil
+	local smallest_angle = 0.2
+	local acpos = db.actor:position()
+	local max_distance = 150
+	local lbobj, pid, pobj, lbobj_pos, view_angle_offset, lbobj_dist
+	for idb_ = 1, 65534, 1 do
+		lbobj = level.object_by_id(idb_)
+		if lbobj ~= nil then
+			pid = nil
+			if type(lbobj.parent) == "function" then
+				pobj = lbobj:parent()
+				if pobj ~= nil then pid = pobj:id() end
+			end
+			-- if pid == nil then pid = 65535 end
+			if pid == nil or pid == 65535 then
+				if lbobj:clsid() == clsid.script_stalker then
+					-- if lbobj:alive() then
+					lbobj_pos=lbobj:position()
+						view_angle_offset = absolute_view_angle_offset(lbobj_pos)
+						if view_angle_offset <= smallest_angle then 
+							lbobj_dist = acpos:distance_to(lbobj_pos)
+							if lbobj_dist < max_distance and lbobj_dist > 0.1 then
+								best_obj = lbobj
+								max_distance = lbobj_dist
+								-- smallest_angle = view_angle_offset
+							end
+						end
+					-- end
+				end
+			end
+			-- end
+		end
+	end
+	return best_obj --, smallest_angle
+end
+----------------------------------
+function this_id()
+	local thing = this_thing()
+	if thing then
+		return thing:id()
+	end
+	return nil
+end
+----------------------------------
+function this_name()
+	local thing = this_thing()
+	if thing then
+		return thing:name()
+	end
+	return nil
+end
+----------------------------------
+function this_section()
+	local thing = this_thing()
+	if thing then
+		return thing:section()
+	end
+	return nil
+end
+----------------------------------
+function this_name_section()
+	local thing = this_thing()
+	if thing then
+		return string.format("%s %s",thing:name(),thing:section())
+	end
+	return nil
+end
+----------------------------------
+function this_guy_health()
+	local guy = this_guy()
+	if guy then
+		return string.format("%s %2.4f",guy:name(),guy.health)
+	end
+	return nil
+end
+----------------------------------
+function print_element(sub, key, v)
+	if type(v) == "table" then
+		dbglog("%s%s:", sub, key)
+		print_table(v, sub.."    ")
+	elseif type(v) == "function" then
+		dbglog("%s%s: function", sub, key)
+	elseif type(v) == "userdata" then
+		dbglog("%s%s: userdata", sub, key)
+	elseif type(v) == "boolean" then
+		if v == true then
+			dbglog("%s%s: true", sub, key)
+		else
+			dbglog("%s%s: false", sub, key)
+		end
+	elseif type(v) == "number" then
+		dbglog("%s%s: %g", sub, key, v)
+	else
+		if v ~= nil then
+			dbglog("%s%s: %s", sub, key, v)
+		else
+		  dbglog("%s%s: nil", sub, key)
+		end
+	end
+end
+----------------------------------
+function print_table(_table, subs)
+	local sub,kk
+	if subs ~= nil then
+		sub = subs
+	else
+		sub = ""
+	end
+	if type(_table) ~= "table" then
+		dbglog("print_table(arg): arg is %s (not a table)",type(_table))
+		return
+	end
+	for k,v in pairs(_table) do
+		if type(k) == "userdata" then -- unusual "actions" data
+			-- dbglog(sub.."??:key is userdata:"..tostring(v))
+			print_element(sub,"??[key is userdata]",v)
+		else
+			print_element(sub,tostring(k),v)
+		end
+	end
+end
+----------------------------------
+function dbstruct()
+	local this_dude = z.this_guy()
+	if this_dude ~= nil then
+		dbglog("Name: %s, character_name: %s, section: %s, id=%d",
+			this_dude:name(),this_dude:character_name(),this_dude:section(),this_dude:id())
+		local dbst = db.storage[z.this_guy():id()]
+		z.print_table(dbst)
+	else
+		dbglog("Nobody ahead")
+	end
+end
+-----------------------------------
+function dbs()
+	local this_dude = z.this_guy()
+	return (this_dude and db.storage[this_dude:id()]) or {}
+end
+-----------------------------------
+function kill_this_thing()
+	local entity = z.this_thing(true)
+	if entity and type(entity.kill) == "function" then
+		entity:kill(entity)
+	end
+end
+---------------------------------
+function bar_wars()
+	local enemies = {
+		{section="pri_monolith_respawn_3"},
+		{section="rad_soldier_master"}, --note comma on all but last
+		{section="mil_killer_respawn_4"}
+	}
+	local locations = { --only pos is needed, other parameters as desired
+		{
+			{pos=vector():set(218.729736,2.486280,-89.141243), min = 3, max = 4},
+			-- {pos=vector():set(241.520081,2.490381,-84.397278), min = 3, max = 4},
+			-- ... add more for the level
+			{pos=vector():set(258.026001,1.624133,-81.376518), min = 3, max = 4}
+		},
+		{
+			-- {pos=vector():set(218.729736,2.486280,-89.141243), min = 3, max = 4},
+			{pos=vector():set(241.520081,2.490381,-84.397278), min = 3, max = 4},
+			-- ... add more for the level
+			{pos=vector():set(258.026001,1.624133,-81.376518), min = 3, max = 4}
+		},
+		{
+			{pos=vector():set(218.729736,2.486280,-89.141243), min = 3, max = 4},
+			{pos=vector():set(241.520081,2.490381,-84.397278), min = 3, max = 4}
+			-- ... add more for the level
+			-- {pos=vector():set(258.026001,1.624133,-81.376518), min = 3, max = 4}
+		}
+	}
+	if level.name() ~= "l05_bar" then
+		_z.show_blinking_msg("You must be on the Bar level first.")
+		return
+	end
+	for i=1, #enemies do
+		-- dbglog(enemies[i].section)
+		_custom_ext_zrp_mm.spawn_(enemies[i],locations[i])
+	end
+end
+---------------------------------

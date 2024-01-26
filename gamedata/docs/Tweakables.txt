@@ -1,0 +1,62 @@
+
+	Tweakables
+
+Many STALKER items are adjustable.  Some have their own Modifier entries already.  Many do not.
+
+Examine the optional directories included with the ZRP archive.  The extensions usually indicate the purpose of the optional configuration or script file.  If you experiment with these, please keep or make backups of the originals.
+
+This is an incomplete list of tweaks you might find useful.  More will be added as time permits.
+
+================================================================
+config\creatures\m_stalker.ltx:
+
+The "use_single_item_rule" variable is set to off in the default to avoid an exploit which permits one to trade cheap weapons to stalkers, making them drop their good weapons.  But this can keep them from using the better weapons.  You can set this variable to "on" to permit them to use the better weapon if they have ammo for it.  Yes, this means that they will often drop the weapon they are currently holding.
+
+If you are using the weapons manager part of the Rulix AI tweaks, you should keep this variable set "off".
+
+================================================================
+scripts\xr_box.script:
+
+To restore the original behavior, set "use_workaround" to false.
+
+To automatically collect what is dropped, set "keep_spawns_in_pack" and "use_workaround" to true.
+
+To increase the odds that you will get artifacts or armor or medkits, search the file for "double the chances".
+
+================================================================
+For a tougher game:
+
+config\weapons\weapons.ltx:
+
+Increase the distance within which the NPCs are most accurate when shooting at you by adjusting "hit_probability_max_dist".  See the "Weapons" entry in Experimental.cfg.
+
+config\creatures\m_stalker.ltx:
+
+Make the NPCs tougher by reducing the damage they take when they are hurt.  The <hit_scale> values in the [stalker_damage] section are multipliers for the damage.
+
+Here's the set of values for the MonoMartyrs:
+
+[stalker_damage_tough]
+;bone_name	= <hit_scale>,<fwd_damage_anim_index>,<wound_scale>
+default 	= 0.1, -1, 0.02	;smaller is harder	;1.0, -1, 1.0
+bip01_head 	= 0.5, 0, 0.5, 1.0
+eyelid_1 	= 0.5, 0, 0.5, 1.0
+eye_left 	= 0.5, 0, 0.5, 3.0
+eye_right 	= 0.5, 0, 0.5, 3.0
+
+Their body is about ten times tougher than the normal stalker for a given armor mesh.  You can quickly see that their head is the soft spot.
+
+================================================================
+For an easier game:
+
+config\creatures\actor.ltx (may need to install via Modifier or copy a version from config\creatures\optional\):
+
+Change the "immunities_sect" assignment from "actor_immunities_gd_master" to "actor_immunities_gd_novice" to reduce the damage the player receives by half, at the default settings for that section -- which is also something you can change.
+
+The value of health_hit_part determines how much your physical health is affected by direct damage.  Reduce it from 1.0 to 0.5 to receive only half the damage.  You'll still bleed, though.  Change that by adjusting bleeding_v and wound_incarnation_v.
+
+You can also do the opposite of the advice given for a tougher game:  Make sure the accuracy of the NPCs is low and increase the damage they take.  (This last part will make battles quicker, though.)
+
+
+================================================================
+See also docs\ZRP_ModdingNotes.txt for some older tips.

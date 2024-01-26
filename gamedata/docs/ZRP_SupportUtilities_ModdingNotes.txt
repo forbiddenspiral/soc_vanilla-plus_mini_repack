@@ -1,0 +1,103 @@
+================================================================
+How to create a ZRP Support Utility script
+
+2009/12/30 NatVac - Initial RC1 release
+2010/03/31 NatVac - RC2a update for hotkey support
+================================================================
+
+A ZRP Support Utilities (AKA 'Modolith Wish Granter') script is a normal 
+STALKER Lua script. It is listed in the dialog if it starts with "z_" 
+and ends with ".script". You can add it to the scripts subdirectory and 
+it will appear in the ZSU dialog when you load a saved game or change 
+levels. 
+
+Here's the bare-bones template for a Support Utility script:
+
+================================================================
+name = ""
+description = ""
+author = ""
+revision = "1.0"
+number_of_parameters = 0
+
+function main()
+	-- your prime function
+end
+================================================================
+
+Here's the quick-start template for the script:
+
+================================================================
+name = "The Name That Appears in the Dialog" --don't make this too long
+description = "Put your description here.  Keep it brief.  You can enter hard returns with a pair of backslashes and an 'n' like this:\\nTest with 800x600 resolution, too."
+author = "YourNameHere"
+revision = "1.0.1" --must be a string
+number_of_parameters = 1 --this is the number of parameters the main() function expects.
+
+function main(parameter) --replace 'parameter' with your argument, like 'item' or 'position', etc.
+	--put your prime function here.
+end
+================================================================
+
+Here's a very simple example script, with comments.  The hotkey
+support is commented out via the double-hyphen prefix; remove the 
+hyphens to enable hotkey support -- and change the letter!
+
+================================================================
+name = "Spawn Something in Inventory"
+description = "Save first! This function requires a VALID item section parameter in the box below. Otherwise it will crash your game.\\nExamples: wpn_svd_m1 decoder af_electra_moonlight ammo_7.62x54_ap outfit_exo_m1 medkit"
+author = "NatVac"
+-- keep dik_key and hotkey in sync; use lua_help.script's DIK_keys class
+-- dik_key = DIK_keys.DIK_Z -- replace 'Z' with your key
+-- hotkey = "Z" -- replace 'Z' with your key
+revision = "1.0"
+number_of_parameters = 1
+
+function main(item) --this main() function is required
+	-- You can reference external functions and public variables in other scripts.
+	-- Note that the argument is the parameter passed into the main() function.
+	-- Right now that argument is a string.
+	_z.spawn_in_inventory(item)  --or (safer) return pcall(_z.spawn_in_inventory, item)
+end
+
+================================================================
+Other than the function main() and the file "z_*.script" naming 
+convention, not much is really required by the ZSU facility. The 
+script name (sans the ".script") is used for the name if you omit 
+the 'name' variable. The number of parameters is assumed to be 
+zero if you don't supply it, or put in an invalid value. 
+
+An optional function is qualify(key, match_string). This function 
+can be added to process keys as they are typed. Look at the 
+"Spawn Something in Inventory" script file for an example of its 
+use. 
+
+Another optional function is validate(parameter_string). You can 
+supply this function in your script to check to see if the final 
+parameter string is okay. If the parameter_string is determined 
+by this function to be invalid, return false, with an optional 
+error message to say why, followed by an optional mode number:
+
+0 = Show the error message on the Utilities dialog (default)
+1 = Show error in a message box with an OK button (no action) 
+2 = Show message box with Yes/No buttons, to proceed on Yes
+
+Since the 2 value results in both a Yes button and a No button, 
+the error message should include a query about proceeding:
+
+	return false, "Could not confirm entry! Proceed anyway?", 2
+
+Again, see the "Spawn Something in Inventory" script for an 
+example. 
+
+If you wish to keep the ZSU dialog open, have your main() 
+function return false.  You can append a comma and a message for 
+the description box if you wish:
+
+	return false, "Could not perform action. Try again."
+
+Just using "return" or "return true" will close the dialog and 
+return you to the game.
+
+Look at all the supplied "scripts\z_*.script" files for other 
+examples of use.

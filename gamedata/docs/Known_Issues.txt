@@ -1,0 +1,273 @@
+=====================================
+Known issues and Game Quirks:
+=====================================
+
+General:
+
+Patch 1.0006 introduces new engine bugs. You cannot eat or use 
+items directly from a corpse; move them to your inventory first. 
+Sometimes using an item yourself will cause the same crash. 
+There was also an issue with drop-a-medkit healing in ZRP with 
+patch 1.0006. This is fixed in ZRP 1.07 R5.
+
+Also fixed is a rare crash during level changes. Patch 1.0006 
+now destroys the bind_stalker's bind_object as you leave a level 
+yet still calls the on_item_drop callback on every item in your 
+inventory in a parallel thread. This can crash your game if the 
+destruction occurs before the first item is processed.
+
+Sometimes the rain is accompanied by flashing triangles.  There 
+is something not properly initialized in the graphics engine, 
+perhaps relating to shaders.  Until a graphics specialist can 
+address this, one workaround is to exit and relaunch the game. 
+You can also use the temporary ZSU script fix to reset the rain 
+in the current game session. Tip: Avoid Alt-tabbing in/out of 
+the game.
+
+A tossed weapon on NPC death can be lost or destroyed by the 
+game, causing a CTD as other NPCs attempt to evaluate it.  This 
+can give the appearance of a lockup or freeze, and you may have 
+to use the Task Manager (ctrl-alt-del) to terminate the game 
+process.
+
+Certain anomalies have a radius and/or a location that makes 
+life virtually impossible for nearby stalkers, even with Red75's 
+SANB mini-mod.  This will eventually be fixed, but the current 
+workaround is to go beyond switch distance or change levels so 
+that the NPCs can safely navigate past the deadly obstruction in 
+offline mode.
+
+Certain resolutions, notably 1280x720 and 800x600, do not show 
+news updates in the lower left of the display.  This is an 
+"engine" problem. Change to a higher resolution if possible. The 
+news items are in your PDA log.
+
+"Eliminate Camp" task references are not properly tracked.  This 
+may be a game engine issue.  One effect is the "current task" 
+function (default key is TAB) won't properly show the current 
+task. The PDA contains the correct info. 
+
+Use the debug time shifting with caution -- non-10X speeds may 
+affect scenarios.  For example, using a 1X speed for the 
+Agroprom rescue of Mole might prevent the helicopter from 
+making his rounds of the Agroprom compound. It can also cause 
+strange behavior of Kruglov and his group in Rostok.
+
+Some task "Return for reward" identifiers might be incorrect, as 
+only the last one for each taskgiver is shown, and it is possible 
+to complete the last task before an earlier one. This should be 
+fixed as of ZRP 1.07 R5.
+
+The game will transfer any object out of your inventory to meet 
+an external requirement (e.g., bring a Night Star) without regard 
+to whether you have it on your belt or not. In some cases this 
+can mean that you suffer from radiation poisoning because your 
+protection was removed. 
+
+After a crash, the "Last Save" button is likely NOT the last save 
+you expect, because the crash lost that info. It is the last save 
+of the previous gaming session. 
+
+Double-clicking a red target in the task list does not always 
+select the objective on the map, but it does center the map view 
+on the objective. 
+
+The task to find the Dutyer's weapon can display a marker where 
+the weapon was, but it is often stored in the inventory of the 
+weapon's bearer or strapped to his back, and this is not tracked 
+by the game until you are on the same level as the one carrying 
+the weapon. 
+
+NPCs will often reset to their spawning positions and logic when 
+you leave and return to a level, although most of the immersion 
+breakers for these have been resolved. Examples include 
+Kruglov/Semenov whining to Sakharov and the Skull group 
+restarting at the western entrance to Army Warehouses. Solutions 
+to these have been implemented over time and most should be gone 
+in ZRP 1.07 R5RC.
+
+Some game doors on a level can "break" and become inert. These 
+can be fixed by executing a ZSU script while near the broken 
+door. Doors that commonly break: the Cordon trader's door, the 
+Dark Valley doors (the door to X18, Shaggy's cell door, the 
+armory door) and the Yantar scientist bunker doors.  Other 
+doors have been known to break in X18, Pripyat, the Sarcophagus 
+and Monolith Control.
+
+An alternative is to use a workaround.  You can bump the inert 
+door to get it to open enough to push it all the way open.  This 
+solution is sufficient for all the doors except the door to X18. 
+Or you can use Esc D F after enabling the ZRP debug mode.  This 
+will teleport past most doors to permit you to push it open from 
+within.  It will remove the X18 door entirely and permit you to 
+complete the pending task.  See the debug notes for teleporting 
+via Esc D F.
+
+Switches in X16 and X19 can also break. You can use the ZRP 
+support utilities to fix broken switches as well.
+
+The physics engine is quirky. Collision handling can send bodies 
+(or even you) flying, just to keep two objects from trying to 
+occupy the same space. 
+
+Certain dynamic quests do not behave well when you reload a 
+save made in the middle of the task.  Examples include helping 
+Bullet rescue his friend (make a save as he starts eastward 
+from the west side of Dark Valley) and siding with Freedom 
+against Skull's group (make saves before talking to Lukash). 
+
+Some NPCs at camps will enter into a fugue state. Sometimes you 
+can talk to them to snap them out of it, or use the Reset NPC 
+ZSU script. As of ZRP 1.07 R4, most NPCs should automatically 
+snap out of it within a few seconds.
+
+Stealth:
+
+Saving while being stealthy near enemy doesn't work, as the 
+initialization while loading the save can alert the bad guys 
+to your presence, especially if there are any dead NPCs nearby. 
+Tips: Make a save before any NPC is hurt or alerted. Equip a 
+quiet weapon (e.g., knife) before saving, and make sure you are 
+not visible to any enemy NPCs when you save. You should not be 
+where any NPCs could see you if they switch online facing in 
+your direction. Also, not everything in the game that is a 
+vision barrier to you is one to the NPCs.
+
+As of ZRP 1.07 R5, if you stealthily take down an enemy before 
+he identifies any enemies (not just you), then you can make 
+a save that will preserve that "unknown killer" information. 
+Upon reloading that save, his body might alert his associates 
+but they will not know that you killed him nor will they know 
+where you were when you did that.
+
+Garbage: 
+
+The initial bandit attack on the Garbage vehicle graveyard from 
+the west can stall if you move too far west before talking to 
+Bes.  The objective remains, however, and you can complete it 
+and perhaps even remind the bandits what they want to do simply 
+by taking the attack to them.
+
+Agroprom Underground:
+
+The Agroprom underground secrets and quest targets do not 
+reliably display on the map. (Fixed as of ZRP 1.07 R5.)
+
+NPCs that transition into the underground while you are there 
+will sometimes spawn and immediately fry in the Electro-filled 
+tunnel.  They will be okay if the transition is made while you 
+are not there.
+
+Bar:
+
+The arena still has issues. You should not save while in the 
+battle zone except right after you are transported there. 
+
+You should also check your log after completing an arena battle; 
+critical SMap Location errors can corrupt saves. This occurs 
+because the game deletes the NPCs you fought while you are 
+still in range of their mini-map spots, and sometimes the game 
+doesn't remove the spot before it deletes the body. This 
+orphaned spot is saved but not properly loaded as it no longer 
+has a parent. 
+
+As of ZRP 1.07 R5, an active workaround is in place which will 
+hopefully prevent the problem.
+
+Dark Valley: 
+
+Shaggy can spawn outside his cell due to spawn radius. If this 
+happens to you, you can still 'free' him the normal way via 
+the switch on the wall next to his cell. A workaround is in 
+place in ZRP 1.07 R5RC that will automatically handle the 
+situation if he is still in the cellar. If he spawns outside 
+of the cellar, he may have trouble surviving the return to his 
+cell.
+
+The "Defend the Dutyers" task requires that you move into the 
+bandit base to switch the attackers online.  They are not 
+currently online until you approach to within 125 meters of 
+their camp at the north end of the base.  This was broken in 
+patch 1.0004, along with the "defend the stalkers at the 
+campsite" task in Army Warehouses. The latter task is partially 
+fixed by the bardak bug fix attempt at the heart of the ZRP, but 
+the DV task has not yet been addressed. 
+
+You can "start the action" if you increase switch_distance in 
+config\alife.ltx from 150 to 400. Otherwise just approach the 
+bandit base.
+
+X16: 
+
+The timer reset exploit still exists. 
+
+Rostok:
+
+Some enemy could join a camp even though they were offline. The 
+normal culprits were the bandit Poker and some of the mercs that 
+ambushed Kruglov's group. This is fixed in ZRP 1.07 with a new 
+game.
+
+Yantar: 
+
+A post-X16 helicopter can be a victim of friendly fire; it can 
+get in the way of the other. 
+
+The pre-X16 psi-emitter post-process effect can be at full value 
+after a save/reload; the game is not preserving the current 
+value. (Fixed in ZRP 1.07 R4.)
+
+Army Warehouses: 
+
+Going south of the farmstead between it and the Freedom base 
+will automatically make you enemies with one of the snipers. 
+This will make you enemies with Freedom, unless you are already 
+very solidly friends with them.  In that case, the sniper will 
+merely turn neutral, and when you go back north of that zone 
+you will be restored to friendship with him.  As of 1.07 R3, 
+this no longer occurs once Skull's group is eliminated.
+
+Max might stall when facing his troops before the battle with 
+their sworn enemy. This is because one of the troops is missing, 
+most likely stuck trying to get to the location. A save/reload 
+might fix it, or go away for a bit to allow the NPC to join up 
+with the group. Then return to join the battle group. 
+
+Later, Max will attempt to return to the base through a wall that 
+may be still standing. Go away for a bit and he will make it back 
+okay. 
+
+You must not be seen by Pavlik to avoid failing the task, but you 
+must also be close enough to him to get him to turn enemy. 
+Otherwise, dealing with him could make you the enemy of the 
+faction you are trying to help. 
+
+It is possible that you are already friends with Freedom when you 
+take on the Pavlik task. Instead of becoming enemy, he becomes 
+merely neutral. It's okay to deal with him, even so -- but only 
+after you are explicitly told to do so. This is not the first 
+item on the quest. 
+
+The Defend the Campsite autoquest given by Lukash would sometimes 
+autocomplete due to improper "state" initialization -- but the 
+mercs would still attack the stalkers afterward. This automatic 
+completion should not occur as of ZRP 1.07 R5RC.  (Requires new 
+game; mil_lager's useless states conflicted with the task.)
+
+Red Forest: 
+
+As with Yantar, the pre-X19 psi-emitter post-process effect can 
+be at full value after a save/reload; the game is not preserving 
+the current value. (Fixed in ZRP 1.07 R4.)
+
+The visibility indicator sticks after encountering the psydog. 
+A save/reload will correct this. 
+
+Pripyat: 
+
+Lots of torches at night will shred framerate on some PCs. You 
+can reduce this by enabling NPC Smart Flashlights via the 
+Modifier's Experimental.cfg configuration file.
+
+
+See also QuirksInTheGame.txt and the ZRP_Changes_*.txt files.

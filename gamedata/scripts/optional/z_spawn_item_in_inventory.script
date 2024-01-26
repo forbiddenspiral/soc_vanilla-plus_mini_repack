@@ -1,0 +1,326 @@
+-- script for optional spawning in inventory
+name = "Spawn Something in Inventory"
+description = "Use auto-complete: Type starting letters of section name, then use arrow keys. up/down=prev/next, left/right=reset/use. 'af' - artifacts, 'am' - ammo, 'w' - weapons"
+author = "NatVac"
+dik_key = DIK_keys.DIK_S
+hotkey = "S"
+revision = "1.0.4"
+number_of_parameters = 1
+
+sp_sorted = false
+current_str = ""
+cur_pos = 1
+
+local spawnables = {
+	-- Artifacts
+	"af_medusa",
+	"af_cristall_flower",
+	"af_night_star",
+	"af_vyvert",
+	"af_gravi",
+	"af_gold_fish",
+	"af_drops",
+	"af_fireball",
+	"af_cristall",
+	"af_blood",
+	"af_mincer_meat",
+	"af_soul",
+	"af_electra_sparkler",
+	"af_electra_flash",
+	"af_electra_moonlight",
+	"af_ameba_slime",
+	"af_ameba_slug",
+	"af_ameba_mica",
+	"af_dummy_spring",
+	"af_dummy_dummy",
+	"af_dummy_battery",
+	"af_dummy_pellicle",
+	"af_dummy_glassbeads",
+	"af_rusty_thorn",
+	"af_rusty_kristall",
+	"af_rusty_sea-urchin",
+	"af_fuzz_kolobok",
+
+	-- Ammo
+	"ammo_9x18_fmj",
+	-- "ammo_9x18_pbp", --not really in vanilla
+	"ammo_9x18_pmm",
+	"ammo_9x19_fmj",
+	"ammo_9x19_pbp",
+	"ammo_5.45x39_fmj",
+	"ammo_5.45x39_ap",
+	"ammo_5.56x45_ss190",
+	"ammo_5.56x45_ap",
+	-- "ammo_5.7x28_fmj", --not really in vanilla
+	-- "ammo_5.7x28_ap", --not really in vanilla
+	"ammo_7.62x54_7h1",
+	"ammo_7.62x54_7h14",
+	"ammo_7.62x54_ap",
+	"ammo_9x39_pab9",
+	"ammo_9x39_ap",
+	"ammo_9x39_sp5",
+	"ammo_11.43x23_fmj",
+	"ammo_11.43x23_hydro",
+	"ammo_12x70_buck",
+	"ammo_12x76_dart",
+	"ammo_12x76_zhekan",
+	"ammo_12x76_zhekan_heli",
+	"ammo_gauss",
+	"ammo_m209",
+	"ammo_og-7b",
+	"ammo_vog-25",
+	"ammo_vog-25p",
+
+	-- Explosives
+	"explosive_barrel",
+	"explosive_barrel_low",
+	"explosive_dinamit",
+	"explosive_fuelcan",
+	"explosive_mobiltank",
+	"explosive_tank",
+	"grenade_gd-05",
+	"grenade_f1",
+	"grenade_rgd5",
+
+	-- Miscellaneous items
+	"antirad",
+	"bandage",
+	"bread",
+	"conserva",
+	"detector_advances",
+	"detector_elite",
+	"detector_simple",
+	"device_pda",
+	"device_torch",
+	"energy_drink",
+	"guitar_a",
+	"harmonica_a",
+	"kolbasa",
+	"medkit",
+	"medkit_army",
+	"medkit_scientic",
+	"vodka",
+
+	-- Weapon addons
+	"wpn_addon_grenade_launcher",
+	"wpn_addon_grenade_launcher_m203",
+	"wpn_addon_scope",
+	"wpn_addon_scope_susat",
+	"wpn_addon_silencer",
+
+	-- Weapons
+	"wpn_abakan",
+	"wpn_abakan_m1",
+	"wpn_abakan_m2",
+	"wpn_ak74",
+	"wpn_ak74_m1",
+	"wpn_ak74u",
+	"wpn_ak74u_m1",
+	"wpn_beretta",
+	"wpn_binoc",
+	"wpn_bm16",
+	"wpn_colt1911",
+	"wpn_colt_m1",
+	"wpn_desert_eagle",
+	"wpn_eagle_m1",
+	-- these probably result in stack trace CTD, error 259: No more data is available
+	-- "wpn_fake_missile1",
+	-- "wpn_fake_missile2",
+	-- "wpn_fake_missile",
+	"wpn_fn2000",
+	"wpn_fort",
+	"wpn_fort_m1",
+	"wpn_g36",
+	"wpn_gauss",
+	"wpn_groza",
+	"wpn_groza_m1",
+	"wpn_hpsa",
+	"wpn_knife",
+	"wpn_l85",
+	"wpn_l85_m1",
+	"wpn_l85_m2",
+	"wpn_lr300",
+	"wpn_lr300_m1",
+	-- "wpn_mac10", --not in vanilla
+	"wpn_mp5",
+	"wpn_mp5_m1",
+	"wpn_mp5_m2",
+	"wpn_pb",
+	"wpn_pm",
+	"wpn_rg-6",
+	"wpn_rg6_m1",
+	"wpn_rpg7",
+	-- "wpn_rpg7_missile", results in xrGame.dll crash
+	"wpn_sig220",
+	"wpn_sig550",
+	"wpn_sig_m1",
+	"wpn_sig_m2",
+	"wpn_spas12",
+	"wpn_spas12_m1",
+	"wpn_svd",
+	"wpn_svd_m1",
+	"wpn_svu",
+	"wpn_toz34",
+	"wpn_usp",
+	"wpn_val",
+	"wpn_val_m1",
+	"wpn_vintorez",
+	"wpn_walther",
+	"wpn_walther_m1",
+	"wpn_wincheaster1300",
+	"wpn_winchester_m1",
+	"hunters_toz",
+	"hunters_toz_34",
+
+	-- Outfits
+	"bandit_outfit",
+	"dolg_outfit",
+	"dolg_scientific_outfit",
+	"ecolog_outfit",
+	"exo_outfit",
+	"killer_outfit",
+	"military_commander_outfit",
+	"military_outfit",
+	"military_stalker_outfit",
+	"monolit_outfit",
+	"novice_outfit",
+	"outfit_bandit_m1",
+	"outfit_dolg_m1",
+	"outfit_exo_m1",
+	"outfit_killer_m1",
+	"outfit_novice_m1",
+	"outfit_specnaz_m1",
+	"outfit_stalker_m1",
+	"outfit_stalker_m2",
+	"outfit_svoboda_m1",
+	"protection_outfit",
+	"scientific_outfit",
+	"soldier_outfit",
+	"specops_outfit",
+	"stalker_outfit",
+	"svoboda_heavy_outfit",
+	"svoboda_light_outfit",
+
+	-- Mutant parts
+	"mutant_boar_leg",
+	"mutant_burer_hand",
+	"mutant_dog_tail",
+	"mutant_flesh_eye",
+	"mutant_krovosos_jaw",
+	"mutant_psevdodog_tail",
+	"mutant_snork_leg",
+	"mutant_zombie_hand",
+
+	-- Quest items
+	-- "af_blood_tutorial",
+	-- "cit_doctors_key",
+	-- "dar_pass_flash",
+	-- "dar_pass_document",
+	-- "dar_document1",
+	-- "dar_document2",
+	-- "dar_document3",
+	"dar_document4", -- X18 docs
+	-- "dar_document5",
+	"decoder", -- Pripyat hotel device for Monolith door
+	-- "dynamite", -- use explosive_dinamit
+	"esc_wounded_flash", -- Nimble's flash drive
+	"gunslinger_flash", -- Strelok's flash drive
+	-- "bar_tiran_pda",
+	-- "bar_lucky_pda",
+	"bar_ecolog_flash", -- Kruglov's flash drive
+	"lab_x16_documents", -- X16 docs
+	"good_psy_helmet",
+	"bad_psy_helmet",
+	"kruglov_flash", -- emissions measurement
+	"crazy_flash", -- Max quest target
+	-- "mil_svoboda_leader_pda",
+	"pri_decoder_documents", -- Pripyat hotel docs
+	"quest_case_01", -- Cordon outpost case
+	"quest_case_02", -- Agroprom mil case
+	-- "val_key_to_underground",
+
+	-- ABC sleeping bag
+	"sleep_bag",
+
+	-- MM/AS demo items
+	"af_niphty",
+	"af_niphty_shield",
+	"af_supershield",
+	"af_ultimashield",
+	"af_ultrashield",
+	"ammo_pellet",
+	"ecolog_outfit_psi_coll",
+	"outfit_specnaz_m2",
+	"wpn_addon_scope_m1",
+	"wpn_eagle_m2", -- cool pistol
+	-- "wpn_eagle_pg", -- meant for NPCs
+	"wpn_mp5_niphty_m1",
+	"wpn_mp5_niphty_m2",
+	"wpn_sig_m3",
+	"wpn_val_m2",
+	"wpn_val_m3",
+	"wpn_vintorez_coll"
+}
+
+function main(item)
+	-- _z.spawn_in_inventory(item)
+	-- pcall doesn't work on low-level engine crashes, unfortunately
+	local success, result = pcall(_z.spawn_in_inventory,item)
+	return success, result
+end
+
+function qualify(key, match_str)
+	if sp_sorted == false then
+		table.sort(spawnables)
+		sp_sorted = true
+	end
+	local handled = false
+	if key == DIK_keys.DIK_LEFT then
+		if match_str == "" then
+			current_str = ""
+			cur_pos = 1
+		end
+		-- dbglog("spawnables = "..tostring(#spawnables))
+		handled = true
+	elseif key == DIK_keys.DIK_RIGHT then
+		handled = true
+	elseif key == DIK_keys.DIK_UP then
+		cur_pos = cur_pos - 1
+		if cur_pos < 1 then cur_pos = 1 end
+		handled = true
+	elseif key == DIK_keys.DIK_DOWN then
+		cur_pos = cur_pos + 1
+		if cur_pos > #spawnables then cur_pos = #spawnables end
+		handled = true
+	else
+		-- match the supplied string
+		for i,v in ipairs(spawnables) do
+			if string.find(v,match_str,1,true) == 1 then
+				cur_pos = i
+				handled = true
+				break
+			end
+		end
+	end
+	if handled then
+		current_str = spawnables[cur_pos]
+		return current_str, _z.friendly_name(current_str)
+	else
+		return nil, nil -- don't modify input
+	end
+end
+
+function validate(match_str)
+	for i,v in ipairs(spawnables) do
+		if match_str == v then
+			return true, "Input is valid"
+		end
+	end
+	if system_ini():section_exist(match_str) then
+		if system_ini():line_exist(match_str,"inv_name") then
+			return true, game.translate_string(system_ini():r_string(match_str,"inv_name"))
+		end
+		return false, "No inventory name found for '"..match_str.."'. Crash to desktop anyway?", 2
+	end
+	return false, "No entry found in system for '"..match_str.."'.", 1
+end

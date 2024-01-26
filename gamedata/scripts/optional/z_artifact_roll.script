@@ -1,0 +1,172 @@
+-- 
+name = "Artifact Roll"
+description = "Click 'Go' or press 'R' to roll for artifacts, press S to spawn them, press E to exit."
+author = "NatVac"
+dik_key = DIK_keys.DIK_A
+hotkey = "A"
+revision = "1.0.3"
+number_of_parameters = "key"
+
+--DIK_1 = 2, DIK_2 = 3, DIK_6 = 7
+keys = {
+	["R"] = {dik_key=DIK_keys.DIK_R,keystroke="r"},
+	["E"] = {dik_key=DIK_keys.DIK_E,keystroke="e"},
+	["S"] = {dik_key=DIK_keys.DIK_S,keystroke="s"}
+}
+
+local roll_count = 0
+
+local artifact_odds = 
+{
+	{sec_name = "af_medusa",			 odds = 0.03},
+	{sec_name = "af_cristall_flower",	 odds = 0.012},
+	{sec_name = "af_night_star",		 odds = 0.009},
+	{sec_name = "af_vyvert",			 odds = 0.03},
+	{sec_name = "af_gravi",				 odds = 0.012},
+	{sec_name = "af_gold_fish",			 odds = 0.009},
+	{sec_name = "af_blood",				 odds = 0.03},
+	{sec_name = "af_mincer_meat",		 odds = 0.012},
+	{sec_name = "af_soul",				 odds = 0.009},
+	{sec_name = "af_electra_sparkler",	 odds = 0.03},
+	{sec_name = "af_electra_flash",		 odds = 0.012},
+	{sec_name = "af_electra_moonlight",	 odds = 0.009},
+	{sec_name = "af_rusty_thorn",		 odds = 0.03},
+	{sec_name = "af_rusty_kristall",	 odds = 0.012},
+	{sec_name = "af_rusty_sea-urchin",	 odds = 0.009},
+	{sec_name = "af_ameba_slime",		 odds = 0.03},
+	{sec_name = "af_ameba_slug",		 odds = 0.012},
+	{sec_name = "af_ameba_mica",		 odds = 0.009},
+	{sec_name = "af_drops",				 odds = 0.03},
+	{sec_name = "af_fireball",			 odds = 0.012},
+	{sec_name = "af_cristall",			 odds = 0.009}
+}
+
+--[[ test for cost of locals in/out of functions
+-- function test()
+	-- _dev.queue_delayed_event({delay=2000,event="z_artifact_roll.main(\"t\")"})
+-- end
+
+local x1, x2
+function main(roll_command)
+	local spawnlist = ""
+	local count = 0
+	if roll_command == "1" then --test
+		-- dbglog("Timestamp: start test 1 - "..game.get_game_time():timeToString(game.CTime.TimeToMilisecs))
+		-- dbglog("Timestamp: start test 1 - "..tostring(device():time_global()))
+		-- local startTime = device():time_global()
+		for ix=1,100,1 do
+			for id_=1,4000000,1 do
+				x1 = count + 1
+				x2 = count + 1
+				x1 = x1 + 1
+				x2 = x2 + 1
+				x1 = x1 + 1
+				x2 = x2 + 1
+				x1 = x1 + 1
+				x2 = x2 + 1
+				x1 = x1 + 1
+				x2 = x2 + 1
+			end
+		-- dbglog("Timestamp: end test 1 - "..tostring(device():time_global() - startTime))
+		end
+		dbglog("Timestamp: test 1 - complete")--game.get_game_time():diffSec(startTime))
+	elseif roll_command == "2" then --test
+		-- startTime = device():time_global()
+		for ix=1,100,1 do
+			for id_=1,4000000,1 do
+				local y1 = count + 1
+				local y2 = count + 1
+				y1 = y1 + 1
+				y2 = y2 + 1
+				y1 = y1 + 1
+				y2 = y2 + 1
+				y1 = y1 + 1
+				y2 = y2 + 1
+				y1 = y1 + 1
+				y2 = y2 + 1
+			end
+		end
+			dbglog("Timestamp: test 2 - complete")--game.get_game_time():diffSec(startTime))
+		-- dbglog("Timestamp: end test 2 - "..game.get_game_time():timeToString(game.CTime.TimeToMilisecs))
+		-- dbglog("Timestamp: end test 2 - "..game.get_game_time():diffSec(startTime))
+		-- dbglog("Timestamp: end test 2 - "..tostring(device():time_global() - startTime))
+	end
+end
+--]]
+
+_G.s_array = {}
+
+function main(roll_command)
+	local spawnlist = ""
+	local count = 0
+	if roll_command == "r" or roll_command == "" then -- roll
+		_G.s_array = {}
+		while count == 0 do
+			for k,v in pairs(artifact_odds) do
+				if math.random(1000) < (v.odds * 1000) then
+					-- success for this one
+					table.insert(_G.s_array,v.sec_name)
+					local valcolor = "%c[255,255,255,255]"
+					if v.odds < 0.02 then
+						if v.odds < 0.01 then valcolor = "%c[120,255,120,160]" --zc_rose
+						else
+							valcolor = "%c[255,238,155,23]" --zc_yellow
+						end
+					end
+					
+					if count == 0 then
+						spawnlist = valcolor .. _z.friendly_name(v.sec_name)
+					else
+						spawnlist = spawnlist .. ", " .. valcolor .. _z.friendly_name(v.sec_name)
+					end
+					count = count + 1
+				end
+			end
+		end
+		if count > 0 then
+			return false, spawnlist
+		else
+			roll_count = roll_count + 1
+			return false, if_then_else(roll_count%2 == 0,"**** nothing ****","---- nothing ----")
+		end
+	elseif roll_command == "s" then -- spawn results of last roll
+		if #_G.s_array > 0 then
+			for k,v in pairs(_G.s_array) do
+				dbglog("spawning "..v)
+				_z.spawn_in_inventory(v)
+				if count == 0 then
+					spawnlist = _z.friendly_name(v)
+				else
+					spawnlist = spawnlist .. ", " .. _z.friendly_name(v)
+				end
+				count = count + 1
+			end
+			_G.s_array = {}
+			return false, "Spawned "..spawnlist
+		else
+			return false, "Nothing to spawn!"
+		end
+	elseif roll_command == "e" then -- exit
+		return nil -- used to close the dialog
+	end
+end
+
+-- function spawn()
+	-- if #_G.s_array > 0 then
+		-- for k,v in pairs(_G.s_array) do
+			-- dbglog("spawning "..v)
+			-- _z.spawn_in_inventory(v)
+		-- end
+		-- _G.s_array = {}
+	-- end
+-- end
+
+--hack to spawn the last roll shown, but just once
+-- function qualify(key, match_str)
+	-- if key == DIK_keys.DIK_S then
+	-- if #_G.s_array > 0 then
+		-- spawn()
+	-- else
+		-- return 
+	-- end
+-- end

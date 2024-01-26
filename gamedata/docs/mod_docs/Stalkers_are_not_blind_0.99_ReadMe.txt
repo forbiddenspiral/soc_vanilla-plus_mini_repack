@@ -1,0 +1,35 @@
+Stalkers are not blind v0.99
+(Additional English translation by Babel Fish and NatVac)
+
+by Red75 
+
+Stalkers evade anomalies.
+This MOD should work with any patch up to 1.0003
+You don't need to start new game after patch installation.
+This mod can be used in any appropriate way, given that author's name is mentioned.
+
+Changes in 0.99
+  exact anomalies' radiuses are used, instead of guessed values
+  anomaly evasion algorithm is improved
+  Kruglov makes his way thru anomalies almost as fast as in vanilla game thanks to improved algorithm
+  
+Changes in 0.95 
+
+  the algorithm of anomaly evasion is not discontinued at the sight of the enemy
+  a table of probabilities of collision with the anomaly while in combat mode is added
+  stalkers consider effective casualty radius for each type of the anomalies
+  anomaly evasion algorithm is changed
+
+Changes into 0.9 
+
+  dynamic anomalies now supported
+  the algorithm to obtain the list of anomalies is optimized
+  the algorithm for anomaly evasion by stalkers is changed
+  a table of probabilities of collision with the anomaly is added
+
+====================
+
+Notes for ZRP implementation:
+  The outfit_evaluator support was removed, since it was not provided with 0.99
+  Crash prevention tweaks made to anomaly_evader.script and anomaly_holder.script
+  "mylog" debug calls may be changed to dbglog in some cases.  Most are not used.

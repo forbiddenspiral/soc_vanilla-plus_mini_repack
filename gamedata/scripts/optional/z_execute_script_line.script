@@ -1,0 +1,67 @@
+name = "Execute Script Command"
+description = "This will parse the argument you enter below and try to run it as a Lua statement.\\nAn invalid statement can crash the game. (Save first.)"
+author = "NatVac"
+-- keep dik_key and hotkey in sync; use lua_help.script's DIK_keys class
+dik_key = DIK_keys.DIK_X
+hotkey = "X"
+revision = "1.0.1"
+number_of_parameters = 1
+
+local not_valid_lua_statement = "Input is not a valid Lua statement: "
+
+function main(argument)
+	if type(argument) == "string" then
+		-- dbglog("Attempting to execute: "..argument)
+		-- assert(loadstring(argument))() -- normal method of executing a string
+		local exec_func = loadstring(argument)
+		local exec_func_type = type(exec_func)
+		if exec_func_type == "nil" then --not yet a valid statement, might be value or reference
+			-- use the echo function to make any valid result printable
+			return false, echo(argument)
+		elseif exec_func_type == "function" then
+			return pcall(exec_func) -- returns true on success, false with error msg otherwise
+		-- elseif exec_func_type == "boolean" or exec_func_type == "string" or exec_func_type == "number" then
+			-- return false, string.format(argument .. " = %s", tostring(loadstring("return "..argument)()))
+		else
+			return false, not_valid_lua_statement .. "\\n" .. argument
+		end
+	end
+end
+
+function echo(argument)
+	local exec_func = loadstring("return "..argument)
+	if type(exec_func) ~= "function" then return not_valid_lua_statement.."\\n"..argument end 
+	local success, return_val = pcall(exec_func)
+	if success == true then
+		local result_type = type(return_val)
+		if result_type == "boolean" or result_type == "string" or result_type == "number" then
+			return string.format(argument .. " = %s", tostring(return_val))
+		else
+			return argument .. " evaluates to type '" .. result_type .. "'."
+		end
+	else
+		return return_val
+	end
+end
+
+function validate(argument)
+	if type(argument) == "string" then
+		-- dbglog("Attempting to execute: "..argument)
+		if string.find(argument,"echo ",1,true) == 1 or string.find(argument,"show ",1,true) == 1 then
+			argument = string.sub(argument,6)
+			return false, echo(argument)
+		elseif string.find(argument,"print ",1,true) == 1 then
+			argument = string.sub(argument,7)
+			return false, echo(argument)
+		elseif string.find(argument,"exec ",1,true) == 1 then
+			argument = string.sub(argument,6)
+			local success, return_val = main(argument)
+			if success then return false, "Exec'ed '"..argument.."'" end
+			return false, return_val
+		end
+	else
+		return false, "Input must be a string."
+	end
+	-- nil return treated same as true
+end
+

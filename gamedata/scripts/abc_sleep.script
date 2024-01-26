@@ -1,0 +1,118 @@
+--[[
+****************************************************
+  ABC - Basic Sleep Bag Mod - adapted for ZRP use
+
+nv120307 - added kb callback: hours 1-9, fixed Esc
+****************************************************
+--]]
+
+local abc_bag = "sleep_bag"
+local abc_ui_is_on = false
+local keep_bag_flag = false
+
+function add_bag_if_needed(use_bag)
+	if use_bag then keep_bag_flag = true else return end
+	if db.actor:object(abc_bag) == nil then 
+		local item_struct = {
+			section = abc_bag,
+			pos = db.actor:position(),
+			lid = db.actor:level_vertex_id(),
+			gid = db.actor:game_vertex_id(),
+			pid = db.actor:id()
+		}
+		_dev.queue_item_for_insertion(item_struct)
+		bind_stalker.nv_need_update = true
+	end
+end
+
+local sleep_dlg = nil
+
+function show_sleep_dialog()
+	if sleep_dlg == nil then
+		sleep_dlg = sleep_ui(get_hud())
+	end
+	if sleep_dlg then
+		level.start_stop_menu(sleep_dlg, true)
+		abc_ui_is_on = true
+	end
+end
+
+class "sleep_ui" (CUIScriptWnd)
+
+function sleep_ui:__init(owner) super()
+	self.owner = owner
+	self:InitControls()
+	self:InitCallBacks()
+end
+
+function sleep_ui:__finalize() end
+
+function sleep_ui:InitControls()
+	self:Init(5,5,300,300)
+	local xml = CScriptXmlInit()
+	xml:ParseFile("ui_abc_sleep.xml")
+    if _z.mainmenu_anims then
+		xml:InitStatic("back_video", self)
+    end
+	xml:InitStatic("background", self)
+	self:Register(xml:Init3tButton("caption", self),"caption")
+	self:Register(xml:Init3tButton("btn_1", self),"btn_1")
+	self:Register(xml:Init3tButton("btn_2", self),"btn_2")
+	self:Register(xml:Init3tButton("btn_3", self),"btn_3")
+	if db.actor.health < 0.9 then
+		self:Register(xml:Init3tButton("btn_4", self),"btn_4")
+	end
+	self:Register(xml:Init3tButton("btn_quit", self),"btn_quit")
+end
+
+function sleep_ui:InitCallBacks()
+	self:AddCallback("btn_1", ui_events.BUTTON_CLICKED, self.sleep_ui1, self)
+	self:AddCallback("btn_2", ui_events.BUTTON_CLICKED, self.sleep_ui2, self)
+	self:AddCallback("btn_3", ui_events.BUTTON_CLICKED, self.sleep_ui3, self)
+	if db.actor.health < 0.9 then
+		self:AddCallback("btn_4", ui_events.BUTTON_CLICKED, self.sleep_ui4, self)
+	end
+	self:AddCallback("btn_quit", ui_events.BUTTON_CLICKED, self.on_quit, self)
+end
+
+function sleep_ui:sleep_ui1()
+	sleep_manager.sleep_one_hour()
+	self:on_quit()
+end
+function sleep_ui:sleep_ui2()
+	sleep_manager.sleep_three_hours()
+	self:on_quit()
+end
+function sleep_ui:sleep_ui3()
+	sleep_manager.sleep_nine_hours()
+	self:on_quit()
+end
+function sleep_ui:sleep_ui4()
+	sleep_manager.sleep_unlim(0)
+	self:on_quit()
+end
+function sleep_ui:on_quit()
+	abc_ui_is_on = false
+	add_bag_if_needed(keep_bag_flag)
+	self:GetHolder():start_stop_menu (self,true)
+end
+
+function sleep_ui:OnKeyboard(dik, keyboard_action)  --virtual function
+	CUIScriptWnd.OnKeyboard(self,dik,keyboard_action)
+
+	-- any key from 1 through 9 sets time
+	-- Esc and Return exit and restore sleepbag to inventory
+	if keyboard_action == ui_events.WINDOW_KEY_PRESSED then
+		local alive_on_level = level.present() and (db.actor ~= nil) and db.actor:alive()
+		if alive_on_level then -- player can sleep
+			if dik == DIK_keys.DIK_ESCAPE or dik == DIK_keys.DIK_RETURN then
+				self:on_quit()
+			elseif dik >= DIK_keys.DIK_1 and dik < DIK_keys.DIK_0 then
+				sleep_manager.main(dik-1)
+				self:on_quit()
+			end
+		end
+	end
+
+	return true
+end

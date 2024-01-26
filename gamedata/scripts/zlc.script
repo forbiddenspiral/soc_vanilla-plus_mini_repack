@@ -1,0 +1,248 @@
+-- File:        zlc.script
+-- Description: Dynamic Level Changer support for the Zone Reclamation Project (ZRP)
+-- Created:     2009.04.03
+-- Copyright:   2009 NatVac
+-- Author:      NatVac
+-- Version:     1.0 - initial release
+--              1.1 - lc updates 
+
+-- primarily based on bardak's acdc.pl and comments by IG2007
+-- nv111111 adjusted Agroprom-to-Yantar LC height per ERForman
+-- nv130123 adjusted some destination view angles
+-- nv140104 changed requirement for AW-Yantar LC; must have Scorcher start
+
+local fp_lcs = {
+	l01_escape = {
+		["to_agroprom"] = {req_info="agr_factory_heli_start", --"agroprom_military_case_have",
+			sid=10240,pos=vector():set(-157.849991,16.177803,230.396179),
+			dir=vector():set(0,0,0),lid=92451,gid=167,
+			dest_lname="l03_agroprom",dest_pos=vector():set(50.212753,13.699740,-283.708099),
+			dest_dir=vector():set(0,0.479536,0),dest_lid=286948,dest_gid=450},
+		["to_darkvalley"] = {req_info="val_x18_door_open", --"val_raid_start",
+			sid=10241,pos=vector():set(371.762451,19.958951,-41.645695),
+			dir=vector():set(0,0,0),lid=594453,gid=0,
+			dest_lname="l04_darkvalley",dest_pos=vector():set(-44.382774,0.434771,-541.465698),
+			dest_dir=vector():set(0,0,0),dest_lid=122613,dest_gid=815}
+	},
+	l03_agroprom = {
+		["to_escape"] = {req_info="agr_factory_heli_start", --"agroprom_military_case_have",
+			sid=10242,pos=vector():set(53.317543,19.322743,-289.772064),
+			dir=vector():set(0,0,0),lid=289593,gid=435,
+			dest_lname="l01_escape",dest_pos=vector():set(-154.690094,9.651772,229.015198),
+			dest_dir=vector():set(0,4.556450,0),dest_lid=95429,dest_gid=167},
+		["to_yantar"] = {req_info="yan_find_laboratory_end",
+			-- lowered LC height by 0.4 m per ERForman
+			--sid=10243,pos=vector():set(-192.699707,28.674734,200.698456),
+			sid=10243,pos=vector():set(-192.699707,28.274734,200.698456),
+			dir=vector():set(0,0,0),lid=44560,gid=592,
+			dest_lname="l08_yantar",dest_pos=vector():set(-67.405266,-1.739798,-350.016083),
+			dest_dir=vector():set(0,-0.532342,0),dest_lid=15229,dest_gid=1487}
+	},
+	l07_military = {
+		["to_yantar"] = {req_info="bar_deactivate_radar_start",
+			sid=10247,pos=vector():set(-371.406006,-2.171982,182.018768),
+			dir=vector():set(0,0,0),lid=1243,gid=1838,
+			dest_lname="l08_yantar",dest_pos=vector():set(165.865067,1.698518,80.016281),
+			dest_dir=vector():set(0.09,2.32,0.09),dest_lid=131545,dest_gid=1521}
+	},
+	l08_yantar = {
+		["to_agroprom"] = {req_info="yan_find_laboratory_end",
+			sid=10244,pos=vector():set(-69.154037,1.915043,-357.288239),
+			dir=vector():set(0,0,0),lid=15229,gid=1487,
+			dest_lname="l03_agroprom",dest_pos=vector():set(-189.056900,22.233664,192.894318),
+			dest_dir=vector():set(0,3.528374,0),dest_lid=48069,dest_gid=592},
+		["to_military"] = {req_info="mil_actor_nearest",
+			sid=10248,pos=vector():set(171.224960,7.869846,83.164032),
+			dir=vector():set(0,0,0),lid=131947,gid=1521,
+			dest_lname="l07_military",dest_pos=vector():set(-364.094696,-15.251039,185.562286),
+			dest_dir=vector():set(0.2838,-1.2452,0.2838),dest_lid=2278,dest_gid=1838}
+	},
+	l12_stancia = {
+		["to_pripyat"] = {req_info="rad_task_aes",
+			sid=10245,pos=vector():set(910.793213,4.9,-406.717102),
+			dir=vector():set(0,0,0),lid=405348,gid=2400,
+			dest_lname="l11_pripyat",dest_pos=vector():set(39.957031,1.568914,426.135071),
+			dest_dir=vector():set(0,2.612595,0),dest_lid=151254,dest_gid=2270}
+	},
+	l12u_sarcofag = {
+		["to_aes"] = {req_info="aes2_monolit_teleport_ready_final",
+			sid=10246,pos=vector():set(-26.073755,5.311760,43.775452),
+			dir=vector():set(0,0,0),lid=106,gid=2466,
+			dest_lname="l12_stancia",dest_pos=vector():set(374.070740,-0.005949,32.633045),
+			dest_dir=vector():set(0,3.488695,0),dest_lid=161043,dest_gid=2384}
+	}
+}
+----------------------------------
+function add_fp_level_changers()
+	for k,v in pairs(fp_lcs) do -- iterate over freeplay lc level entries
+		for lk,lv in pairs(v) do -- iterate over freeplay lcs for each level
+			if has_alife_info(lv.req_info) then
+				local obj = alife():story_object(lv.sid)
+				if obj == nil then -- okay to create this one
+					local lc_obj = alife():create("level_changer", lv.pos, lv.lid, lv.gid)
+					if lc_obj then
+						local lcs, pckt = read_levelchanger_struct(lc_obj)
+						if lcs ~= nil then
+							lcs.story_id = lv.sid
+							lcs.dest_game_vertex_id = lv.dest_gid
+							lcs.dest_level_vertex_id = lv.dest_lid
+							lcs.dest_position = lv.dest_pos
+							lcs.dest_direction = lv.dest_dir
+							lcs.dest_level_name = lv.dest_lname
+							--lcs.dest_graph_point = ""
+							lcs.silent_mode = 0 -- 1 = no choice
+							write_levelchanger_struct(lcs, pckt, lc_obj)
+							level.map_add_object_spot(lc_obj.id, "level_changer", lk)
+							dbglog(k.." to "..lv.dest_lname.." level_changer added")
+						end
+					end
+				end
+			end
+		end
+	end
+end
+
+-- make changes to existing level changer via level changer structure
+function update_level_changer(lc_struct, hint)
+	local lc_obj = alife():story_object(lc_struct.sid)
+	if lc_obj == nil then -- doesn't exist
+		dbglog("NOT FOUND: level changer with story ID "..tostring(lc_struct.sid))
+		return
+	end
+	local lcs, pckt = read_levelchanger_struct(lc_obj)
+	if lcs ~= nil then
+		lcs.story_id = lc_struct.sid
+		lcs.dest_game_vertex_id = lc_struct.dest_gid
+		lcs.dest_level_vertex_id = lc_struct.dest_lid
+		lcs.dest_position = lc_struct.dest_pos
+		lcs.dest_direction = lc_struct.dest_dir
+		lcs.dest_level_name = lc_struct.dest_lname
+		--lcs.dest_graph_point = ""
+		lcs.silent_mode = 0 -- 1 = no choice
+		write_levelchanger_struct(lcs, pckt, lc_obj)
+		level.map_remove_object_spot(lc_obj.id, "level_changer")
+		if hint ~= nil then level.map_add_object_spot(lc_obj.id, "level_changer", hint) end
+		dbglog("Level_changer  to "..lc_struct.dest_lname.." updated")
+	end
+end
+--[[
+		local obj = alife():story_object(8650)
+		if obj == nil and level.name() ~= "l11_pripyat" then -- not yet created one
+			-- spawn levelchanger in front of you - see debug doc
+			local actor_dir = db.actor:direction()
+			local cur_pos = db.actor:position() --vector():set(x,y,z)
+			local lc_pos = vector():set(cur_pos.x + actor_dir.x * 4,
+				cur_pos.y + 1, cur_pos.z + actor_dir.z * 4)
+			local lc_obj = alife():create("level_changer", lc_pos, db.actor:level_vertex_id(), db.actor:game_vertex_id() )
+			if lc_obj then
+				local lcs, pckt = read_levelchanger_struct(lc_obj)
+				if lcs ~= nil then
+					lcs.story_id = 8650 -- arbitrary for test
+					lcs.dest_game_vertex_id = 2270
+					lcs.dest_level_vertex_id = 151254
+					lcs.dest_position = vector():set(39.957031,1.568914,426.135071)
+					lcs.dest_direction = vector():set(0,2.612595,0)
+					lcs.dest_level_name = "l11_pripyat" --"L11_Pripyat" in all.spawn
+					--lcs.dest_graph_point = ""
+					lcs.silent_mode = 0 -- 1 = no choice
+					write_levelchanger_struct(lcs, pckt, lc_obj)
+					level.map_add_object_spot(lc_obj.id, "level_changer", "to_pripyat")
+					dbglog("NPP to Pripyat LC added")
+				end
+			end
+		end
+--]]
+----------------------------------
+function read_levelchanger_struct(lc_obj)
+	local pkt = net_packet()
+	local lcs = {}  -- levelchanger structure for the organized data
+	lc_obj:STATE_Write(pkt) -- put the levelchanger structure into a readable "packet"
+	-- cse_alife_object
+	lcs.game_vertex_id = pkt:r_u16() --default => 0xffff
+	lcs.distance = pkt:r_float() --f32, default => 0.0
+	lcs.direct_control = pkt:r_u32() --default => 1
+	lcs.level_vertex_id = pkt:r_u32() --default => 0xffffffff
+	lcs.object_flags = pkt:r_s32() --h32, default => 0, net says s32, might try u32
+	lcs.custom_data = pkt:r_stringZ() --default => ''
+	lcs.story_id = pkt:r_s32() --default => -1
+	lcs.spawn_story_id = pkt:r_s32() --default => -1
+	-- cse_shape -- it's an array
+	lcs.num_shapes = pkt:r_u8()
+	--name => 'shapes', type => 'shape', default => {}
+	lcs.shape_array = {}
+	if lcs.num_shapes == 0 then
+		-- dbglog("no default shape for lc - using sphere")
+		lcs.shape_array[1] = {}
+		lcs.shape_array[1].type = 0
+		lcs.shape_array[1].offset = vector():set(0,0,0)
+		lcs.shape_array[1].radius = 2
+		lcs.num_shapes = 1
+	else
+		for i=1, lcs.num_shapes do
+			lcs.shape_array[i] = {}
+			lcs.shape_array[i].type = pkt:r_u8()
+			if lcs.shape_array[i].type == 0 then
+				-- sphere
+				lcs.shape_array[i].offset = pkt:r_vec3()
+				lcs.shape_array[i].radius = pkt:r_float()
+				local offset = lcs.shape_array[i].offset
+				-- dbglog("Shape is sphere, radius %s, offset = %s,%s,%s",lcs.shape_array[i].radius,offset.x,offset.y,offset.z)
+			else -- box
+				lcs.shape_array[i].box = pkt:r_matrix()
+			end
+		end
+	end
+	-- cse_alife_space_restrictor
+	lcs.restrictor_type = pkt:r_u8() --default => 0xff
+	-- cse_alife_level_changer
+	lcs.dest_game_vertex_id = pkt:r_u16() --u16, default => 0
+	lcs.dest_level_vertex_id = pkt:r_u32() --u32, default => 0
+	lcs.dest_position = pkt:r_vec3() --f32v3, default => []
+	lcs.dest_direction = pkt:r_vec3() --f32v3, default => []
+	lcs.dest_level_name = pkt:r_stringZ() --sz, default => ''
+	lcs.dest_graph_point = pkt:r_stringZ() --sz, default => ''
+	lcs.silent_mode = pkt:r_u8() --default => 0
+	return lcs, pkt
+end
+
+function write_levelchanger_struct(lcs, pkt, lc_obj)
+	-- lcs has the organized levelchanger structure data - put it into a packet
+	-- local pkt = net_packet()
+	-- pkt:w_u16(lcs.game_vertex_id)
+	pkt:w_begin(lcs.game_vertex_id) -- from Ru TEAM
+	pkt:w_float(lcs.distance)
+	pkt:w_u32(lcs.direct_control)
+	pkt:w_u32(lcs.level_vertex_id)
+	pkt:w_s32(lcs.object_flags) -- net says s32 - use u32 if u32 used above
+	pkt:w_stringZ(lcs.custom_data)
+	pkt:w_s32(lcs.story_id)
+	pkt:w_s32(lcs.spawn_story_id)
+	-- cse_shape -- it's an array
+	pkt:w_u8(lcs.num_shapes)
+	for i=1, lcs.num_shapes do
+		pkt:w_u8(lcs.shape_array[i].type)
+		if lcs.shape_array[i].type == 0 then
+			-- sphere
+			local offset = lcs.shape_array[i].offset
+			pkt:w_vec3(offset)
+			pkt:w_float(lcs.shape_array[i].radius)
+			-- dbglog("New radius %s, offset = %s,%s,%s",lcs.shape_array[i].radius,offset.x,offset.y,offset.z)
+		else -- box
+			pkt:w_matrix(lcs.shape_array[i].box)
+		end
+	end
+	-- cse_alife_space_restrictor
+	pkt:w_u8(lcs.restrictor_type)
+	-- cse_alife_level_changer
+	pkt:w_u16(lcs.dest_game_vertex_id)
+	pkt:w_u32(lcs.dest_level_vertex_id)
+	pkt:w_vec3(lcs.dest_position)
+	pkt:w_vec3(lcs.dest_direction)
+	pkt:w_stringZ(lcs.dest_level_name)
+	pkt:w_stringZ(lcs.dest_graph_point)
+	pkt:w_u8(lcs.silent_mode)
+	pkt:r_seek(0) -- rewind to beginning
+	local pkt_size = pkt:w_tell()
+	lc_obj:STATE_Read(pkt, pkt_size) -- load data into orig obj
+	return lc_obj
+end

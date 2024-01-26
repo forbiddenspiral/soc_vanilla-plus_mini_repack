@@ -1,0 +1,70 @@
+ File: _ZRP.cfg 
+
+This particular configuration group can be used to customize the ZRP mod 
+itself to your preferences. 
+
+The interface is meant to be relatively easy to use. Click the Help 
+button for details on how to use the Modifier program. 
+
+Click on items in the listbox to see what you can change. The choices 
+for each item are presented on the right panel. 
+
+You should hover the mouse pointer over the edit boxes, radio buttons 
+and checkboxes to see pop-up tips on the use of the selected item. 
+
+The ZRP now ships with more of a default flavor for the out-of-the-box 
+experience. If you want the earlier ZRP enhancements, look at the Diary, 
+Main Menu, Task Map, and Weapon Tossing items. If you install over your 
+existing ZRP setup, some of your current settings will not be changed; 
+you will need to use this program to restore the original behavior for 
+these items. 
+
+Some special notes about the items:
+
+FileChoice items:  Take care when using these with other mods, as you 
+might overwrite changes made by those other mods. If you are solely 
+using ZRP with SoC, you can ignore the warnings. You might still need to 
+revisit other Field and Checkbox changes to the same file because they 
+can be lost when overwritten by a FileChoice version of the file.
+
+
+Body Removal -- DO NOT INCREASE the time unless you are willing to start 
+a new game; saved games tend to crash when trying to restore a body that 
+has already been removed. Also, the monster setting may override the NPC 
+setting. 
+
+
+Sleeping bag -- If enabled, drop it from your backpack inventory to sleep. 
+You'll see a dialog for selecting the time. You can also press a number 
+key from 1 to 9.
+
+If you spin rapidly when awakening, bring down the console (~) and 
+type "cam_inert 0" or "cam_inert 0.1" (without quote marks) and press the 
+Enter key. Exit the console with ~ again.
+
+To disable the sleeping bag, uncheck the option. In game, drop the 
+sleeping bag one more time and make a save.
+
+If you have copied scripts\optional\_custom_zrp.script up a directory to
+scripts\_custom_zrp.script, you can press Esc Home to pop up the same 
+dialog. This requires ZRP "Debug Mode" checked under Debug Options. See 
+docs\DebugSupportChanges.txt for more _custom_zrp.script info.
+
+
+See the docs\ZRP_ModdingNotes.txt file for a few more details on 
+modifying the game without the Modifier. 
+
+
+All settings marked "default", "original" or "normal" are vanilla, except 
+for the following options:
+
+Autosave enhancements are not vanilla.
+
+Inventory Grid Size: ZRP Grid Settings are not vanilla.
+
+Quest Time Limits: quest_time_factor vanilla default is 1 day. Both "Show 
+Quest Rewards and "Allow Unwanted Task Rejection" are unchecked in vanilla.
+
+Trade and Search Screens: The vanilla setting is marked "Vanilla Screens".
+
+See the Vanilla.cfg config file for vanilla settings.

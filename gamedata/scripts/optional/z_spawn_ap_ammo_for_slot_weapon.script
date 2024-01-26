@@ -1,0 +1,39 @@
+name = "Spawn AP Ammo For Weapon"
+description = "Spawn a box of AP ammo (actually, last defined ammo) for the weapon in the specified slot.\\n1 = Pistol, 2 = Rifle"
+author = "NatVac"
+revision = "1.1"
+number_of_parameters = "key"
+
+--DIK_1 = 2, DIK_2 = 3, DIK_6 = 7
+keys = {
+	["1"] = {dik_key=DIK_keys.DIK_1,keystroke="1"},
+	["2"] = {dik_key=DIK_keys.DIK_2,keystroke="2"}
+}
+
+function main(slot_str)
+	local slot = tonumber(slot_str)
+	if slot ~= nil and (slot == 1 or slot == 2) then
+		local ltx = system_ini()
+		local weapon_in_slot = db.actor:item_in_slot(slot)
+		if weapon_in_slot == nil then
+			_z.show_small_msg("No weapon in specified slot")
+			return
+		end
+		local ammo_list = ltx:r_string(weapon_in_slot:section(),"ammo_class")
+		if ammo_list == nil then
+			_z.show_blinking_msg("No ammo_class for weapon in slot "..tostring(slot))
+			return
+		end
+		-- find the last item in a comma-separated string
+		local pos
+		local nextpos = 0
+		while nextpos ~= nil do
+			pos = nextpos + 1
+			nextpos = string.find(ammo_list,",",pos,true)
+		end
+		local ammo = string.sub(ammo_list,pos) -- for last entry
+		_z.spawn_in_inventory(ammo)
+	else
+		_z.show_small_msg("Slot number must be 1 or 2")
+	end
+end

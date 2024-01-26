@@ -1,0 +1,16 @@
+name = "Info_portion Set"
+description = "Save first! Enter an info_portion string that you wish to set in the box below. Info_portion must be valid or a crash will result."
+author = "NatVac"
+revision = "1.0.2"
+number_of_parameters = 1
+
+function main(info_portion_to_set)
+	if type(info_portion_to_set) == "string" then
+		if has_alife_info(info_portion_to_set) then
+			_z.show_small_msg("\""..info_portion_to_set.."\" is already set")
+		else
+			_z.show_small_msg("Attempting to set \""..info_portion_to_set.."\"")
+			db.actor:give_info_portion(info_portion_to_set)
+		end
+	end
+end

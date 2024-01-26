@@ -1,0 +1,42 @@
+name = "Hunter Bloodsucker Lair Task Info"
+description = "Click Go to find out information on Hunter's repeating task."
+author = "NatVac"
+revision = "1.0"
+number_of_parameters = 0
+
+function main()
+	local TM = task_manager.get_random_task()
+	if not TM then return false, "No task manager found" end
+	-- hunter is story_id 504
+	-- for k,v in pairs(TM.task_id_by_parent["hunter"]) do
+		-- -- dbglog(tostring(v))
+		-- if TM:task_avail(actor, npc, nil, nil, TM.task_info[v].init_phrase_id, true) then
+			-- avail = true
+		-- end
+	-- end
+
+	-- z.print_table(TM.task_info["hunter_eliminate_lager"])
+	local task = TM.task_info["hunter_eliminate_lager"]
+	if not task then return false, "The 'hunter_eliminate_lager' task is not in the list" end
+	-- TM.task_info["hunter_eliminate_lager"].last_task_time
+	if task.last_task_time == nil then return false, "\\nYou can complete it for the first time now." end
+	local t = game.CTime()
+	t:setHMSms(0,0,task.idle_time,0)
+	t:add( task.last_task_time )
+	-- local time_elapsed = game.get_game_time():diffSec(task.last_task_time)
+	local Y, MM, D, h, m, s, ms = 0, 0, 0, 0, 0, 0, 0
+	Y, MM, D, h, m, s, ms = t:get(Y, MM, D, h, m, s, ms)
+	-- game.get_game_time():get(Y, MM, D, h, m, s, ms)
+	local available_time = string.format("%04d/%02d/%02d %02d:%02d:%02d", Y, MM, D, h, m, s)
+	if task.target_objects ~= nil then
+		for k,v in pairs(task.target_objects) do
+			local gulag = alife():object(v).gulag
+			if gulag:get_population_comed() > 0 then
+				-- it has occupancy
+				return false, "\\nTask offered after "..available_time.."\\n\\nBloodsucker already present"
+			end
+		end
+	end
+	return false, "\\nTask offered after "..available_time.."\\n\\nNo bloodsucker yet"
+end
+

@@ -1,0 +1,513 @@
+-- File:        UI_ZRP_UTILS_DIALOG.SCRIPT
+-- Version:     0.1
+-- Description: ZRP Utility Dialog for STALKER
+-- Created:     20091217, NatVac, from ui_save_dialog.script
+-- Save Dlg Author: Serhiy Vynnychenko (narrator@gsc-game.kiev.ua)
+-- Copyright:   2004 GSC Game World
+--------------------------------------------------------------
+-- ZRP revisions
+-- nv120213 - default parameter support
+-- nv100112 - hotkey support
+-- nv150311 - reduced execution log spam to option
+
+class "zrp_utils_item" (CUIListItemEx)
+
+zscript = nil
+LastParamStr = ""
+NewParamStr = ""
+LastExecScriptIndex = -1
+local NoPercentSigns = "Input cannot contain percent signs (yet)."
+local log_execs = false
+
+function zrp_utils_item:__init() super()
+	self:SetWndRect		(0,0,430,22)
+	
+	local ca = 255
+	local cr = 216
+	local cg = 186
+	local cb = 140
+
+	self.fn = "filename"
+
+	self.dik_key = DIK_keys.DIK_ESCAPE
+	self.hkey = CUIStatic()
+	self.hkey:SetAutoDelete	(true)
+	self:AttachChild		(self.hkey)
+	self.hkey:SetWndRect	(0,0,10,22)
+	self.hkey:SetText		(" ")
+	self.hkey:SetFont		(GetFontLetterica16Russian())
+	self.hkey:SetTextColor	(ca,cb,cg,cr) --(ca,cr,cg,cb)
+
+	self.sn = CUIStatic()
+	self.sn:SetAutoDelete	(true)
+	self:AttachChild		(self.sn)
+	self.sn:SetWndRect	(10,0,260,22)
+	self.sn:SetText		("scriptname")
+	self.sn:SetFont		(GetFontLetterica18Russian())
+	self.sn:SetTextColor	(ca,cr,cg,cb)
+
+	self.sparams = CUIStatic()
+	self.sparams:SetAutoDelete	(true)
+	self:AttachChild		(self.sparams)
+	self.sparams:SetWndRect	(265,0,60,22)
+	self.sparams:SetText		("scriptparams")
+	self.sparams:SetFont		(GetFontLetterica16Russian())
+	self.sparams:SetTextColor	(ca,cr,cg,cb)
+
+	self.srev = CUIStatic()
+	self.srev:SetAutoDelete	(true)
+	self:AttachChild		(self.srev)
+	self.srev:SetWndRect	(335,0,50,22)
+	self.srev:SetText		("scriptrev")
+	self.srev:SetFont		(GetFontLetterica16Russian())
+	self.srev:SetTextColor	(ca,cr,cg,cb)
+end
+
+
+class "zrp_utils_dialog" (CUIScriptWnd)
+
+function zrp_utils_dialog:__init() super()
+	self:InitControls()
+	self:InitCallBacks()
+	self:FillList()
+end
+
+function zrp_utils_dialog:__finalize()
+
+end
+
+function zrp_utils_dialog:FillList()
+	local flist = getFS():file_list_open_ex("$game_scripts$",FS.FS_ListFiles,"z_*.script")
+	local f_cnt = flist:Size()
+
+	-- flist:Sort(FS.FS_sort_by_modif_down)
+	-- flist:Sort(FS.FS_sort_by_name_up) -- should default to name_down
+
+	self.qualify = false
+
+	for	it=0, f_cnt-1 	do
+		local file		=	flist:GetAt(it)
+		local file_name = string.sub(file:NameFull(), 0, (string.len(file:NameFull()) - 7)) -- remove ".script"
+		local script_name = file_name
+		local script_params = "Invalid"
+		local script_rev = "Rev: n/a"
+		local hotkey = " "
+		if _G[file_name] ~= nil then
+			if _G[file_name].name ~= nil then
+				script_name = _G[file_name].name
+			end
+			script_params = "No info"
+			local num_params = _G[file_name].number_of_parameters
+			local param_str
+			if num_params == nil then
+				script_params = "Args: none"
+			else
+				script_params = "Args: "..tostring(num_params)
+			end
+			local revision = _G[file_name].revision
+			if revision == nil then
+				script_rev = "Rev: ?"
+			else
+				script_rev = "Rev: "..tostring(revision)
+			end
+			dik_key = _G[file_name].dik_key
+			if dik_key ~= nil then 
+				hotkey = _G[file_name].hotkey
+				if hotkey == nil then hotkey = " " end
+			else
+				dik_key = DIK_keys.DIK_ESCAPE
+			end
+		end
+		self:AddItemToList(file_name, script_name, script_params, script_rev, dik_key, hotkey)
+	end
+	-- if LastSelectedScriptIndex > -1 then
+		-- dbglog("Set default index to last")
+		-- local list_box		= self:GetListWnd("list_window")
+		-- if list_box:GetSize() == 0 then return end
+		-- list_box:SetFocusedItem(LastSelectedScriptIndex)
+		-- self:OnListItemClicked()
+		-- LastSelectedScriptIndex = -1
+	-- end
+end
+
+function zrp_utils_dialog:InitControls()
+	self:Init(0,0,1024,768)
+
+	self.list_file_font = GetFontMedium()
+	self.list_date_font = GetFontMedium()
+
+	local xml = CScriptXmlInit()
+	xml:ParseFile("ui_zrp_utils_dlg.xml")
+
+	local ctrl
+
+	if _z and _z.mainmenu_anims then
+		xml:InitStatic("back_video", self)
+	end
+
+	xml:InitStatic("background",				self)
+	if _z and _z.mainmenu_anims then
+		xml:InitStatic("newspaper_video", self)
+	end
+	self.form = xml:InitStatic("form",			self)
+
+	ctrl = xml:InitEditBox("form:param_edit", 		self.form)
+	self:Register(ctrl, "script_params")
+	ctrl:Enable(false)
+
+	-- ctrl = xml:InitEditBox("form:script_edit", 		self.form)
+	-- self:Register(ctrl, "script_name")
+
+	xml:InitStatic("form:caption",				self.form)
+
+	self.desc_static = xml:InitStatic("form:description_static",			self.form)
+	self.desc_static:SetText("Recommended for emergencies and experimentation only. Use may affect gameplay enjoyment.\\n\\nRead the docs/config notes for usage tips.")
+
+	xml:InitFrame("form:list_frame",			self.form)
+
+	ctrl = xml:InitList("form:list", 			self.form)
+	ctrl:ShowSelectedItem(true)
+	self:Register(ctrl, "list_window")
+
+	ctrl = xml:Init3tButton("form:exec_button",	self.form)
+	self:Register(ctrl, "button_ok")
+
+	ctrl = xml:Init3tButton("form:exit_button",	self.form)
+	self:Register(ctrl, "button_exit")
+
+	self.message_box = CUIMessageBoxEx()
+	self:Register(self.message_box,"message_box")
+
+	self.mbox_mode = 0
+end
+
+function zrp_utils_dialog:InitCallBacks()
+    --// main frame buttons
+	self:AddCallback("button_ok",     ui_events.BUTTON_CLICKED, 			self.OnButton_ok_clicked,		self)
+	self:AddCallback("button_exit", ui_events.BUTTON_CLICKED, 			self.OnButton_exit_clicked,	self)
+
+	self:AddCallback("message_box", ui_events.MESSAGE_BOX_YES_CLICKED,		self.OnMsgYes,					self)
+	self:AddCallback("list_window", ui_events.LIST_ITEM_CLICKED, 			self.OnListItemClicked,			self)
+end
+
+function zrp_utils_dialog:OnListItemClicked()
+	self.qualify  = nil -- reset these as a precaution against bad scripts
+	self.validate = nil
+	self.quick_key = nil
+	zscript = nil
+	NewParamStr = ""
+
+	local list_box		= self:GetListWnd("list_window")
+	if list_box:GetSize()==0 then return end
+
+	-- local edit_box		= self:GetEditBox("script_name")
+	local item_id		= list_box:GetSelectedItem()
+	if item_id == -1 then --not selected by click; try focused item
+		-- item_id = list_box:GetFocusedItem()
+		if LastExecScriptIndex ~= -1 and LastExecScriptIndex <= list_box:GetSize() then
+			item_id = LastExecScriptIndex
+			list_box:SetFocusedItem(-1)
+		else
+			return
+		end
+	end
+	-- local item_id		= list_box:GetFocusedItem()
+	local item			= list_box:GetItem(item_id)
+
+	if item==nil then
+		self.desc_static:SetText("No valid script selected.")
+		return
+	end
+
+	local script_item_text = item.fn --item.sn:GetText()
+	zscript = _G[script_item_text]
+	if zscript == nil then
+		-- edit_box:SetText("")
+		self.new_exec = nil
+		self.desc_static:SetText(script_item_text..".script is not valid!")
+		return
+	end
+	-- edit_box:SetText(script_item_text)
+	self.new_exec = script_item_text
+	local script_name = item.sn:GetText()
+--	self:InitUtilScript(script_name, script_item_text)
+-- end
+-- function zrp_utils_dialog:InitUtilScript(script_name, script_item_text)
+	if script_item_text ~= nil then
+		-- local desc_box		= self:GetEditBox("script_description")
+		local param_box = self:GetEditBox("script_params")
+		if zscript.description ~= nil then
+			self.desc_static:SetText(script_name..":\\n\\n"..zscript.description)
+		else
+			self.desc_static:SetText(script_name..":\\n\\nNo description provided")
+		end
+		LastExecScriptIndex = item_id
+		self.number_of_params = tonumber(zscript.number_of_parameters)
+		if self.number_of_params == nil or self.number_of_params < 1 then
+			if zscript.number_of_parameters == "key" then self.quick_key = true end
+			self.number_of_params = 0
+		end
+		self.default = zscript.default_string
+		if self.default == nil then self.default = "" end
+		param_box:SetText(self.default)
+		param_box:Enable(self.number_of_params > 0)
+		-- param_box:Show(true)
+		if type(zscript.qualify) == "function" then
+			self.qualify = zscript.qualify
+		end
+		if type(zscript.validate) == "function" then
+			self.validate = zscript.validate
+		end
+	end
+end
+
+function zrp_utils_dialog:OnMsgYes()
+	if self.mbox_mode == 1 then
+		if self:ExecFile(self.new_exec, self.new_param) ~= false then
+			self:OnButton_exit_clicked()
+			get_console():execute("main_menu off")
+		end	
+	end	
+end
+
+function zrp_utils_dialog:OnButton_ok_clicked()
+	-- prepare message box
+	local message_box	= self.message_box
+	-- local main_frame	= self:GetFrameWindow("main_frame")
+
+	-- Get file name
+	-- local script_edit_box		= self:GetEditBox("script_name")
+	-- self.new_exec		= script_edit_box:GetText()
+
+	local param_edit_box		= self:GetEditBox("script_params")
+	self.new_param		= param_edit_box:GetText()
+
+	-- check for empty name
+	if self.new_exec == nil or string.len(self.new_exec) == 0 or _G[self.new_exec] == nil then
+		self.mbox_mode = 0
+		message_box:Init("message_box_empty_file_name")
+		message_box:SetText("No valid script specified.")
+		self:GetHolder():start_stop_menu(message_box, true)
+		return
+	end
+	if self.number_of_params > 0 then
+		if self.new_param == "" then
+			-- self.desc_static:SetText("Additional input is required.")
+			local quip
+			if math.random(1000) < 500 then
+				quip = "I'm sorry, but I can't do that, "..user_name().."."
+			else
+				quip = "'Iiiiiinnnnput!' -- Johnny 5"
+			end
+			self.desc_static:SetText(quip.."\\n\\n(Additional input is required.)")
+			return
+		end
+		LastParamStr = self.new_param
+		if self.validate then
+			if string.find(LastParamStr,"%",1,true) ~= nil then
+				self.desc_static:SetText(NoPercentSigns)
+				return
+			end
+			local valid, not_valid_msg, mode = self.validate(LastParamStr)
+			if valid == false then
+				if type(not_valid_msg) ~= "string" then
+					self.desc_static:SetText("Input not valid; result type = '"..type(not_valid_msg).."'")
+					return
+				end
+				-- we have an error msg - do we have a preferred way to show it?
+				local mode_val = tonumber(mode)
+				if mode_val == nil or mode_val == 0 then -- on dialog
+					self.desc_static:SetText(not_valid_msg)
+					return
+				end
+				-- show a msg box
+				if mode_val == 2 then -- explicitly check for Yes/No option
+					self.mbox_mode = 1
+					message_box:Init("message_box_file_already_exist")
+				else
+					self.mbox_mode = 0 -- simple OK msg box, keep dialog showing
+					message_box:Init("message_box_empty_file_name")
+				end
+				message_box:SetText(not_valid_msg) -- use script's error msg
+				self:GetHolder():start_stop_menu(message_box, true)
+				return
+			end
+		end
+	end
+	if self:ExecFile(self.new_exec, self.new_param) ~= false then
+		self:OnButton_exit_clicked()
+		get_console():execute("main_menu off")
+	end
+end
+
+function zrp_utils_dialog:OnButton_exit_clicked()
+	self:GetHolder():start_stop_menu	(self.owner, true) --new
+	self:GetHolder():start_stop_menu	(self,true)
+	self.owner:Show						(true)
+end
+
+function zrp_utils_dialog:QualifyKeystroke(dik)
+	local response1, response2 = nil, nil
+	local param_box = self:GetEditBox("script_params")
+	if dik == DIK_keys.DIK_LEFT then
+		-- reset
+		NewParamStr = ""
+		param_box:SetText("")
+		response1, response2 = _G[self.new_exec].qualify(dik, NewParamStr)
+	elseif dik == DIK_keys.DIK_RIGHT then
+		NewParamStr = param_box:GetText()
+		response1, response2 = _G[self.new_exec].qualify(dik, NewParamStr)
+		-- put returned value in field
+		if response1 ~= nil then
+			param_box:SetText(response1)
+		end
+	elseif dik == DIK_keys.DIK_UP or dik == DIK_keys.DIK_DOWN then
+		-- select previous or next value
+		response1, response2 = _G[self.new_exec].qualify(dik, NewParamStr)
+	else
+		NewParamStr = param_box:GetText()
+		response1, response2 = _G[self.new_exec].qualify(dik, NewParamStr)
+		-- if response1 ~= nil then
+			-- param_box:SetText(response1)
+		-- end
+	end
+	if response1 ~= nil then
+		if response2 == nil then response2 = "" end
+		self.desc_static:SetText("F8: last used value, up/down=prev/next, left/right=reset/use\\n\\n"..response2.."\\n"..response1)
+	end
+	return true
+end
+
+function zrp_utils_dialog:OnKeyboard(dik, keyboard_action)  --virtual function
+	ui_base_dialog.base_dialog.OnKeyboard(self,dik,keyboard_action)
+	local param_edit_box = self:GetEditBox("script_params")
+
+	if keyboard_action == ui_events.WINDOW_KEY_PRESSED then
+		if dik == DIK_keys.DIK_RETURN then
+			self:OnButton_ok_clicked()
+			return true
+		end
+		if self.new_exec == nil or string.len(self.new_exec) == 0 or _G[self.new_exec] == nil then
+			local list_box		= self:GetListWnd("list_window")
+			local list_size = list_box:GetSize()
+			local k,v = 0,0
+			local item
+			for i = 1, list_size do
+				item = list_box:GetItem(i-1)
+				if dik == item.dik_key then
+					LastExecScriptIndex = list_box:GetItemPos(item)
+					list_box:SetFocusedItem(LastExecScriptIndex)
+					self:OnListItemClicked()
+					return true
+				end
+			end
+		end
+
+		if dik == DIK_keys.DIK_F8 or dik == DIK_keys.DIK_F9 then
+			if self.new_exec == nil then
+				if LastExecScriptIndex ~= nil then
+					local list_box		= self:GetListWnd("list_window")
+					local list_size = list_box:GetSize()
+					if list_size == 0 then
+						self.desc_static:SetText("No utilities listed.")
+						return true
+					end
+					if LastExecScriptIndex <= list_size then
+						list_box:SetFocusedItem(LastExecScriptIndex)
+						self:OnListItemClicked()
+					else
+						self.desc_static:SetText("Last list index is invalid.")
+						return true
+					end
+				end
+				if self.new_exec == nil or string.len(self.new_exec) == 0 or _G[self.new_exec] == nil then
+					self.desc_static:SetText("Please select a valid script first.")
+					return true
+				end
+			end
+			if self.number_of_params > 0 then
+				if dik == DIK_keys.DIK_F9 then --hack to force display of function result
+					if string.find(LastParamStr,"print ",1,true) == nil and
+						string.find(LastParamStr,"echo ",1,true) == nil and
+						string.find(LastParamStr,"show ",1,true) == nil then
+						LastParamStr = "print "..LastParamStr
+					end
+				end
+				param_edit_box:SetText(LastParamStr)
+			end
+			return true
+		elseif dik == DIK_keys.DIK_F4 then
+			param_edit_box:SetText("")
+		end
+
+		if self.qualify then self:QualifyKeystroke(dik) end
+		if self.quick_key and self.new_exec then
+			local keys = _G[self.new_exec].keys or {}
+			for k, v in pairs(keys) do
+				if v.dik_key == dik then
+					if self:ExecFile(self.new_exec, v.keystroke) ~= false then
+						LastParamStr = v.keystroke
+						self:OnButton_exit_clicked()
+						get_console():execute("main_menu off")
+						return true
+					end
+				end
+			end
+		end
+	end
+	return true
+end
+
+function zrp_utils_dialog:AddItemToList(file_name, script_name, script_params, script_rev, dik_key, hotkey)
+	
+	local _itm = zrp_utils_item()
+	-- _itm.fn:SetText(file_name)
+	_itm.fn = file_name
+	_itm.dik_key = dik_key
+	_itm.hkey:SetText(hotkey)
+	_itm.sn:SetText(script_name)
+	_itm.sparams:SetText(script_params)
+	_itm.srev:SetText(script_rev)
+	local list_box = self:GetListWnd("list_window")
+	list_box:AddItem(_itm)
+	
+end
+
+function zrp_utils_dialog:ExecFile(fileName, param)
+	if fileName ~= nil then
+		local has_param = param ~= nil and param ~= ""
+		if has_param then
+			if string.find(param,"%",1,true) ~= nil then
+				self.desc_static:SetText(NoPercentSigns)
+				return false
+			end
+		end
+		if log_execs then
+			local debugStr = "Executing "..fileName..".main("
+			if has_param then debugStr = debugStr.."\""..tostring(param).."\"" end
+			debugStr = debugStr..")"
+			dbglog(debugStr)
+		end
+		local result, error_str = _G[fileName].main(param)
+		if result == false then -- a nil result is assumed okay, false isn't
+			if type(error_str) == "string" then
+				self.desc_static:SetText(error_str)
+			else
+				self.desc_static:SetText("An error may have occurred.")
+			end
+		end
+		return result
+	end
+	self.desc_static:SetText("No script file specified.")
+	return false
+end
+
+-- nv120302 support external re-execution of last command
+function ExecLastCommand()
+	if zscript ~= nil then
+		local result, error_str = zscript.main(LastParamStr)
+		if result == false then -- a nil result is assumed okay, false isn't
+			dbglog(tostring(error_str))
+		end
+	end
+end

@@ -1,0 +1,65 @@
+name = "Give Yourself Money"
+description = "You can hack your PDA's wallet. Enter the number of rubles you want to get in the box below, up to 10 million rubles at a time."
+author = "NatVac"
+dik_key = DIK_keys.DIK_M
+hotkey = "M"
+revision = "1.0.2"
+number_of_parameters = 1
+
+local max_ru = 10000000
+function main(amount)
+	local success
+	success, new_amount = parse_as_calc(amount)
+	if success then amount = new_amount end
+	if amount ~= nil then
+		local increase = tonumber(amount)
+		if increase ~= nil and increase > 0 and increase <= max_ru then
+			db.actor:give_money(amount)
+			_z.show_small_msg("Added: "..tostring(amount).." Ru.  You now have "..tostring(db.actor:money()).." Ru.")
+		else
+			_z.show_small_msg("Invalid amount: "..tostring(amount))
+		end
+	else
+		_z.show_small_msg("Invalid amount: NIL (Nothing entered?)")
+	end
+end
+
+function validate(input_str)
+	local value = nil
+	if type(input_str) == "string" then
+		value = tonumber(input_str)
+		if value == nil then
+			local success, return_val = parse_as_calc(input_str)
+			if success then
+				value = return_val
+			else
+				return false, return_val
+			end
+		end
+	end
+	-- value = tonumber(input_str)
+	if value == nil then
+		return false, "Not a valid number: '"..tostring(input_str).."'"
+	elseif value < 0 or value > max_ru then
+		return false, "Amount is out of range: '"..input_str.."'"
+	end
+	return true, "Amount valid."
+end
+
+function parse_as_calc(argument)
+	local exec_func = loadstring("return "..argument)
+	if type(exec_func) ~= "function" then return false, "Input does not evaluate to a number:\\n"..argument end 
+	local success, return_val = pcall(exec_func)
+	if success == true then
+		local result_type = type(return_val)
+		-- if result_type == "boolean" or result_type == "string" or result_type == "number" then
+		if result_type == "number" then
+			return true, return_val
+		else
+			return false, argument .. " evaluates to type '" .. result_type .. "'."
+		end
+	else
+		return false, return_val
+	end
+end
+

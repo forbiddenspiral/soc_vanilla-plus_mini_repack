@@ -1,0 +1,37 @@
+name = "Mark Storming Abakan Etc."
+description = "Mark the Dutyer's weapon and the one carrying it.  The Obokan mark is where the gun bearer last had it out. Go by the bearer's location (usually Friar).  Also mark Poker and Wolf.  Markers last only during current game session."
+author = "NatVac"
+revision = "1.0.1"
+number_of_parameters = 0
+
+function main()
+	local sim = alife()
+	for id_ = 0, 65534, 1 do
+		local lobj = sim:object(id_)
+		if lobj ~= nil then
+			if lobj:clsid() == clsid.wpn_ak74_s then
+			-- if lobj:section() == "wpn_abakan_m2" then  -- not for offline objects
+				if string.find(lobj:name(),"wpn_abakan_m2",1,true) ~= nil then
+					level.map_add_object_spot(id_, "red_location", _z.friendly_name("wpn_abakan_m2"))
+					dbglog("Special Abakan marked")
+					-- break
+				-- elseif string.find(lobj:name(),"wpn_sig_m3",1,true) ~= nil then
+					-- level.map_add_object_spot(id_, "red_location", lobj:name())
+				end
+			elseif lobj:clsid() == clsid.script_stalker then
+				local npc_name = lobj:name()
+				if lobj:name() == "sim_stalker_fraer" then
+					level.map_add_object_spot(id_, "red_location", "Friar (or his body)")
+				elseif lobj:name() == "val_kocherga" then
+					level.map_add_object_spot(id_, "red_location", "Poker")
+				elseif lobj:name() == "esc_wolf" then
+					level.map_add_object_spot(id_, "red_location", "Wolf")
+				elseif lobj:name() == "gar_dm_novice" then
+					level.map_add_object_spot(id_, "red_location", "Yurik")
+				end
+			end
+		end
+	end
+	_z.show_small_msg("See PDA map for markers.")
+end
+

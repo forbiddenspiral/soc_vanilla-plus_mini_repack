@@ -1,0 +1,23 @@
+name = "Repair Dark Valley Gate to Cordon"
+description = "This function reattaches the gate scheme if necessary. You must be within 150 meters of the broken gate."
+author = "NatVac"
+revision = "1.0"
+number_of_parameters = 0
+
+function main()
+	for idb_ = 0, 65534, 1 do
+		local lobj = alife():object(idb_)
+		if lobj ~= nil then
+			if lobj:name() == "val_exit_gate" then
+				local ve_gate = level.object_by_id(lobj.id)
+				if ve_gate ~= nil then
+					local gate_storage = db.storage[ve_gate:id()]
+					if gate_storage["ph_gate"] == nil then
+						xr_logic.initialize_obj(ve_gate, gate_storage, false, db.actor, modules.stype_item)
+						_z.show_blinking_msg("Gate scheme re-attached")
+					end
+				end
+			end
+		end
+	end
+end

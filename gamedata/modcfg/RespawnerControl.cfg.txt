@@ -1,0 +1,200 @@
+
+	File: RespawnerControl.cfg
+
+This version of the ZRP improved respawn script can be 
+configured to adjust the repopulation of the Zone to your 
+liking.  The Modifier configuration file is provided 
+to make that easier.
+
+Please ensure that you have a named save in any existing 
+STALKER Shadow of Chernobyl game, in case you need/want to 
+revert to your old respawner with your current game, before 
+running a game with this version installed.  This respawner 
+changes the save game format.
+
+This version does not require that you start a new game.  
+Nor do respawn time changes require a new game, but in 
+either case it might take some time for existing Alife to 
+finish migrating to their destinations, so allow a game day 
+before looking for the effects of your new settings.
+
+Also note that the use of TZIO ("The Zone Is Open") chapter 
+selection can result in existing NPCs/mutants to change 
+their camps to new ones, resulting in a mass migration. 
+Again, wait a bit for the Zone to settle into a new state. 
+
+===========================================================
+First:  Should you find that the new version is not to 
+your liking or if you experience problems, you can restore 
+the vanilla version.  Please note that if you do this you 
+need to load only older saves made before this updated 
+version was first installed.
+
+To return to vanilla, just rename or delete this file:
+<STALKER_install_dir>\gamedata\scripts\se_respawn.script
+===========================================================
+
+Some background:
+
+For each type of Alife entity in the Zone, there are 
+usually one or more respawners to replace the absence of 
+that entity in those camps where that kind of NPC or mutant 
+resides.
+
+This absence is brought about by you or by the natural 
+workings of Alife, resulting in NPC or mutant deaths (and 
+occasionally in an NPC or mutant deciding to move on).  You 
+can determine when those replacements are created in these 
+respawners, although it will still take a bit more time 
+for the creature(s) to move from the respawner to the camp. 
+
+To do this, just configure the range of spawn times for 
+each type of respawn:  often, medium, or seldom.
+
+
+To configure the respawner and use the available tools, 
+click on one of the entries in the list box.  Make the 
+changes you wish in the fields and checkboxes on the right, 
+then click the Apply button before going to the next entry. 
+
+
+Frequent Respawns:
+
+There are a pair of fields to set the minimum and maximum 
+delays of the frequent ("often") replacement spawners 
+in the game. 
+
+
+Moderate Respawns:
+
+There are two more fields to set the minimum and maximum 
+delays of the moderate ("medium") replacement spawners. 
+
+
+Rare Respawns:
+
+There are a pair of fields to set the minimum and maximum 
+delays of the rare ("seldom") replacement spawners. 
+
+
+Most spawners are of the first two types. 
+
+Every time a respawner spawns something, a new idle time 
+is determined to delay the next spawn by that respawner.  
+This idle time is a random number between the minimum delay 
+and the maximum for the type of spawner.
+
+You would want to set each one to a positive number from 
+1 (0 might work) for the (intended) vanilla respawn rates 
+-- which were broken in vanilla; respawns were always 
+immediate -- to the maximum you wish to wait.
+
+The values are in game hours.  Internally they are 
+multiplied by 3600 to get game seconds, and then multiplied 
+by 1000 to get game milliseconds.  A "game" unit of time 
+defaults to ten times as fast as real time.
+
+So if you like lots of traffic, keep these numbers low.  A 
+spread of numbers between the minimum and maximum is highly 
+recommended to reduce spawn flooding at level changers.
+
+You can use decimal fractions here if you wish, like 0.5.
+
+Suggested initial settings: 
+
+often_min = 2
+often_max = 8
+medium_min = 4
+medium_max = 16
+seldom_min = 24 (one game day)
+seldom_max = 36 or 48 (1.5 to 2 game days)
+
+For a more sparsely-populated Zone, you might try these 
+settings initially and then tweak them to your preference:
+
+often_min = 6
+often_max = 12
+medium_min = 12
+medium_max = 36
+seldom_min = 36
+seldom_max = 72
+
+
+The "Respawn Tools" Entry:
+
+
+Enable ST/Respawn Debugs, Show Respawn Spots
+
+Accompanying the respawn script is a sim_statistic.script 
+file for seeing these respawners work. Check the checkboxes 
+to see them in action.  In the game, hover over the red and 
+green spots on the PDA map to see details about each 
+respawner.  This version has more detailed information 
+than the vanilla script.
+
+Red spots mark inactive respawners.  Green spots show 
+respawners that are about to give birth or are beaming 
+with pride at their new offspring.  The info shows the 
+next time each respawner can spawn again.
+
+The message "Awaiting next request" is a special flag to 
+indicate that this respawner has not yet spawned, or has 
+just spawned and is about to be given a new idle time.
+
+
+Emulate vanilla respawns (mainly for testing)
+
+This checkbox is provided to allow modders to generate new 
+NPCs/mutants quickly to exercise their smart terrains. 
+It can also be used if you want lots of action, although 
+a better approach would be to use smaller minimum and 
+maximum delay values.
+
+============
+More Notes:
+============
+
+Creatures and NPCs that are in the all.spawn already, but 
+are conditionally spawned (e.g., when you complete an 
+objective and get a new info_portion) should not be 
+affected by the respawner code.
+
+The next spawn time of a respawner is measured from the 
+time of the last spawn made by that respawner.
+
+The delay clock starts again right after the spawner 
+creates replacement spawns. It is then possible that 
+respawns might immediately occur when an ST has an opening 
+because enough time has elapsed.  Normally, there will 
+have been enough earlier NPC/mutant deaths in other areas 
+so that a respawner is already committed to supplying them 
+first.
+
+If it appears that a lot of camps are repopulated too 
+quickly, you can try increasing the minimum respawn delay 
+values.
+
+Spawn examples:
+
+Legend:
+X - New replacements requested here
+1 - First respawn for a particular spawner
+2 - Second respawn for that spawner
+[-----------] calculated random delay (between min and max)
+
+In this example, request occurs before respawner is ready
+
+1[--------X-----]2
+
+In this example, respawner is ready when requested
+
+1[--------------]    X2
+
+Hopefully a future version will allow the option of 
+delaying after a new request is made:
+
+1         X[--------------]2  delay from X
+1                  X[--------------]2  same for later need
+
+
+--NatVac, 2010/07/29

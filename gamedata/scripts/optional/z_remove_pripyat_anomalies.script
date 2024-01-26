@@ -1,0 +1,35 @@
+name = "Remove Pripyat Anomalies"
+description = "This function switches certain Pripyat anomalies offline to facilitate NPC activity before you go to the NPP.  They are normally disabled when you complete the game."
+author = "NatVac"
+revision = "1.0"
+number_of_parameters = 0
+
+local prip_anoms_to_remove = {
+--Pripyat:
+"pri_zone_gravi_zone_strong_secret_1", -- in freedom lair
+"pri_zone_mincer_strong_secret_1", -- in freedom lair
+-- not sure about these two, but should be okay
+"pri_zone_mosquito_bald_strong_secret_1",  --rc2b Freedom's bane
+-- "gar_zone_mincer_0005",  --rc2b stadium
+"pri_zone_witches_galantine", -- big radius one
+-- "pri_zone_witches_galantine_0004", -- the underground carpark group
+-- "pri_zone_witches_galantine_0008",
+-- "pri_zone_witches_galantine_0010",
+-- "pri_zone_witches_galantine_0012",
+-- "pri_zone_witches_galantine_0013",
+-- "pri_zone_witches_galantine_0014",
+-- "pri_zone_witches_galantine_0015",
+-- "pri_zone_witches_galantine_0016",
+-- "pri_zone_gravi_zone_average_secret_2", -- near Fang's grave
+-- "pri_zone_mosquito_bald_average_secret_2", -- near Fang's grave
+-- "pri_zone_gravi_zone_average",
+-- "pri_zone_gravi_zone_average_0000",
+-- "pri_zone_gravi_zone_average_0001",
+"pri_zone_mincer_strong" --west side; kills military a lot
+}
+
+function main()
+	_z.remove_anomaly_set(prip_anoms_to_remove)
+	_z.show_small_msg("Attempt made to disable certain Pripyat anomalies.")
+end
+

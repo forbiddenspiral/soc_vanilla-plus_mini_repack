@@ -1,0 +1,33 @@
+name = "Faction Join or Leave"
+description = "Become a Duty or Freedom faction member, or rejoin the Loners.\\nEnter below the name of the group you want to join:\\nDuty, Freedom, Loner."
+author = "NatVac"
+revision = "1.0"
+number_of_parameters = 1
+
+function main(faction_str)
+	if type(faction_str) ~= "string" then
+		_z.show_blinking_msg("Must be a valid faction")
+		return
+	end
+	local faction = string.lower(faction_str)
+	local target_faction = "actor"
+	if faction == "duty" or faction == "dolg" then
+		target_faction = "actor_dolg"
+		faction_str = "Duty"
+	elseif faction == "freedom" then
+		target_faction = "actor_freedom"
+		faction_str = "Freedom"
+	elseif faction == "loner" or faction == "stalker" then
+		target_faction = "actor"
+		faction_str = "Loner"
+	else
+		_z.show_small_msg("No action taken for '"..tostring(faction_str).."'")
+		return
+	end
+	if db.actor:character_community() == target_faction then
+		_z.show_small_msg("You are already a member of the "..faction_str.." faction.")
+	else
+		db.actor:set_character_community(target_faction, 0, 0)
+		_z.show_large_msg("You are now a member of the "..faction_str.." faction.")
+	end
+end

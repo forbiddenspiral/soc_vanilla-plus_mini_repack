@@ -1,0 +1,136 @@
+ File: Experimental.cfg
+
+This configuration contains some not-fully-tested tweaks.
+
+
+===============
+The Sim_statistic Debug Options stuff has moved to the Respawn 
+Control configuration (RespawnerControl.cfg).
+
+
+===============
+Alternative Pripyat Gulag
+Alternative Lab X16 Gulag - removed; not supported in new game
+
+Alex-Tommy has made some suggestions to improve the operation of 
+the game; see the "Alternative Pripyat Gulag" entry. 
+
+
+===============
+Explosives Carry - Light
+Explosives Carry - Heavy
+
+You can carry (or at least pick up) explosives if you enable the 
+ability to do so.  This feature allows you to selectively enable 
+the can_take attribute of six different explosive containers in 
+the game, half of which are light enough to be carried in the 
+vanilla game.
+
+Use the tooltips to see the current weight of the fuel cans, 
+canisters, tanks and barrels, as well as that of the dynamite 
+box.
+
+If you enable the heavy items without changing the weight you can 
+carry, you will be able to pick up the heavy containers but you 
+will not be able to walk with them.  You might find it useful to 
+help you get barrels up steps. 
+
+Note that not all barrels, fuel tanks, etc. in the game are 
+explosive items.  If you look at a red barrel while close to it 
+you should see a prompt to pick it up if it is an explosive one. 
+
+
+===============
+Explosives Weight - Light
+Explosives Weight - Heavy
+
+You can use this option to change the default weight for the 
+six types of explosive containers you can enable to carry.
+
+
+===============
+Live Stalker Ranking
+
+Mr. Fusion's AI tweak is now in the Experimental_AI.cfg 
+configuration file.
+
+
+===============
+NPC Smart Flashlights
+
+This AI tweak has been moved to the Experimental_AI.cfg 
+configuration file.
+
+
+===============
+NPP Blowout Timer
+
+You can set the default countdown value at any time prior to 
+triggering the blowout timer at the Chernobyl Nuclear Power Plant.
+
+
+===============
+Psi Emitter
+
+The vanilla game normally uses rupture damage to lower your health 
+while you are in a psi field like that around the Brain Scorcher. 
+The ZRP default is to lower your mental health (the blue bar in 
+inventory) instead.  If you wish to return to the vanilla effect, 
+check the checkbox and click Apply.
+
+
+===============
+Time on HUD
+
+This tweak has been promoted to the _ZRP.cfg configuration file.
+
+
+===============
+Weapons
+
+These settings affect the config\weapons\weapons.ltx file.
+
+The hit_probability_max_dist is the maximum distance from you at 
+which the full probability of the difficulty setting (typically 
+20% at novice to 50% at master) is applied.  The percentage of 
+hits to shots fired will drop off beyond this distance.
+
+The default distance is 10 meters.  Set it higher to increase 
+the accuracy of the NPCs.
+
+NOTE:  This does not apply to your accuracy.  That is determined 
+by the accuracy of the gun combined with the accuracy adjustment 
+determined by your stance and whether you are aiming or not. 
+A gauss rifle in good condition will always hit the target if 
+you aim or low-crouch.  See the debug notes to learn how to 
+display the damage you are doing to NPCs and mutants.
+
+
+Both fire_dispersion_base_k and bullet_hit_power_k affect your 
+weapon when an add-on silencer is attached.  Normally such a 
+silenced weapon is 25% less accurate and hits with 20% less damage. 
+You can tweak it to keep the weapon's default accuracy (1.0) or 
+even improve it (e.g., 1.25).
+
+This only applies to the default add-on silencer in the vanilla 
+game.  It does not affect weapons that are silenced by default.
+
+
+===============
+Weather:
+
+Don't use the Weather tweak if you already use a mod that modifies 
+the weather.
+
+You have three choices besides the default:
+
+"Good Weather on All Maps, Soft Rain after Midnight" - It rains softly 
+a couple of times in the wee hours of the morning, and 
+the weather will still cloud over from time to time.
+
+"Normal Weather on All Maps" - The standard weather that you see in 
+the Cordon and other places can now also be had in Dark Valley, Yantar, 
+Red Forest, Pripyat and the two NPP outdoor levels.
+
+"Normal Weather on All Maps, No Lightning Bolts" - This attempts to 
+remove the lightning from the normal weather.

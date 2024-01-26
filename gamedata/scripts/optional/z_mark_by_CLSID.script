@@ -1,0 +1,35 @@
+name = "Mark by CLSID name"
+description = "Mark objects by CLSID name (e.g., script_stalker, gigant_s). Objects in your inventory may be mismarked (wrong location). Markers last only during current game session."
+author = "NatVac"
+revision = "1.0"
+number_of_parameters = 1
+
+function main(CLSID)
+	local _clsid = clsid[CLSID]
+	if _clsid == nil then return false, "That CLSID name isn't in the game." end
+	local sim = alife()
+	local found = 0
+	for id_ = 0, 65534, 1 do -- include the actor id (0) just in case
+		local lobj = sim:object(id_)
+		if lobj ~= nil then
+			if lobj:clsid() == _clsid then
+				local ident = lobj:name()
+				if lobj.alive then
+					if lobj:alive() then
+						ident=ident.." (alive)"
+					else
+						ident=ident.." (dead)"
+					end
+				end
+				level.map_add_object_spot(id_, "red_location", ident..", clsid="..CLSID)
+				found = found + 1
+			end
+		end
+	end
+	if found > 0 then
+		_z.show_small_msg("Found "..tostring(found)..".  See PDA map for marker(s).")
+	else
+		return false, "No match found for "..CLSID
+	end
+end
+

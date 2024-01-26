@@ -1,0 +1,229 @@
+ File: Actor.cfg 
+
+This config file can be used to customize characteristics of the Marked 
+One to your preferences. 
+
+Click on items in the listbox to see what you can change. The choices 
+for each item are presented on the right panel. 
+
+
+* Install actor.ltx *
+
+The first item is "* Install actor.ltx *". You will need to select it if 
+you do not already have actor.ltx and system.ltx extracted to the 
+correct subdirectories. Be careful to select a compatible version -- 
+although you can adjust the version with the Mod Compatibility entry.
+
+Steam users: STALKER SoC is pre-patched to 1.0005. You will want to use 
+the 1.0005/1.0006 versions here.
+
+WARNING:  This will overwrite any existing actor.ltx/system.ltx files. 
+If you have already made changes to other entries in this configuration, 
+they will be overwritten.
+
+Tip:  First click on "Carry Weight".  If you see an error message to the 
+effect that it can't find something, then you first need to install the 
+correct version via the "* Install actor.ltx *" item.  Otherwise you 
+don't need to install anything; just proceed to configuration.
+
+If any configuration file already exists, a backup will be created if 
+possible, using the configuration filename concatenated with 
+".orig_bkup". This will only be done the first time.
+
+The source files and the backup are never modified, so you can always 
+return to the original files. Once you have saved any changes, you can 
+use the Revert button to restore the original file. 
+
+Note:  The Alt1 version has 1) improved default accuracy of the Marked 
+One (not the default accuracy of the guns, just the component 
+contributed by your aiming -- see the disp_* variables); 2) increased 
+jump height; 3) increased carry weight (150 kg); 4) reduced hunger; 
+5) doubled the mini-map red marker view time of spotted enemies (10 sec); 
+6) increased ability to walk over low obstacles without having to jump 
+(derived from info by hawk318); 7) increased pickup detection radius 
+(shows object info at a greater distance when you press your "use" key) 
+from 5 to 12 meters; 8) increased likelihood that NPCs will hit you with 
+their shots (+20% at all difficulty levels); 9) a 10% longer reach; and 
+10) increased vulnerability of the Marked One's head. Items 1 through 9 
+are also currently adjustable directly in the Modifier program in other 
+Actor.cfg entries.
+
+After installing actor.ltx and system.ltx if needed, you can then 
+directly edit various parameters in those files. 
+
+Also see the First-Person Shooter.cfg Modifier configuration.
+
+
+_Mod Compatibility
+
+The system.ltx file has an entry, current_server_entity_version, that 
+varies depending on the patch version of the game that you are using. 
+It must be 6 for patch 1.0004 and 7 for patches 1.0005 and 1.0006.  You 
+must make sure this value is correct BEFORE PLAYING -- otherwise you can 
+play the game and even make saves, but those saves won't load.
+
+
+Camera Viewpoint
+
+You can specify a number up to 1.0 to position your viewpoint relative 
+to the Marked One's height in the game.  The default of 0.85 makes it 
+seem as if your eyes are in Marked One's chest.
+
+
+Carry Weight
+
+You can change the weight that the Marked One can carry. Hover over the 
+edit boxes and follow the advice of the tooltips here. The 
+max_walk_weight should be greater than the the other two values; it is 
+the value at which Marked One can no longer move. 
+
+
+Climbing
+
+You can increase his ability to walk or climb over small obstacles, by 
+increasing his climbing coefficient. Default is 0.7, Alt1 uses 1.0. 
+This makes the player "sticky"; avoid too high a value or you will not 
+be able to get off a ladder!
+
+
+Difficulty - Part 1
+
+You can determine the innate (unprotected) vulnerability of the Marked 
+One to damage. The immunities_sect value is the name of a section that 
+contains the default immunity settings for the different kinds of damage 
+that can be delivered to the Marked One.
+
+The valid section names are:
+  actor_immunities_gd_novice (50% of damage) 
+  actor_immunities_gd_stalker (65% of damage) 
+  actor_immunities_gd_veteran (80% of damage) 
+  actor_immunities_gd_master (100% of damage) 
+
+In vanilla STALKER, the setting is always actor_immunities_gd_master, 
+which means that 100% of the damage is applied to the Marked One.  This 
+damage is reduced by armor and protective artifacts, but this setting 
+is not affected by the difficulty setting in the game's Options menu. 
+You can change that here.
+
+CAUTION:  Be sure that the field only has one valid section name in 
+it before clicking the Apply button.  The Modifier does not currently 
+perform any input validation.
+
+health_hit_part - This factor adjusts how much you are hurt when 
+damaged.  This setting can range between 0.0 (no damage applied) and 1.0 
+(normal full damage to health).
+
+power_hit_part - When hurt, your stamina takes a beating as well. 
+This value determines just how much.  While the value can range from 
+0.0 to 1.0, the default is low.
+
+
+Difficulty - Part 2
+
+NPC Accuracy - This is the only setting affected by your choice of 
+difficulty in the game's Options menu.  Note that even this setting 
+is limited based on the hit_probability_max_dist setting, which you 
+can change in the Modifier's Experimental configuration under Weapons 
+in this version of the ZRP, as well as the FirstPersonShooter config.
+
+Each setting determines what percentage of shots made by the NPC will 
+hit the target if the NPC is within hit_probability_max_dist for the 
+corresponding difficulty.  The hit percentage drops as the distance 
+increases beyond that.
+
+The defaults range from novice's 20% (0.20) to master's 50% (0.50). 
+You can reduce the novice setting to make the novice game easier, or 
+increase the master setting to make the master game more difficult.
+
+
+Difficulty - Part 3
+
+Marked One's Accuracy Contribution
+
+You can use this to improve the default accuracy of the Marked One, by 
+controlling the component contributed by your aiming.
+
+base_disp - Base accuracy factor. Default value is 0.8, Alt1 uses 0.4 
+(50% improvement in player contribution).
+
+disp_aim - Aiming Down the Sights accuracy factor. Default value is 
+0.04 (95% improvement), Alt1 uses 0.001 (99.2%).
+
+disp_crouch_factor - Crouching accuracy factor. This value is added 
+to 1.0 and the result is multiplied by the base accuracy. Default 
+value is -0.2 (result is 80% of base), Alt1 uses -0.4 (60%).
+
+disp_crouch_no_acc_factor - Low Crouching accuracy factor. This value 
+is added to 1.0 and the result is multiplied by the base accuracy.
+Default value is -0.4 (result is 60% of base), Alt1 uses -0.9 (10%).
+
+Also see FirstPersonShooter.cfg and the associated config notes.
+
+
+Endurance - Part 1
+
+The stand_power setting determines the speed of recovery while you 
+stand still.  The walk_power setting controls the rate at which your 
+stamina decreases while walking, and the walk_weight_power controls 
+the rate while you are over your nominal carry weight.
+
+
+Endurance - Part 2
+
+Here you can set the trip points for running and walking exhaustion. 
+
+
+Enemy on Radar
+
+Use this to increase or decrease the amount of time that the red 
+marker persists on the mini-map after the enemy moves out of your 
+sight.
+
+
+HUD Cursor
+
+You can determine the size of the crosshairs on your game if you have 
+crosshairs displayed.  (This change actually modifies system.ltx.)
+
+
+Hunger
+
+You can reduce how often Marked One gets hungry. The default is 
+0.000015. Lowering this value increases how long Marked One can go 
+before he needs to eat. 
+
+
+Item PickUp
+
+You can increase the distance at which Marked One will detect items 
+lying in the ground. Default value is 5 meters, Alt1 uses 12.
+
+You can also control his reach when picking up objects. Default 
+value is 2 meters, Alt1 uses 2.2.
+
+
+Jumping
+
+You can increase the height that he can jump, by increasing his initial 
+speed. Six is the default value. Try 9 if you want to be able to climb 
+up on a bus but not jump over it. 
+
+You can also increase his direction control while airborne. Default 
+value is 0.1, Alt1 uses 0.2. 
+
+
+Radiation
+
+You can reduce (or increase) the speed of damage that radiation causes.
+
+
+
+A lot more items can be added to the Actor.cfg file to permit the 
+manipulation of other characteristics. 
+
+A REMINDER:  The Revert button will restore the original versions of the 
+modified files -- which will undo ALL OTHER CHANGES to those files as 
+well.
+
+See the ZRP_ModdingNotes.txt file for more details on modifying STALKER. 
+

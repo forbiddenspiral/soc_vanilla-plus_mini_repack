@@ -1,0 +1,113 @@
+name = "Fix Rostok Merc/Bandit Quests"
+description = "Force any offline merc online or make Poker leave the quest target camp."
+	.."  Must be within 100 meters of quest target center (quest marker) to work."
+author = "NatVac"
+revision = "1.1"
+number_of_parameters = 0
+
+local info_portion_needs_reset = false
+
+function main()
+	local rostok_quest1_pos = vector():set(-95.554,0.0,148.38)
+	local rostok_quest2_pos = vector():set(-161.2,0,185.4)
+	local rostok_quest3_pos = vector():set(-234.3,9.36,49)
+	local count = 0
+	local found_online = false
+	local found_Poker = false
+	local found_Merc = false
+	local distance_from_camp1 =
+		db.actor:position():distance_to_sqr(rostok_quest1_pos)
+	local distance_from_camp2 =
+		db.actor:position():distance_to_sqr(rostok_quest2_pos)
+	local distance_from_camp3 =
+		db.actor:position():distance_to_sqr(rostok_quest3_pos)
+	if level.name() ~= "l06_rostok" or
+		 (distance_from_camp1 > 10000 and distance_from_camp2 > 10000 
+		 and distance_from_camp3 > 10000) then
+		return false, "You must be in Rostok within 100 meters of quest target."
+	end
+	dbglog("distance from ElimMercsAndBandits/DestroyTheMercs camp is "..
+		tostring(math.sqrt(distance_from_camp1)))
+	dbglog("distance from PurgeThebandits/KillTheBandits camp is "..
+		tostring(math.sqrt(distance_from_camp2)))
+	dbglog("distance from DestroyTheDetachmentOfMercs camp is "..
+		tostring(math.sqrt(distance_from_camp3)))
+	-- determine closest camp
+	local target_strn_name = "ros_smart_stalker2"
+	if distance_from_camp1 <= distance_from_camp2 then -- closer to 1st camp
+		if distance_from_camp3 < distance_from_camp1 then
+			target_strn_name = "ros_smart_stalker_killers1"
+		else
+			target_strn_name = "ros_smart_killers1"
+		end
+	else -- distance_from_camp2 < distance_from_camp1
+		if distance_from_camp3 < distance_from_camp2 then
+			target_strn_name = "ros_smart_stalker_killers1"
+		end
+	end
+	local target_strn = db.zone_by_name[target_strn_name]
+	if not target_strn then
+		return false, target_strn_name.." ST not added to db.zone_by_name[]!"
+	end
+	local strn = alife():object(target_strn:id())
+	if not strn then
+		return false, "Could not obtain ST object for "..target_strn_name
+	end
+	strn:initialize_if_needed()
+	dbglog("Current members of %s:", strn:name())
+	for id, v in pairs( strn.npc_info ) do
+		if v.se_obj:can_switch_online() then
+			dbglog("   "..v.name .." is online")
+			found_online = true
+		else -- offline oops
+			if v.name == "val_kocherga" then 
+				dbglog("   "..v.name .." (Bandit: Poker) is OFFLINE")
+				dbglog("   ... Attempting to detach %s from %s",
+					v.name, strn:name())
+				strn:unregister_npc(v.se_obj)
+				found_Poker = true
+			else
+				dbglog("   "..v.name .." (Merc) is OFFLINE")
+				found_Merc = true
+			end
+		end
+		count = count + 1
+	end
+	if not (found_Merc or found_Poker or info_portion_needs_reset) then
+		if count == 0 then dbglog("... None.") end
+		return false, "There are no offline NPCs in "..strn:name()
+	end
+	if found_online then
+		return false, "You must kill all the online bandits/mercs first."
+	end
+	-- all mercs must be dead before revoking the info_portion
+	if info_portion_needs_reset then
+		dbglog("Resetting info_portion 'bar_heli_scene_stay_online'")
+		db.actor:disable_info_portion("bar_heli_scene_stay_online")
+		info_portion_needs_reset = false
+		_z.show_small_msg("Info_portion has been reset")
+	end
+	if count == 0 then
+		dbglog("... None.")
+		_z.show_large_msg("The "..target_strn_name.." camp is empty.")
+		return
+	end
+	if found_Merc then
+		dbglog("Setting info_portion 'bar_heli_scene_stay_online'")
+		db.actor:give_info_portion("bar_heli_scene_stay_online")
+		info_portion_needs_reset = true
+		_z.show_large_msg("Switched offline Merc(s) online")
+		dbglog("First kill the newly-online merc(s)")
+		if found_Poker then
+			_z.show_blinking_msg("Poker also found. Re-run utility after killing mercs")
+		else
+			_z.show_blinking_msg("Re-run utility after killing mercs")
+		end
+		dbglog("Then rerun this utility to reset an info_portion")
+		_z.show_small_msg("See console log for details.")
+	elseif found_Poker then
+		_z.show_blinking_msg("Poker momentarily detached")
+		_z.show_small_msg("Do the X18 quest to really fix this quest.")
+		dbglog("Poker momentarily detached. Do the X18 quest to really fix this.")
+	end
+end

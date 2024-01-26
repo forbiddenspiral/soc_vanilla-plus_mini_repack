@@ -1,0 +1,313 @@
+-- nv120412 support for xStream's AIPack - ZRP-compatible version
+-- nv140321 Unified version for ZRP/AIPack compatibility
+-- normal toss_weapon_on_death (=false) or store_weapon_in_backpack (true)
+local store_weapon = false
+
+-- nv140427 set this true to globally control the amount of ammo found on bodies
+local scavenger_mode = false
+-- nv140427 set this to adjust the ammo amount
+local ammo_quantity_factor = 0.5
+
+-- nv150320 use 100 for pure vanilla, 1000 for vanilla bugfix
+local odds_factor = 1000	--see config\misc\death_items_by_communities.ltx
+
+--' Ключем является группировка персонажа. Значением является таблица, содержашая имена секций предметов.
+local item_by_community = {}
+
+--' Зависимости в спауне предметов. Предмет спауниться только если есть хотя бы один из зависимых.
+local item_dependence = {}
+
+--' Множители и минимаксы для выпадения вещей в зависимости от уровня
+local count_by_level = {}
+local count_by_level_pripyat = {}
+
+--' Предметы, которые нельзя удалять (квестовые например)
+local always_keep_item = {}
+
+--' Предметы, относящиеся к патронам. Их надо спаунить другим методом.
+local ammo_sections = {}
+
+function init_drop_settings()
+	local mul_by_level = {} -- these are only used within the function
+	local mul_by_level_pripyat = {}
+	local death_ini = ini_file("misc\\death_generic.ltx")
+	--nv 100807 removed "arena_enemy", "actor_dolg" per Cpt. Borovich
+	local community_list = { "stalker", "dolg", "freedom", "bandit", "military", "zombied", "ecolog", "killer", "monolith", "stranger" }
+
+	local id, value = "", ""
+	local n, result -- nv150404 use only once
+	for k,v in pairs(community_list) do
+		--' Необходимо заполнить таблицу
+		item_by_community[v] = {}
+		if death_ini:section_exist(v) then
+			n = death_ini:line_count(v)
+			-- local id, value = "", ""
+			for i=0,n-1 do
+				result, id, value	= death_ini:r_line(v,i,"","")
+				item_by_community[v][id] = odds_factor*tonumber(value)
+			end
+		end
+	end
+
+	--' Заполняем таблицу зависимостей
+	n = death_ini:line_count("item_dependence")
+	-- local id, value = "", ""
+	for i=0,n-1 do
+		result, id, value	= death_ini:r_line("item_dependence",i,"","")
+		item_dependence[id] = {}
+		local vvv = parse_names(value)
+		for k,v in pairs(vvv) do
+			item_dependence[id][v] = true
+		end
+	end
+
+	--' Множители и минимаксы для выпадения вещей в зависимости от уровня
+	local level_name = level.name()
+
+	if not death_ini:section_exist(level_name) then
+		level_name = "default"
+	end
+
+	n = death_ini:line_count(level_name)
+	-- local id, value = "", ""
+	for i=0,n-1 do
+		result, id, value	= death_ini:r_line(level_name,i,"","")
+		mul_by_level[id] = tonumber(value) or 0
+	end
+	level_name = "l11_Pripyat"
+	n = death_ini:line_count(level_name)
+	-- local id, value = "", ""
+	for i=0,n-1 do
+		result, id, value	= death_ini:r_line(level_name,i,"","")
+		mul_by_level_pripyat[id] = tonumber(value) or 0
+	end
+
+	local item_count_section = "item_count_" .. level.get_game_difficulty()
+	n = death_ini:line_count(item_count_section)
+	for i=0,n-1 do
+		result, id, value	= death_ini:r_line(item_count_section,i,"","")
+		--' Нужно распарсить value в два значения
+		local t = parse_nums(value)
+		if t[1] == nil then
+			abort("Error on [death_ini] declaration. Section [%s], line [%s]", item_count_section, tostring(id))
+			t[1] = 0 -- if abort doesn't exit, use a default value
+		end
+		local min = t[1]
+		local max = t[2]
+		if max == nil then
+			max = min
+		end
+
+		min = tonumber(min)	-- * mul_by_level[id]
+		max = tonumber(max)	-- * mul_by_level[id]
+
+		count_by_level[id] = {min = min * mul_by_level[id], max = max * mul_by_level[id]}
+		count_by_level_pripyat[id] = {min = min * mul_by_level_pripyat[id], max = max * mul_by_level_pripyat[id]}
+	end
+
+ 	--' Предметы, которые нельзя удалять (квестовые например)
+	n = death_ini:line_count("keep_items")
+	for i=0,n-1 do
+		result, id, value	= death_ini:r_line("keep_items",i,"","")
+		if value == "true" then
+			always_keep_item[id] = true
+		end
+	end
+
+	--' Предметы, относящиеся к патронам. Их надо спаунить другим методом.
+	-- ammo_sections = {} -- function called once per session, table already initialized
+	n = death_ini:line_count("ammo_sections")
+	-- local id, value = "", ""
+	for i=0,n-1 do
+		result, id, value	= death_ini:r_line("ammo_sections",i,"","")
+		ammo_sections[id] = true
+	end
+end
+
+
+
+class "drop_manager"
+function drop_manager:__init(npc)
+	self.npc = npc
+end
+function drop_manager:create_release_item()
+	--' Спрашиваем у серверного объекта генерились ли предметы
+	local self_npc = self.npc
+	local se_obj = alife():object(self_npc:id())
+	if se_obj.death_droped == true then
+		return
+	end
+	se_obj.death_droped = true
+
+	--' Запускаем итератор на удаление предметов
+	self_npc:iterate_inventory(keep_item, self_npc)
+
+	--' Проверка на отсутствие спауна лута
+	local ini = self_npc:spawn_ini()
+
+	if ini and ini:section_exist("dont_spawn_loot") then
+		return
+	end
+
+	--' Доспавниваем необходимое количество итемов:
+	--' Необходимо составить список объектов которые могут быть заспавнены для персонажа
+	-- dbglog(self_npc:character_community())
+	local char_community = self_npc:character_community()
+	local spawn_items = item_by_community[char_community]
+	if spawn_items == nil then return end
+	local math_ceil = math.ceil
+	local math_random = math.random
+	local item_dep = item_dependence
+	local number
+	if char_community == "stranger" then
+		for k,v in pairs(spawn_items) do
+			if item_dep[k] == nil or check_item_dependence(self_npc, k) == true then
+				number = math_ceil(math_random(count_by_level_pripyat[k].min, count_by_level_pripyat[k].max))
+				create_items(self_npc, k, number, v)
+			end
+		end
+		if _dev then _dev.note_death(self_npc, char_community) end
+	else
+		for k,v in pairs(spawn_items) do
+			--' По каждому объекту необходимо получить зависимости
+			-- number = math_ceil(math_random(count_by_level[k].min, count_by_level[k].max))
+			if item_dep[k] == nil then -- not ammo
+				number = math_ceil(math_random(count_by_level[k].min, count_by_level[k].max))
+				--' Необходимо заспавнить нужное количество.
+				-- create_items(self_npc, k, number, v) --npc, section, number, rnd
+				for i=1,number do --this avoids wasted ammo processing on non-ammo
+					--' Проверяем вероятность появить каждый объект в отдельности
+					if math_random(odds_factor) <= v then -- v = rnd
+						alife():create(k, -- k = section
+								self_npc:position(),
+								self_npc:level_vertex_id(),
+								self_npc:game_vertex_id(),
+								self_npc:id())
+					end
+				end
+			elseif check_item_dependence(self_npc, k) then
+				--' По каждому объекту необходимо получить количество
+				number = math_ceil(math_random(count_by_level[k].min, count_by_level[k].max))
+				--' Необходимо заспавнить нужное количество.
+				create_items(self_npc, k, number, v)
+			end
+		end
+	end
+end
+
+-- nv 090609 external helper function
+function marked_as_keep_item(section)
+	return always_keep_item[section]
+end
+
+--' Функция вызывается для каждого предмета, если вернет false то предмет удалится.
+function keep_item(npc, item)
+	-- nv140321 for AIPack compatibility
+	-- if item==nil or alife():object(item:id())==nil then return end
+	if item == nil then return end
+	local item_id = item:id()
+	local sobj = alife():object(item_id)
+	if sobj == nil then return end -- test probably not needed even for AIPack, could debug here
+	local section = item:section()
+
+	if section == "bolt" then
+		return false
+	end
+
+	if always_keep_item[section] == true then
+		-- per Alex-Tommy, no hack on trade
+		item:set_condition(item:condition())
+		return true
+	end
+
+	if string.find(section, "wpn_",1,true) then
+		local npc_is_not_mm = true
+		if npc:character_community() == "stranger" then
+			-- they shouldn't have binocs
+			item:set_condition(0)
+			npc_is_not_mm = false
+		end
+		local randVal = math.random(20)
+		if string.find(section, "_m%d",7) then -- may be unique weapon; _m203 not handled properly but no matter
+			-- item:unload_magazine()
+			item:set_condition((randVal+80)*item:condition()/100)
+			return true
+		end
+
+		local item_in_slot = npc:item_in_slot(2)
+		if item_in_slot ~= nil and
+		   item_in_slot:id() == item_id
+		then
+			if section == "wpn_rpg7" or section == "wpn_gauss" then
+				if npc_is_not_mm then -- toss the weapon
+					item:set_condition((randVal+75)*item:condition()/100)
+					return true
+				end
+			end
+		end
+
+		if section ~= "wpn_binoc" then
+			item:set_condition((randVal+72)*item:condition()/100)
+			item:unload_magazine()
+			if store_weapon then
+				local active_item = npc:active_item()
+				if active_item ~= nil and active_item:id() == item_id then
+					-- hack to keep weapon on NPC; sometimes LUA squawks but nothing else
+					npc:transfer_item(item, npc)
+				end
+				return false
+			end
+			return true
+		end
+	end
+	-- alife():release(alife():object(item_id), true)
+	alife():release(sobj, true)
+	return false
+end
+
+--' Функция спавнит необходимое число предметов
+function create_items(npc, section, number, rnd)
+	--'printf("create %s of %s", tostring(number), tostring(section))
+	if ammo_sections[section] == true then
+		if scavenger_mode then number = math.ceil(number * ammo_quantity_factor) end
+		if number > 0 then
+			se_respawn.create_ammo(section,
+					npc:position(),
+					npc:level_vertex_id(),
+					npc:game_vertex_id(),
+					npc:id(),
+					number)
+		end
+	else
+		for i=1,number do
+			--' Проверяем вероятность появить каждый объект в отдельности
+			if math.random(odds_factor) <=  rnd then
+				alife():create(section,
+						npc:position(),
+						npc:level_vertex_id(),
+						npc:game_vertex_id(),
+						npc:id())
+			end
+		end
+	end
+end
+
+
+--' Функция проверяет есть ли хоть один из зависимых объектов у персонажа
+function check_item_dependence(npc, section)
+	-- nv140429 moved to create_release_item()
+	-- if item_dependence[section] == nil then
+		-- return true
+	-- end
+
+	-- local d_flag = true
+	for k,v in pairs(item_dependence[section]) do
+		local obj = npc:object(k)
+		if obj ~= nil and npc:marked_dropped(obj) ~= true then
+			return true
+		end
+		-- d_flag = false
+	end
+	-- return d_flag
+	return false
+end

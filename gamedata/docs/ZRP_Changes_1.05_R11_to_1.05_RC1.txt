@@ -1,0 +1,576 @@
+=====================================
+Changes in 090912 RC1 release over 090429 ZRP 1.05 demo:
+=====================================
+
+Added:
+* Free play support even if you don't start a new game. (NatVac)
+* Another named quicksave via Esc F5 or Esc F6. (NatVac)
+
+ZRP 1.05 RC1 fixes:
+* No more sticky location markers. (Mr. Fusion; see below)
+* Logical marker management. (Mr. Fusion)
+* Skinflint/Murk task exploit removed. (Mr. Fusion)
+* Cases/crates have improved item spawning. (NatVac)
+* Ironsight zoom of Storming Obokan/Abakan fixed. (NatVac)
+* Some additional widescreen fixes.  (Kosmokrator, NatVac)
+* Ivantsov is no longer quirky about repair. (Mr. Fusion)
+
+Changes:
+* The Live Stalker Ranking support has been updated. (Mr. Fusion)
+* Tushkanos are now more resistant to electricity. (NatVac per 
+  Mr. Fusion)
+* You can now trade with Cap before the initial Barrier attack. 
+  (NatVac per BobBQ)
+* Disabled Rostok helicopter flame fix for now. (NatVac)
+* Drop-a-medkit tweaked to include walking wounded. Reach 
+  on drop extended to 3 meters. (NatVac)
+* New level changers added as you go, except late game LCs. 
+  All unadded LCs are added when you complete the game. (NatVac)
+* Optional save game prefix helps group your saves. (NatVac)
+
+Modifier changes (NatVac):
+* A preliminary Tweaks configuration has been added.
+* The save_prefix configuration is part of New Game Tweaks.
+
+Debug Changes (NatVac):
+* The direction algorithm is improved.
+* Esc D A and Esc D B work differently.
+* If there are no more targets, jump-to-unsearched-body and
+  jump-to-wounded do not set a new return position. (NatVac 
+  per romulous)
+* Esc D H checks the health of the NPC directly ahead.
+* Esc D Home remotely checks NPC bodies, gets stuff.
+* Esc D N destroys inventory weapons in a nearby NPC.
+* Esc F2, Esc F3, Esc F4 combo commands added.
+Again, PLEASE see docs\DebugSupportChanges.txt.
+
+
+**********************************
+Details of changes and fixes since the 090429 demo release:
+**********************************
+
+The location markers are now completely managed to the best of 
+our current knowledge, thanks to Mr. Fusion. Let us know if you 
+find any that persist when they shouldn't. Note that some 
+grey-circle tip markers are more persistent than before, but they 
+will also go away under certain logical conditions like visiting 
+the stash or progressing in the game. (research and primary 
+clean-up scripting: Mr. Fusion) 
+
+The Red Forest antenna farm and Pripyat hotel tasks have been 
+tweaked to reveal markers as you go, helping reduce confusion. 
+(Mr. Fusion) 
+
+Box and crate spawns are greatly improved: Electro-based 
+artifacts are always visible. Stuff doesn't fall through the 
+floor -- if the box/crate is one you broke; some entities will 
+remotely break containers and still cause trouble. The 
+dual/multi-core delayed spawns of items from these containers may 
+be fixed, as well. Old behavior can be restored, and there is a 
+third option: Just directly spawn the contents in your inventory, 
+with a news item listing the stuff. (NatVac) 
+
+You can now enter free play after the "good" (extended) ending 
+even if you didn't start a new game. See docs\TheZoneIsOpen.txt 
+for details. (NatVac) 
+
+The ironsight zoom of the Storming Obokan/Abakan has been 
+corrected. (NatVac) 
+
+The Enter key now works on the Save Game (saves game if filename 
+supplied) and Load Game (returns to main menu) dialogs. At the 
+main menu, it activates the currently-highlighted button. 
+(NatVac) 
+
+More English typos corrected. (Mr. Fusion: tasks, general, 
+NatVac: TM, weapons, dialogs, general) 
+
+X16 and X18 task hints have been added to support the now-visible 
+underground markers. (Mr. Fusion) 
+
+Ivantsov is no longer quirky about repair. (Mr. Fusion) 
+
+The AW Skinflint/Murk bloodsucker task reward exploit has been 
+removed. (Mr. Fusion) 
+
+The "Kill the Monolith Stalker" autoquest is deferred to the time 
+when the target is expected to be online. (NatVac) 
+
+The Chernobyl NPP map should now show the player's position, by 
+using a separate map (textures\map\map_aes_2.dds) in 
+config\game_maps_single.ltx for stancia2 (NPP North Side) with 
+full transparency for the lower half. However, this is dependent 
+on the order in which the two AES maps load, so the complete fix 
+might be to make map_aes_1.dds transparent in the upper half. 
+(NatVac) 
+
+Some Modifier configuration files were updated. See the Tweaks 
+configuration for modifying some alife.ltx parameters, and see 
+the "New Game Tweaks" entry on the _ZRP configuration to define a 
+save game prefix. This prefix can be changed at any time outside 
+of the game; you don't have to start a new game. (NatVac) 
+
+Note: The 090429 release of the demo had accidentally included 
+the se_monster.script from Mr. Fusion's Live Stalker Ranking as 
+default. It is an option, but if you are not using it, you can 
+remove the file if you wish. If you are using this feature or 
+would like to use it, see the "Live Stalker Ranking" entry in the 
+Experimental configuration for Mr. Fusion's latest version. 
+
+
+**********************************
+Widescreen changes (may need tweaking): 
+**********************************
+
+af_params_16.xml: Changed ui_icons_newPDA_showpers_e to 
+ui_inv_icon_chemical_burn_immunity for 
+static_chemical_burn_immunity. (Kosmokrator) 
+
+inventory_item_16.xml: Lengthened the item description text area 
+to suit improved inventory_new_16.xml. (NatVac) 
+
+inventory_new_16.xml: Improvements to make better use of 
+available area, swapped shock and impact on item description. 
+(090206 fix by nandersen, NatVac on top of Raw's work) 
+
+ui_custom_msgs.xml: Commented out the HUD clock background. It 
+seems that it is not adjusted for widescreen as the rest of the 
+HUD is. You can tweak it further by editing the coordinates for 
+the main_time_static entry. (NatVac) 
+
+
+**********************************
+TZIO fixes (NatVac): 
+**********************************
+
+The Cordon railroad bridge soldiers are not automatically ticked 
+off enough to fire at you if you select a point of progress. 
+
+Certain Agroprom underground events (e.g., the explosion) should 
+not happen if you have the appropriate progress via TZIO. 
+
+You have to visit the Cordon after completing the game before the 
+MonoMartyrs can make an appearance, unless you enable their early 
+appearance via the Modifier. 
+
+Please note that the new level changers are not automatically 
+added via TZIO in this release (unless you are in the right 
+place).  You have to either add them via Esc D L (see below) 
+or go through the final teleporter and get the final cutscene 
+to add them automatically.
+
+
+**********************************
+Debug Support changes (NatVac): 
+**********************************
+
+Several new commands have been added, and several existing 
+commands have been changed. There have been some algorithm 
+improvements in direction finding and searching. Some combo 
+commands have been added for convenience. 
+
+Esc D L can be used at any time to add the new level changers 
+(automatically added at the completion of the normal game), but 
+the mechanism has been tweaked to permit only those level 
+changers suitable to the current point of progress. 
+
+Spoilers:  New level changers will be added automatically at 
+certain points:  When you get the Agroprom military case, the 
+X18 documents, and the X16 documents.  You can execute this 
+debug command after reaching the NPP for a way back to Pripyat. 
+The Sarcophagus-to-NPP LC is not available until you make it 
+through the normal game ending in order to remove the blowout 
+timer and ground radiation.
+
+Please see docs\DebugSupportChanges.txt for more debug details. 
+
+
+**********************************
+Tweaks:
+**********************************
+
+The tushkanos are now more resistant to electricity, since many 
+of them tend to start life -- and end it -- in a tunnel filled 
+with Electro anomalies. (NatVac per Mr. Fusion) 
+
+The Save Game dialog can have a default filename prefix, to make 
+savegame organization easier. (NatVac) 
+
+You now have the ability to make an alternate quicksave via Esc 
+F6 (or Esc F5). This creates a level-specific "snapshot" similar 
+to the Esc S named save, but it will overwrite itself for that 
+level. The saves have the form "<prefix><level_name>_snapshot" 
+except for the first time it is executed on a level, in which 
+case the name is "<prefix><level_name> - start". (NatVac) 
+
+There is a certain rare chance that some boxes that would 
+otherwise only yield a bandage (1 in 333), or medkit or antirad 
+or Fort pistol (1 in 1000), will now offer a very rare artifact 
+(1 in 1000 for each of the all-good ones). Because it will be a 
+rare game when you get anything from these boxes anyway, this may 
+need tweaking. --Or not. (NatVac) 
+
+Some stalkers will let you approach with gun out to within 4 
+meters before complaining. (Reminder: You can turn off the 
+whining; see the "Sound Annoyances 2" entry in the Modifier.) 
+This is a minor change, affecting mainly generic stalkers. Quite 
+a few are still pre-programmed to be upset at 10 meters. (NatVac) 
+
+The grey circle marking the Garbage vehicle graveyard is smaller 
+to permit the viewing of a secret there, important because the 
+Garbage grey markers persist for quite a bit longer. (NatVac) 
+
+There's now a text message for Seriy to accompany the "dead meat" 
+announcement. (Mr. Fusion) 
+
+Barkeep mention of Duty HQ access now requires separate 
+acknowledgement. (NatVac) 
+
+The crazy stalker's flash now yields a "Found PDA" journal entry 
+instead of a Diary entry. Several Army Warehouses tasks (from 
+Skull, Murk/Skinflint, Max) now have task article references 
+instead of diary entries. (Mr. Fusion) 
+
+Delayed "Assist at Freedom's Barrier outpost" rush until you 
+acknowledge Cap's request, per BobBQ. Before, the timer started 
+when you initiated the dialog; now it waits until you have had a 
+chance to read the text (and possibly trade with him). (NatVac) 
+
+The notice to heed the call of the monolith is moved to after the 
+X-19 cutscene. (NatVac) 
+
+Since the HUD clock background was commented out to keep it from 
+looking ugly in widescreen, the original ui_custom_msgs.xml file 
+was moved to ui\optional\ui_custom_msgs.xml.clock_bkgnd. You can 
+replace the update with the older file if you prefer the clock 
+background on your standard (4x3) display monitor. (NatVac) 
+
+The new level changers are selectively added as you achieve 
+certain points of progress in the game (not yet via TZIO unless 
+you are on the levels where the LCs are normally added). Due to 
+the blowout, the late game level changers (NPP to Pripyat, 
+Sarcophagus to NPP) are added when you finish the normal game, 
+but you can manually add the "NPP to Pripyat" LC when you arrive 
+at the NPP via Esc D L. (NatVac) 
+
+
+=====================================
+Changes in 090429 demo release over ZRP 1.05 R11 090206:
+=====================================
+Added:
+* New level changers added upon normal game completion.
+* Intra-level jumps added to support new level changers.
+* Game clock on HUD (optional, default).
+* Two more anomalies removed for free play:
+    Springboard on Cordon road near Fox
+    Springboard in front of Garbage Hangar
+* SMM image file, courtesy nandersen
+
+Debug Changes (PLEASE see DebugSupportChanges.txt):
+* Alter game time: Absolute: 1X to 10000X Real Time
+* Alter game time: Relative: 1/10X, 10X current (nandersen)
+* New level changers addable via key sequence.
+* Position snapshot now includes all.spawn dest_position info.
+* "Debug Get" reach extended from 50 to 75 meters.
+* "Debug collect" now also grabs outfits, medkits, etc.
+
+Demo fixes:
+* Storming SIG typo corrected.
+* Removed three test script files:  xr_camper.script, 
+  xr_combat.script, xr_combat_camper.script
+* _z.on_item_drop()'s autorepair of uniques is commented out.
+* Fedeyin's unique Berill suit can no longer be traded to
+  stalkers. (nandersen)
+
+ZRP R11 fixes:
+* Intermittent dialog crash if Ivantsov repair not enabled.
+  (Racemate)
+* Murk task had wrong individual marked on map. (BobBQ)
+* Couldn't carry bodies while wearing Duty SEVA suit.
+  (EggChen, ZaGaR)
+* Sarcophagus voices weren't muted after "good ending".
+* Hand Radio inventory image took two squares. (Racemate)
+* Wide-screen dialog choices didn't properly word-wrap.
+  (Kosmokrator)
+* Crate content notices didn't translate item names.
+* Voronin, Petrenko could not be quieted. (romulous)
+
+Changed:
+* Knife reach extended from 1.4 to 1.6.
+* G36 (GP37) returned to vanilla accuracy/deterioration.
+* The inventory background is less opaque.
+* Some UI message on-screen locations tweaked.
+* You can now trade with Petruha's buddies. (BobBQ)
+* Custom items no longer default to quest_item.
+* Ammo NPC trade file (trade_generic.ltx) now default.
+* Some vanilla files tweaked to get past SMM filtering.
+* Red75's Stalkers Are Not Blind no longer uses odds.
+  (Should be better in non-combat situations.)
+* Explosives now correctly labeled, internationalizable. 
+  (romulous)
+
+ZRP 1.05 R11 All.spawn changes:
+* Rare vanilla Agroprom waypoint CTD fixed.
+
+Modifier changes:
+* Time of day toggle in Experimental.cfg.
+* You can now enable the MonoMartyrs early, before completing 
+the game.
+
+
+=====================================
+Changes in R11 090206 release over ZRP 1.05 R10:
+=====================================
+Tweaks and typo corrections based on Don Reba's LTX syntax 
+checker have been incorporated. 
+
+Raw's widescreen inventory gets an update. (nandersen)
+
+Duty gets equal time with Freedom: Captain Ivantsov can also 
+repair weapons and armor, just like Screw, if the option is 
+enabled. However, Captain Ivantsov is moody in this release. If 
+he doesn't offer the opportunity for repair, keep trying. (NatVac 
+implementation of a BobBQ solution to a motiv-8 recommendation.)
+
+The MonoMartyrs seek revenge. This requires that you either 
+complete the normal game with the "good" ending, or enable free 
+play AND go through the last cutscene. You can do this by 
+teleporting to the final level, north of the NPP) using Esc T F 
+and then jumping to the Cordon exit via Esc J C. Please see 
+MonoMartyr.cfg.txt (the MonoMartyr.cfg Config Notes for the 
+Modifier program) for more details.  (NatVac, fatrap for the 
+strangers idea, future enhancements by nandersen, others)
+
+A few anomalies are removed in free play mode to support better 
+NPC existence. Just load a save from the final level and get the 
+cutscene. Or you can start a new game, use Esc T F to teleport to 
+the final level, then use Esc J C to get the final cutscene and 
+the message "The Zone is Open". You can add to the anomaly 
+removal list, and you can also remove anomalies directly while in 
+the game, although in that case you'll need to save/reload for 
+the change to take effect. (NatVac, from bardak's acdc.pl, IG2007 
+comments, and a couple of Ru Team lines of code.)
+
+You can swap good artifacts for better ones with Skinflint; you 
+might want to keep him alive for now. Bring lots of every kind of 
+artifact, and LOTS of money.  There's a storage box nearby under 
+the stairs.  (NatVac, with a form of barin's uber-artifact)
+
+The Wild Territory (Rostok) minimap is fixed.  The helicopter 
+fires on that level are removed after something happens in 
+Yantar. The chopper still glows, though. (NatVac)
+
+The Monolith and the zombied have been commanded to collect any 
+valuable artifacts they find, and the ones from Red Forest onward 
+have about a one percent chance of having found one or more. And 
+when the Scorcher drops, the military aren't above picking up 
+what they find (one percent), and of course the loners along with 
+the Duty and Freedom guys really ransack the place. (This last 
+change is due to a fix correcting the odds calculation in a 
+vanilla script, a bug found by Alex-Tommy. Blame NatVac for the 
+rest.)
+
+Note:  Odds are aggregate.  The odds of finding a particular 
+good artifact on an NPC in Red Forest and beyond are 1 in 200 
+for loners, Duty, Freedom and mercs, and 1 in 1000 for Monolith, 
+zombies and military.
+
+The same script fix was applied to boxes. In vanilla, anything 
+with a chance lower than 10 in 1000 (<1%) was rounded to a zero 
+percent chance. This includes your nice stuff like weapons (e.g., 
+FN F2000 had a 0.3% chance in dungeon boxes) and many the top end 
+artifacts. For example, Night Star, Goldfish, Moonlight, Urchin, 
+Mica, and Crystal each had a 0.9% chance in generic boxes in the 
+Bar and levels west and north of the Bar, but you'd never get 
+them at all in vanilla. (NatVac)
+
+You can revisit the NPP levels for continued exploration after 
+completing the game with the good ending.  The ground radiation 
+and the blowout are removed.
+
+In this mod, the Monolith attacking the barrier don't run out 
+of 9x39 ammo if they have VLAs (AS Vals).  The Monolith and 
+northern zombies are usually equipped with AP ammo.
+
+Many debug enhancements and changes. See the corresponding 
+document, mentioned below. 
+
+
+=====================================
+Fixed as of ZRP 1.05 test release 10 (includes other ZRP fixes):
+=====================================
+This is not exhaustive.  See ZRP_Changes_1.0_to_1.05_R10.txt.
+
+Stalkers no longer die in campfires when switched online. 
+(bardak, et alia) 
+
+Quests complete the way they are supposed to. (bardak, with minor 
+fixes by others) 
+
+No more empty secret stashes. (bardak) 
+
+Tushkanos are treated as the vermin they are by the NPCs. 
+(Russian forum fix by way of fatrap) 
+
+Fanatic's Cordon rookies hide before the Mercenary attack, not 
+after. (bardak) 
+
+Typos in all.spawn kept things from working. (Alex-Tommy, barin, 
+Cpt. Borovich, dezodor, Don Reba, EggChen, fatrap, NatVac, omero, 
+others...) 
+
+Tuskanos no longer beep. (NatVac) 
+
+Tushkano encyclopedia entry is fixed. (NatVac per Mr. Fusion) 
+
+Your reputation doesn't swing wildly between excellent and 
+terrible. (NatVac) 
+
+You can heal stalkers that were wounded without "Gimme a medkit" 
+dialogs, or worse, would otherwise crash the game. Just drop a 
+medkit nearby. You get the exact same benefit (friendship with 
+neutrals, reputation credit) as if you had healed him via dialog. 
+You must be within two meters of the spot (usually based on the 
+feet), and it is momentarily disabled for stalkers that first 
+require healing via dialog (e.g., Tolik, Fox). (NatVac) 
+
+You can no longer engage in trade with a wounded stalker. (XiaNi) 
+
+You can complete the Strelok quest. (NatVac) 
+
+Lights don't shine out of the ground during the day. (NatVac) 
+
+Possible crash when killing Yurik's robbers at Garbage entry 
+(copy/paste bug) fixed. (NatVac per Alex-Tommy) 
+
+Exiting the way you entered the Agroprom tunnels now immediately 
+completes the "Find your way out of the underground" objective. 
+(NatVac) 
+
+Rostok HUD minimap works correctly. (NatVac, fatrap) 
+
+You can go by the tracks in Rostok to save Kruglov without 
+getting the flyby cutscene later. (NatVac) 
+
+You can complete the Lukash mission to kill Skull's group even if 
+you save and reload in the middle of the battle. (bardak, NatVac) 
+
+If Skull dies when you are working on the "kill the sniper" 
+mission, the mission fails (instead of sticking around 
+unfinished). (NatVac) 
+
+Army Warehouses Merc camp waypoint no longer causes a crash. 
+(NatVac) 
+
+Returning to AW from Red Forest no longer causes a crash if you 
+didn't defend the border from the Monolith. (NatVac)
+
+Most typos in the dialogs and secrets have been fixed, including 
+misleading references to "cellar". (And some of the secrets are 
+now worth reading.) (NatVac)
+
+Marked One's position while underground should now match reality 
+in the PDA. Sometimes, you'll see secrets and tasks marked 
+correctly there as well. (NatVac)
+
+Icons for impact and shock protection in inventory suit 
+statistics are swapped to match other uses like artifact stats. 
+(NatVac; done just knowing someone else had already done it) 
+
+You have a chance of finding better artifacts on the bodies of 
+loners, Dutyers, Freedomers and others in Red Forest and points 
+north.  Config files had this, but script support was broken. 
+(Alex-Tommy)
+
+You now have a real chance of getting rare items in crates later 
+in the game. The ph_box_items_*.ltx files had items that had odds 
+of less than 10 in 1000, but the script truncated anything below 
+1 in 100 to zero chance. (NatVac)
+
+Fire-protection "battery" is correctly marked "Shell" (NatVac)
+
+Ecologist's mutant parts quests are fixed. (fatrap, NatVac, 
+Decane)
+
+Fixed Sniper TRS301 (Sniper ZM LR-300ML) zoom, as it was using 
+ironsight zoom instead of SUSAT scope zoom. (NatVac)
+
+Removing your items from a stash no longer prevents its possible 
+use as a future secret stash. (NatVac)
+
+Again:  This list is not yet exhaustive.
+
+===================
+Requires new game with r11 all.spawn (versus r10):
+===================
+
+Fox and Guide are not bothered by the dogs from the first attack 
+once you kill them. Also, the smart terrain for the dogs (located 
+right in the house) is disabled once you handle the threat. 
+(NatVac)
+
+The R11 all.spawn RC3 is included. Changes over RC1:
+* Rare Agroprom military base waypoint crash fixed. (NatVac)
+* NW Garbage hangar guard is moved a bit so you can walk up the 
+stairs. (BobBQ) 
+
+
+===================
+Other Features:
+===================
+The Zone Is Open (TZIO) permits one to pick up the game at any 
+chapter in the story, even after the story ends (aka "free 
+play"). (NatVac, awesome teleport dialogs by TSL16b) 
+
+You can also jump instantly to various points on each level.  
+Please see the file TheZoneIsOpen.txt in docs\ZRP_docs.
+
+The Modifier program for configuring STALKER to your liking. A 
+new version of the program is included. It now has a mod 
+compatibility warning about the FileChoice options, and it 
+supports an additional Alias keyword for Fields. There are a few 
+more configuration options. 
+
+
+===================
+Known issues:
+===================
+Release-specific:
+
+The Tab key to show the current task might show the previous task 
+instead, late in the game or after you complete the normal game. 
+
+I've noticed slightly more "fugue" state NPCs than normal in a 
+couple of camps. Save/reload should fix them, although they just 
+seem to be lost in thought and you can still talk to some. It may 
+have to do with a bad transition from handling a threat to 
+returning to "kamp" mode. 
+
+Twice during playtesting, I've encountered a situation where I 
+couldn't select any inventory during the searching of bodies. 
+Saving and reloading fixed this.  Tossing my weapon also fixed it. 
+
+
+General:
+
+A couple of stalkers can mess up a eliminate-the-camp quest by 
+joining the camp while they are held offline. An example: Poker 
+can become part of the Rostok bandits if you don't go to Dark 
+Valley first, but he is not switched online until you deal with 
+Borov. 
+
+See the following files in the gamedata\docs subdirectory for 
+much more information:
+
+CrashesStillInTheGame.txt
+QuirksInTheGame.txt
+DebugSupportChanges.txt (lots of new features)
+
+A reminder:  "! Unknown command:  dbg:_" followed by text in your 
+console log is just a debug statement.  Look at it to know what 
+it is about.  Usually it is just informative, as when guns are 
+moved into bodies or crates are broken (with crate debug mode) 
+or a mapspot removal is deferred.
+
+Please report any new issues on the forum sites mentioned in the 
+ZRP readme file.

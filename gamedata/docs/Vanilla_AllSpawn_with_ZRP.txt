@@ -1,0 +1,55 @@
+
+Things I noticed when I played using the vanilla all.spawn:
+
+WARNING:  Spoilers.
+
+The dogs torment Fox and subsequent residents of the house forever.
+
+You can't disable the Agroprom cutscene.
+
+The initial military soldiers in the northern Agroprom Institute area are always hidden on the PDA.
+
+The Dutyer gets free from prison without your help, a lot.
+
+There's stale bread in Dark Valley, and in Cordon.  This is handled by the ZRP.
+
+Changing levels from Dark Valley to the Garbage results in a prompt to move to next level (i.e., back to DV).
+
+The Hunting Shotgun is a BM16 sawn-off.
+
+The helicopters don't go away by themselves in Yantar.
+
+The poltergeists may not appear in Rostok.
+
+The level changer markers are missing for Rostok-to-Bar and AW-to-RF, although the Rostok minimap is fixed.
+
+The Strelok task cannot be completed, but that's not a big thing.
+
+The Skull group will have some issues: repeating the gloat, etc.
+
+Skinflint can only buy up to 5000 Ru at a time, initially, although that corrects itself as you do business with him.
+
+Chef's refrigerator doesn't open.
+
+The farmstead stalkers have trouble with an Electro that's near the village unless you use SANB.
+
+You can't get the Red Forest bunker lock's combination from a source within the game.
+
+Prior to ZRP 1.07 releases, the south entrance to the Pripyat stadium triggers the level changer to NPP after the cutscene, so enter the stadium through the broken fences, not the south entrance where the quest marker is located.
+
+The late-game LCs are not automatically added until you complete the game, because the blowout effects are not removed until then.  You can add the NPP-to-Pripyat level changer just before or just after you arrive at the NPP via Esc D L.
+
+Upon reaching the NPP, you will trigger the movement of Freedomers to fill smart terrains in Pripyat and beyond.  This will affect tasks, repairs and trading, as Lukash, Skinflint and Screw will likely move on.  A possible fix: execute db.actor:disable_info_portion("aes_arrive_to") every time you leave the south NPP level to reset their relocation.
+
+In my vanilla all.spawn game, Cap died in the Monolith camp on the south side of Pripyat, while Lukash succumbed to the remaining anomaly in the Freedom camp on the southwest.  Both Screw and Max made it all the way to the stadium before the anomalies there did them in.  I managed to undo the info_portion in time to keep Skinflint in the AW Freedom base.
+
+Upon game completion:
+
+One C-Con rep is still alive after entering free play.  If you are using a version of ZRP 1.07 prior to R3, you will need to 1) use the "rifle in the door" trick twice to return from the end game area back to Pripyat, 2) teleport through the two blocked doors with Esc D F, or 3) use the intralevel jump to retrace your steps in one level.  As of ZRP 1.07 R3, you will find the C-Con hologram room's doors unlocked and opened.
+
+The blowout timer box is still there on the NPP level, but it is blank and the blowout is off.
+
+================================================================
+Zone fugue, where a stalker is standing dumbfounded and otherwise dead to the world, is a temporary condition.  The stalker has lost his current job scheme, often because a threat occurred and was handled.  If you save/reload, or if another change in status occurs (e.g., another threat), he will usually return to normal.
+
+The military from the army outpost in south Cordon will attack the loners if something gets their attention, like gunfire or dead mutant bodies.  This happens even in vanilla, although mods tend to add (or subtract) some sensitivities to (or from) NPCs.

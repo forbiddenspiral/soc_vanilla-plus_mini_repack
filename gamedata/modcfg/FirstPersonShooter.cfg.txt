@@ -1,0 +1,170 @@
+ File: FirstPersonShooter.cfg 
+
+STALKER Shadow of Chernobyl normally uses an accuracy mechanism intended 
+for gameplay rather than reality, as more accurate weaponry would make 
+for quick fights and force the player to reload much less often. 
+
+This configuration group can be used to modify the default accuracy of 
+weapons, affecting both the player and the AI when firing upon other AI. 
+(Their accuracy when firing upon you is handled separately. See below.) 
+
+
+Installation
+
+You will need to install the modified weapons.ltx file with the first 
+entry.
+
+If you see an error telling you that config\creatures\actor.ltx 
+is missing when you select an entry, you can install it using Actor.cfg. 
+The changes below can be made to any installed version of actor.ltx. 
+
+The primary change to weapons.ltx is the reduction of the k_disp value 
+for all the ammo. This value is a multiplier that modifies the normal 
+weapon accuracy, so an ammo type using the typical k_disp value of 3.0 
+widens the "cone of fire" by a factor of three. 
+
+The modified weapons.ltx file uses 1.0 for all ammo, so the lower- and 
+mid-tier weapons will have a cone of fire that subtends a circle only 
+1/9th the original area. 
+
+Again, this also affects the accuracy of the NPCs when firing upon 
+other enemies, but not upon you.
+
+Other factors apply, like your stance and motion, discussed below.
+
+Fire mode is another factor. Due to recoil, your aim will be off after 
+the first shot. It will return to where you were pointing based on 
+cam_relax_speed. 
+
+That aim is also affected by time_to_aim for the weapon. After a shot, 
+the cone of fire for the next shot is larger. If the value is 1.0, it 
+will take one second before the accuracy will return to normal. You can 
+edit the weapon files to change that to a smaller value if you wish. 
+
+There's another important issue as well related to the firing rate. 
+Single-shot mode with a pause between shots will deal 100% damage, but 
+subsequent shots on full auto will deal less, giving you the impression 
+your target is momentarily invulnerable. You will still do damage but it 
+will be significantly reduced. You can see this in-game by enabling 
+debug mode and then using Esc X to show hit damage. 
+
+As your weapons deteriorate, their initial accuracy is correspondingly 
+reduced. 
+
+Even after the above changes, the player is still responsible for 
+accommodating bullet drop. You can change the bullet_speed in the 
+weapon's configuration file if you get desperate. 
+
+Other considerations include the varying vulnerability of the targets. 
+NPCs and mutants are weaker in the head in vanilla, and other body parts 
+will have different degrees of toughness. Some parts will take no 
+damage; fingers and toes in NPCs, much of the body in mutants. It may be 
+that you have to hit a bone. 
+
+A specific example: The vanilla pseudodog has a default damage scale 
+value of 0.3. Its neck, spine and pelvis use 1.0. Its head uses 2.0. 
+
+And that toughness is scaled up for better armored NPCs or "stronger" 
+mutants. 
+
+Please see the ALT1 version of actor.ltx in the Actor.cfg configuration. 
+It improves the Marked One's contribution to accuracy. If you use it, 
+you will likely want to adjust other values (like the carry weight) to 
+be more like vanilla. 
+
+
+AI Accuracy - Part 1
+
+Accuracy of AI when firing upon the player is a function of 
+hit_probability_max_dist and hit_probability_gd_[difficulty], where 
+difficulty varies from novice to master. The vanilla defaults for the 
+hit_probability_gd_* values range from 20% to 50%. This means that at 
+master difficulty only half the shots an NPC fires will strike the 
+hitbox zone where you are. (Tip: Use cover!) 
+
+The defaults for the First-Person Shooter version are increased to 
+provide more challenge. You can increase them still further; using 1.0 
+on master difficulty will shred your armor but might increase the fun 
+factor. 
+
+Please note that hit damage increases in parallel with difficulty. This 
+works for both the NPCs and you. Here's an example for the G36/GP37:
+
+hit_power = 0.50, 0.54, 0.57, 0.60  ;0.5 at novice, 0.6 at master
+
+
+AI Accuracy - Part 2
+
+Up to hit_probability_max_dist the full value of the difficulty hit 
+percentage is applied. Beyond the value, the odds reduce with distance. 
+
+The comment in the file is wrong. As a test you can use 1.0 for 
+hit_probability_gd_master in actor.ltx and set hit_probability_max_dist 
+to 1.0. You will not be hit that often even at reasonable distances. 
+(Note that YOUR accuracy is not affected by these attributes.) 
+
+While the default for this FPS configuration is 50 meters, for more 
+challenge 100 meters is suggested. Lower the value if you want to 
+increase your odds of surviving. The vanilla default is 10.
+
+
+Your Accuracy
+
+As mentioned above, your accuracy has two main components, that of the 
+weapon and your contribution from stance, motion, aiming, etc.
+
+Here you can tweak how you affect aiming.
+
+While standing and shooting from the hip, the default accuracy of the 
+weapon is decreased by the player component (disp_base in actor.ltx is 
+0.8). Moving and turning doubles that! Aiming helps a lot; the default 
+accuracy of the weapon is reduced only an additional 5% by the player 
+(vanilla disp_aim) compared to standing.
+
+Crouching (disp_crouch_factor)/low-crouching (disp_crouch_no_acc_factor) 
+also improve accuracy by reducing the player's contribution 20% (-0.2) 
+and 40% (-0.4), respectively. 
+
+The Alt1 default settings improve the initial player contribution 
+offset by half for standing (disp_base is 0.4) and for crouching (-0.4 
+or 40% reduction) versus vanilla, and by more than half (-0.9 or 90%) 
+for low-crouching. Aiming (Alt1 disp_aim is 0.001) virtually eliminates 
+the player's part.
+
+It is strongly recommended to initially simply click the Default button 
+followed by the Apply button to apply the Alt1 configuration for aiming. 
+After using this setup, you can try your own tweaks if desired.
+
+The maximum improvement is found with 0.0 for disp_base and disp_aim, 
+while the maximum reduction is -1.0 for crouching/low-crouching. While 
+those settings work for a pure-FPS setup, the Alt1 settings are strongly 
+recommended as a guide so that aiming/low-crouching still have a 
+purpose.
+
+To view the actor component of accuracy on the HUD, you can use the ZSU 
+Variable Watch utility with the following argument:
+
+db.actor:accuracy()
+
+
+Ammo Drops
+
+If you use the FPS settings, you will be more accurate and less ammo 
+will be wasted. This results in a relative abundance of ammo found on 
+bodies, especially on novice difficulty.
+
+To compensate for this, you should enable the Scavenger Mode and try 
+playing with only half the normal ammo drop amount to start. If that is 
+still too much, set the number in the ammo_quantity_factor field to a 
+smaller decimal value >= 0.0. Conversely, set it higher if you keep 
+running out of ammo.
+
+Setting it to 1.0 or higher defeats the idea.
+
+
+See also:
+
+Modifier > _ZRP.cfg > Weapon Stats > Show Initial-Shot Accuracy
+
+Modifier > Experimental.cfg > Weapons > The silencer stuff
+

@@ -1,0 +1,37 @@
+ File: Freedom Vs. Duty.cfg
+
+Author:  MrSeyker
+
+This config file will let you enable joining the Freedom or 
+Duty factions after completing a number of jobs for them.
+
+Duty: Complete the RG-6 mission for Voronin.
+
+Freedom: Kill the Duty detachment, deal with the snitch 
+successfully and protect the Barrier.
+
+As a Freedomer, you get access to the armory. You can also 
+gain access if you fail just one mission, either the snitch 
+or the barrier one.
+
+You can optionally gain access to the Freedom armory after 
+joining Freedom, although you will need to talk to the 
+armory guard first.
+
+Note: This ZRP version utilizes the vanilla info_portion 
+mil_arsenal_inside instead of the arsenal_guard_talked 
+info_portion that was added in the separate Freedom Vs. 
+Duty mod by MrSeyker.
+
+
+Faction Relationship Tweaks
+
+With this entry you can modify the default relationships of 
+factions with you if you have joined a faction.
+
+As a Duty member you can be friends with Duty.
+
+As a Freedom member you can be neutral with Ecologists, and 
+you can adjust the attitudes of Ecologists toward Freedom 
+members and vice versa. And you can make Mercs hostile toward 
+you as they are toward other Freedomers.

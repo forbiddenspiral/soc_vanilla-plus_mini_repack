@@ -1,0 +1,17 @@
+-- spawn a trainer alternative
+name = "Spawn UltimaShield"
+description = "This spawns an invulnerability artifact in your inventory.\\nYou must place it on your belt for use."
+author = "NatVac"
+dik_key = DIK_keys.DIK_U
+hotkey = "U"
+revision = "1.0.1"
+number_of_parameters = 0
+
+function main()
+	if db.actor:object("af_ultimashield") == nil then
+		_z.spawn_in_inventory("af_ultimashield")
+		_z.show_blinking_msg("Equip spawned UltimaShield on belt for use")
+	else
+		_z.show_small_msg("You already have an UltimaShield")
+	end
+end

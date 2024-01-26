@@ -1,0 +1,679 @@
+; qo_as_items.ltx
+; Custom Quest Overhaul and Artifact Swap items
+
+[ecolog_outfit_psi_coll]:ecolog_outfit
+$spawn              				= "outfit\uniq\ecolog_outfit_psi_coll"
+inv_name					= ecolog_outfit_psi_coll_name
+inv_name_short					= ecolog_outfit_psi_coll_name
+description					= ecolog_outfit_psi_coll_description
+burn_protection					= 0.5
+strike_protection				= 0.4
+shock_protection				= 0.5
+wound_protection				= 0.2
+radiation_protection				= 0.45
+telepatic_protection				= 0.65
+chemical_burn_protection			= 0.5
+explosion_protection				= 0.4
+fire_wound_protection				= 0
+cost		 				= 25000
+inv_grid_x					= 18
+inv_grid_y					= 27
+
+[wpn_vintorez_coll]:wpn_vintorez
+$spawn						= "weapons/uniq/wpn_vintorez_coll"	
+description					= enc_weapons1_wpn-vintorez_coll
+inv_name					= wpn-vintorez_coll
+inv_name_short					= wpn-vintorez_coll
+; ammo_mag_size					= 15	; QO; use default of 10 instead
+fire_modes = -1, 1
+cost		 				= 18500
+inv_grid_x					= 12
+inv_grid_y					= 27
+
+fire_dispersion_base	= 0.01	;0.05 for vintar bc, 0.03 for svd
+cam_relax_speed         = 2.0	;4.75
+cam_max_angle			= 5.0	;9.0
+cam_step_angle_horz		= 0.3	;0.4 ;(degree) size of step camera moved in horizontal position while shooting
+
+fire_dispersion_condition_factor = 1	;if condition_shot_dec used	;5
+; misfire_probability			= 0.005
+; condition_shot_dec 		= 0.0002
+
+; Sniper version - shoots straight, but loud
+
+; cam_dispersion          = 0.9	;more recoil ;0.125
+
+; same bullet weight as 7.62x54 at high velocity = high momentum
+; hit_power = 0.80, 0.87, 0.94, 1.01	;~ like SVU ;0.65 is vintar
+; hit_impulse	= 40	;87 ;goes right through
+
+; fire_distance = 1000
+; bullet_speed = 2000
+
+; snd_shoot				= weapons\t_svu_shot	;supersonic bullet now
+; snd_shoot1				= weapons\t_svu_shot
+; snd_shoot2				= weapons\t_svu_shot
+; snd_shoot3				= weapons\t_svu_shot
+
+; end Sniper version
+
+;time_to_aim					= 0.1	;1.0	;test
+
+flame_particles 		= 
+
+;enable/disable this to hide/show the weapon in the grid on searches and trades
+; quest_item				= true
+
+
+[wpn_sig_m3]:wpn_sig550	;Ўтурмовой SiG
+$spawn             			= "weapons\uniq\wpn_sig_m1"	
+description					= enc_weapons1_wpn-sig_m3
+inv_name					= wpn-sig_m3
+inv_name_short				= wpn-sig_m3
+cost						= 8000
+control_inertion_factor		= 1.15f
+PDM_disp_vel_factor 		= 1.05
+PDM_disp_accel_factor 		= 1.05
+scope_status				= 2
+silencer_status				= 0
+grenade_launcher_status		= 0
+inv_weight					= 2.4	;2.2
+; condition_shot_dec 		= 0.0 ;use base value
+inv_grid_x					= 0
+inv_grid_y					= 32
+
+
+;modified (pistol slot) mp5 with silencer, lightweight
+[wpn_mp5_niphty_m1]:wpn_mp5
+$spawn = "weapons\uniq\wpn_mp5_m1"
+description = enc_weapons1_wpn-mp5-niphty_m1
+inv_name = wpn-mp5-niphty_m1
+inv_name_short = wpn-mp5-niphty_m1
+ammo_class = ammo_9x19_fmj, ammo_9x19_pbp
+; inv_grid_x = 5
+; inv_grid_y = 33
+inv_grid_x				= 5
+inv_grid_y				= 33	;22
+;;inv_grid_width		= 4	;no, use base weapon default of 3 for slot 1 weapon
+cost 					= 2400
+ammo_mag_size 			= 30	;100
+slot 					= 1
+animation_slot 			= 1
+;-----------------------------------------------------------------------------------
+fire_dispersion_base 	= 0.05
+control_inertion_factor = 1.02f
+cam_relax_speed 		= 2.2
+cam_dispersion 			= 0.4	;0.04
+cam_dispersion_inc 		= 0.1	;0.01
+cam_dispertion_frac 	= 0.5
+cam_max_angle 			= 3.5
+cam_max_angle_horz 		= 5.0
+cam_step_angle_horz 	= 0.2
+; misfire_probability 	= 0.0 ; use base value
+; condition_shot_dec 		= 0.0 ;use base value
+;-----------------------------------------------------------------------------------
+;hit_power = 0.31, 0.35, 0.38, 0.41	;same as regular mp5
+fire_distance 			= 600
+bullet_speed 			= 900
+silencer_status 		= 1
+light_disabled 			= true
+flame_particles 		= 
+snd_shoot 				= weapons\silencer4a, 0.5	;weapons\w_ak74_shot1
+
+;enable/disable this to hide/show the weapon in the grid on searches and trades
+; quest_item				= true
+
+; used by both old and new versions of Ziphty Viper V2-5.56
+[wpn_mp6_hud]:wpn_mp5_hud
+visual              = weapons\mp6\wpn_mp6_hud.ogf	;weapons\mp5\wpn_mp5_hud.ogf
+
+
+;modified Ziphty Viper V2-5.56, lightweight (pistol slot)
+[wpn_mp5_niphty_m2]:wpn_mp5
+$spawn = "weapons\uniq\wpn_mp5_m2"	; option for Level Editor
+description = enc_weapons1_wpn-mp5-niphty_m2
+inv_name = wpn-mp5-niphty_m2
+inv_name_short = wpn-mp5-niphty_m2
+inv_weight				= 1.5	;2.5 - it's special
+ammo_class 				= ammo_5.56x45_ss190, ammo_5.56x45_ap
+inv_grid_x 				= 12	;dependent on new ui_icon_equipment.dds ;5
+inv_grid_y 				= 23	;dependent on new ui_icon_equipment.dds ;33
+cost 					= 8500
+ammo_mag_size 			= 30
+slot 					= 1
+animation_slot 			= 1
+
+visual                  = weapons\mp6\wpn_mp6.ogf
+
+;-----------------------------------------------------------------------------------
+fire_dispersion_base	= 0.14	;G36/GP37 ;original 0.25; 0.33
+control_inertion_factor = 1.02f	;original 1.07f
+cam_relax_speed			= 2.2	;0.65	;original 6.5;0.2
+cam_dispersion			= 0.2	;0.04	;original 0.2
+cam_dispersion_inc		= 0.1	;original 0.05
+cam_dispertion_frac 	= 0.70	;cam_dispersion*cam_dispertion_frac +- cam_dispersion*(1-cam_dispertion_frac)
+cam_max_angle			= 2.5	;0.6	;original 6.0
+cam_max_angle_horz		= 4.0	;0.9	;original 9.0	;(degree) maximum shot horizontal degree 
+cam_step_angle_horz		= 0.2	;original 0.5;0.3	;(degree) size of step camera moved in horizontal position while shooting
+;fire_dispersion_condition_factor = 5
+misfire_probability		= 0.003 ; G36/GP37
+misfire_condition_k		= 0.025 ; 1/2 of G36/GP37
+condition_shot_dec		= 0.0002
+;-----------------------------------------------------------------------------------
+
+hit_power = 0.50, 0.54, 0.57, 0.60	;GP37	;0.60, 0.64, 0.67, 0.70	;FN2000
+hit_impulse 			= 40	;140
+fire_distance 			= 1000
+bullet_speed 			= 1000
+;rpm 					= 850	;GP37
+silencer_status 		= 0;1
+light_disabled 			= true
+flame_particles 		= 
+snd_shoot 				= weapons\t_fn2000_shot, 0.6	;weapons\w_ak74_shot1
+
+; hack to put scoped weapon in first slot
+;enable scope_status to use a scope texture
+; scope_status			= 1
+scope_zoom_factor		= 30	;2X
+scope_texture			= wpn\wpn_crosshair_l85
+
+hud                     = wpn_mp6_hud
+
+; enable this to reduce settling time on subsequent shots
+; time_to_aim = 0.01
+
+;enable/disable this to hide/show the weapon in the grid on searches and trades
+; quest_item			= true
+
+
+[wpn_addon_scope_m1]:wpn_addon_scope
+$spawn			= "weapons\addons\scope" ; option for Level Editor
+description		= enc_weapons1_wpn-addon-scope_m1
+cost			= 500
+
+holder_range_modifier	= 1.2
+holder_fov_modifier		= 0.3
+
+inv_name		= wpn-addon-scope_m1
+inv_name_short	= wpn-addon-scope_m1
+inv_weight		= .2
+
+inv_grid_width		= 2
+inv_grid_height		= 1
+inv_grid_x			= 13	;18
+inv_grid_y			= 29	;2
+scope_texture		= wpn\wpn_crosshair
+scope_zoom_factor	= 15		; 4X
+
+
+[wpn_val_m2]:wpn_val	; special Sniper Val
+$spawn             		= "weapons\uniq\wpn_val_m1"	
+description				= enc_weapons1_wpn-val_m2
+inv_name				= wpn-val_m2
+inv_name_short			= wpn-val_m2
+fire_modes				= -1, 1
+cost					= 12500	;9000
+scope_status			= 2
+scope_name 				= wpn_addon_scope_m1
+; ;scope_zoom_factor	    = 15		; 4X
+; condition_shot_dec 		= 0.0 ;use base value
+inv_grid_x				= 5
+inv_grid_y				= 31
+
+fire_dispersion_base	= 0.01	;0.14 ;0.05 for vintar bc, 0.03 for svd
+cam_relax_speed         = 2.0	;4.75
+cam_dispersion          = 0.9	;0.125
+cam_dispersion_inc		= 0.2
+cam_dispertion_frac		= 1.0	;cam_dispersion*cam_dispertion_frac +- cam_dispersion*(1-cam_dispertion_frac)
+cam_max_angle			= 5.0	;9.0
+cam_max_angle_horz		= 5.0	;(degree) maximum shot horizontal degree 
+cam_step_angle_horz		= 0.3	;(degree) size of step camera moved in horizontal position while shooting
+
+fire_dispersion_condition_factor = 5
+; misfire_probability			= 0.0 ;use base value
+; same bullet weight as 7.62x54 at high velocity = high momentum
+hit_power = 0.80, 0.87, 0.94, 1.01	;~ like SVU ;0.65 is vintar
+hit_impulse	= 40	;87 ;goes right through
+
+fire_distance = 1200
+bullet_speed = 4000
+
+snd_shoot				= weapons\t_svu_shot	;supersonic bullet now
+snd_shoot1				= weapons\t_svu_shot
+snd_shoot2				= weapons\t_svu_shot
+snd_shoot3				= weapons\t_svu_shot
+flame_particles 		= 
+
+; enable this to reduce settling time on subsequent shots
+; time_to_aim = 0.1
+
+;enable/disable this to hide/show the weapon in the grid on searches and trades
+; quest_item				= true
+
+[wpn_val_m3]:wpn_val	; special Sniper Val
+$spawn             				= "weapons\uniq\wpn_val_m1"	
+description						= enc_weapons1_wpn-val_m3
+inv_name						= wpn-val_m3
+inv_name_short					= wpn-val_m3
+scope_status					= 2
+scope_name 				= wpn_addon_scope_m1
+; scope_texture					= wpn\wpn_crosshair
+condition_shot_dec				= 0.0001 ;use 1/2 base value
+cost							= 14500
+fire_modes						= -1, 1
+inv_grid_x						= 5
+inv_grid_y						= 31
+
+; enable these for FPS tweak
+fire_dispersion_base	= 0.01	;0.14
+cam_relax_speed			= 2.0	;5
+cam_step_angle_horz		= 0.3	;0.5
+cam_max_angle			= 5.0	;7.0
+cam_max_angle_horz		= 5.0	;10.0
+hit_power				= 0.65, 0.69, 0.72, 0.75	;Vintorez numbers
+; enable/disable this to hide/show the weapon in the grid on searches and trades
+; quest_item				= true
+
+
+
+;derived from Niphty's artifact testing facility! yay \o/
+[af_niphty]:af_soul
+description = enc_zone_artifact_af-niphty
+inv_name = af-niphty
+inv_name_short = af-niphty
+particles = anomaly2\artefact\artefact_electra
+inv_grid_x			= 11
+inv_grid_y			= 25
+
+cost = 10000	;50
+
+health_restore_speed = 0.00024	;240% ;0.0004	;400%	0.0006	;600%
+radiation_restore_speed = -0.002 ;-20	;-0.006 ; -60	;-0.02 ;-200 radiation/tick
+;satiety_restore_speed = 0.2
+power_restore_speed = 0.004	;73% flash	;0.006	;109%	;0.033	;600	;0.0825	;1500% ;0.165 = 3000%
+bleeding_restore_speed = 0.01	;333%	;0.04 = 1333%	;0.2 = 6667% Bleed restoration
+hit_absorbation_sect = af_niphty_absorbation
+
+;enable/disable this to hide/show the artifact in the grid on searches and trades
+; quest_item			= true
+
+[af_niphty_absorbation]
+burn_immunity = 1.0
+strike_immunity = 1.0
+shock_immunity = 1.0
+wound_immunity = 1.0
+radiation_immunity = 0.7
+telepatic_immunity = 1.0
+chemical_burn_immunity = 1.0
+explosion_immunity = 1.0
+fire_wound_immunity = 1.0
+
+
+[af_niphty_shield]:af_dummy_glassbeads
+description = enc_zone_artifact_af-niphty_shield
+inv_name = af-niphty_shield
+inv_name_short = af-niphty_shield
+visual	= physics\anomaly\artefact_electra2.ogf
+particles			= anomaly2\artefact\artefact_puxx
+inv_grid_x			= 12
+inv_grid_y			= 9
+
+cost = 12000	;50
+jump_height			= 0.0
+
+hit_absorbation_sect = af_niphty_shield_absorbation
+
+;enable/disable this to hide/show the artifact in the grid on searches and trades
+; quest_item			= true
+
+[af_niphty_shield_absorbation]
+burn_immunity = 1.0
+strike_immunity = 0.72	; 28%
+shock_immunity = 0.75	; 50%	;use 0.40 x 2 for armor repair in electro anomalies
+wound_immunity = 0.94	; 6%
+radiation_immunity = 1.0	; 30%
+telepatic_immunity = 0.90	; 10%
+chemical_burn_immunity = 1.0	; 30%
+explosion_immunity = 0.925	; 7.5%
+fire_wound_immunity  = 0.95	; 5%
+
+[af_supershield]:af_dummy_glassbeads
+description = enc_zone_artifact_af-supershield
+inv_name = af-supershield
+inv_name_short = af-supershield
+visual	= physics\anomaly\artefact_electra2.ogf
+particles = anomaly2\artefact\artefact_ameba
+inv_weight			= 1.0
+; inv_grid_x			= 12
+; inv_grid_y			= 9
+inv_grid_x			= 10
+inv_grid_y			= 25
+
+cost = 24000	;50
+jump_height			= 0.0
+
+health_restore_speed = 0.00024	;240% ;0.0004	;400% meat chunk	0.0006	;600%
+radiation_restore_speed = -0.002 ;-20	;-0.006 ; -60	;-0.02 ;-200 radiation/tick
+;satiety_restore_speed = 0.2
+power_restore_speed =  0.004	;73% flash	;0.006	;109%	;0.009	;164%
+bleeding_restore_speed = 0.01	;333%	;0.04 = 1333%	;0.2 = 6667% Bleed restoration
+
+hit_absorbation_sect = af_supershield_absorbation
+
+;enable/disable this to hide/show the artifact in the grid on searches and trades
+; quest_item			= true
+
+[af_supershield_absorbation]
+burn_immunity = 0.7	; 30%
+strike_immunity = 0.72	; 28%
+shock_immunity = 0.50	; 50%
+wound_immunity = 0.94	; 6%
+radiation_immunity = 0.7	; 30%
+telepatic_immunity = 0.90	; 10%
+chemical_burn_immunity = 0.7	; 30%
+explosion_immunity = 0.925	; 7.5%
+fire_wound_immunity  = 0.95	; 5%
+
+[af_ultrashield]:af_dummy_glassbeads
+description = enc_zone_artifact_af-ultrashield
+inv_name = af-ultrashield
+inv_name_short = af-ultrashield
+visual	= physics\anomaly\artefact_electra2.ogf
+particles = anomaly2\artefact\artefact_electra
+inv_weight			= 1.5
+; inv_grid_x			= 12
+; inv_grid_y			= 9
+inv_grid_x			= 10
+inv_grid_y			= 26
+
+cost = 33000	;50
+jump_height			= 0.0
+
+health_restore_speed = 0.0004	;400% ;0.00048	;480%	;0.0006	;600% soul
+radiation_restore_speed = -0.004	;-40 ;-0.01 ; -100	;-0.02 ;-200 radiation/tick
+;satiety_restore_speed = 0.2
+power_restore_speed = 0.006	;109% moonlight	;0.009	;164%
+bleeding_restore_speed = 0.012	;400%	;0.2 = 6667% Bleed restoration
+
+hit_absorbation_sect = af_ultrashield_absorbation
+
+;enable/disable this to hide/show the artifact in the grid on searches and trades
+; quest_item			= true
+
+[af_ultrashield_absorbation]
+burn_immunity = 0.6	; 40%
+strike_immunity = 0.64	; 36%
+shock_immunity = 0.40	; 60%
+wound_immunity = 0.92	; 8%
+radiation_immunity = 0.6	; 40%
+telepatic_immunity = 0.80	; 20%
+chemical_burn_immunity = 0.6	; 40%
+explosion_immunity = 0.90	; 10%
+fire_wound_immunity  = 0.93	; 7%
+
+; this is the invulnerability artifact per barin with fatrap's help
+; for test purposes and for those demanding a trainer or a walk in the park
+[af_ultimashield]:af_dummy_glassbeads
+description = enc_zone_artifact_af-ultimashield
+inv_name = af-ultimashield
+inv_name_short = af-ultimashield
+visual	= physics\anomaly\artefact_electra2.ogf
+particles = anomaly2\artefact\artefact_electra
+inv_weight			= 0.5
+; inv_grid_x			= 12
+; inv_grid_y			= 9
+inv_grid_x			= 10
+inv_grid_y			= 26
+
+cost = 50
+jump_height			= 0.0
+
+health_restore_speed = 0.01	;10000% soul
+radiation_restore_speed = -0.02 ;-200 radiation/tick
+;satiety_restore_speed = 0.2
+power_restore_speed = 0.1	;~18000%	;0.006	;109% moonlight	;0.009	;164%
+bleeding_restore_speed = 0.2	;6667%
+
+hit_absorbation_sect = af_ultimashield_absorbation
+
+;enable/disable this to hide/show the artifact in the grid on searches and trades
+; quest_item			= true
+
+[af_ultimashield_absorbation]
+burn_immunity = 0.0
+strike_immunity = 0.0
+shock_immunity = 0.0
+wound_immunity = 0.0
+radiation_immunity = 0.0
+telepatic_immunity = 0.0
+chemical_burn_immunity = 0.0
+explosion_immunity = 0.0
+fire_wound_immunity  = 0.0
+
+
+[wpn_fake_missile3]:identity_immunities
+visual 				= weapons\ammo\ammo_m209.ogf
+cform 				= skeleton
+class 				= G_FAKE
+$prefetch 			= 32
+
+cost				= 150
+
+blast				= 2.00 ;150
+blast_r				= 5
+blast_impulse		= 150	;250
+;delete
+blast_impulse_factor = 1
+
+
+frags				= 6
+frags_r				= 15	;20
+frag_hit			= 0.9	;1.50
+frag_hit_impulse	= 90	;200
+
+hit_type_blast		= explosion
+hit_type_frag		= fire_wound
+
+up_throw_factor		= 0.7
+
+
+;trail				= weapons\rpg_trail_01, weapons\rpg_trail_02
+
+explode_particles	= explosions\explosion_01
+
+
+light_color 		= 0.4, 1.9, 1.9	;1.9, 1.2, 0.5
+light_range 		= 25.0
+light_time 			= 0.5
+
+
+ph_mass			 	= 0.01	;1	;5
+;engine_f			= 530
+;engine_u			= 90
+
+jump_height = 0
+
+wm_size         	= 0.1
+
+;трассы от осколков
+fragment_speed		= 100
+
+explode_duration	= 4 ;5		;подолжительность взрыва (с)
+
+;звуки
+snd_explode = weapons\f1_explode
+;wallmarks
+wallmark_section	= explosion_marks
+
+;свойства которые читаютс€, но не используютс€
+inv_name			= ammo-pellet
+inv_name_short		= ammo-pellet
+inv_weight			= .01
+
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 11	;19
+inv_grid_y			= 10
+
+kill_msg_x			= 17
+kill_msg_y			= 232
+kill_msg_width		= 21
+kill_msg_height		= 22
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; —войства CustomRocket
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+engine_present		= true;false		;присутствует ли в ракете двигатель
+lights_enabled 		= true			;свет вокруг ракеты, во врем€ полета
+;trail_light_color 	= 0.6,0.5,0.3
+trail_light_color	= 0.4, 1.9, 1.9	;0.2, 1.0, 1.0
+trail_light_range 	= 8.0
+force_explode_time  = 4000
+engine_work_time	= 4000
+engine_impulse		= 1000
+engine_impulse_up	= 0;137.34 
+engine_particles	= weapons\rpg_trail_01
+
+[ammo_pellet]:ammo_base
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn				= "weapons\ammo\ammo_9x39_ap" ; option for Level Editor (dummy)
+class				= A_M209	;AMMO
+cform 				= skeleton
+visual 				= weapons\ammo\ammo_m209.ogf	;ammo_gauss.ogf	;ammo_9x39_ap.ogf
+description 		= enc_weapons1_ammo_pellet
+$prefetch 			= 64
+
+cost				= 300
+
+box_size		= 24
+
+inv_name		= ammo-pellet
+inv_name_short	= ammo-pellet
+inv_weight		= 0.24
+
+inv_grid_width		= 1	;2
+inv_grid_height		= 1
+; inv_grid_x			= 5
+; inv_grid_y			= 12
+inv_grid_x			= 11
+inv_grid_y			= 10
+
+kill_msg_x			= 61
+kill_msg_y			= 232
+kill_msg_width		= 19
+kill_msg_height		= 22
+
+k_dist			= 1
+k_disp			= 1
+k_hit			= 1
+k_impulse		= 1
+k_pierce		= 1.25
+impair			= 1
+buck_shot		= 0
+tracer			= on	;off
+wm_size			= 0.1
+
+fake_grenade_name = wpn_fake_missile3
+
+;могут ли боеприпасы быть неограниченными : 1 - могут, 0 - не могут
+can_be_unlimited = true ;false
+
+[wpn_eagle_m2]:wpn_desert_eagle	;Ѕольшой Ѕэн
+$spawn             		= "weapons\uniq\wpn_eagle_m1"	
+description				= enc_weapons1_wpn-eagle_m2
+inv_name				= wpn-eagle_m2
+inv_name_short			= wpn-eagle_m2
+class                   = WP_RG6
+weapon_class			= heavy_weapon
+;ef_main_weapon_type		= 4
+;ef_weapon_type			= 9
+cost					= 180
+ammo_limit		 		= 24
+ammo_current		 	= 24
+ammo_elapsed		 	= 0
+
+ammo_class				= ammo_pellet
+ammo_mag_size		 	= 24
+launch_speed			= 250	;76
+sprint_allowed			= true
+
+shell_particles	 		= ;none
+;shell_particles	 		= weapons\generic_shells
+startup_ammo            = 24
+
+; condition_shot_dec		= 0.0 ;use base value
+inv_grid_x				= 9
+inv_grid_y				= 22
+
+kill_msg_x			= 0
+kill_msg_y			= 172
+kill_msg_width		= 68
+kill_msg_height		= 30
+
+hit_power        		= 0.75
+hit_impulse      		= 210
+hit_type 				= fire_wound
+
+fire_point				= -0.005000,0.130000,0.220000
+fire_distance           = 300
+bullet_speed			= 250			;начальна€ скорость пули
+rpm                     = 100
+hud                     = wpn_desert_eagle_hud_m2
+
+snd_draw				= weapons\fort_draw
+snd_holster				= weapons\generic_holster
+snd_shoot				= weapons\t_mp53_shot, 0.4	;weapons\gen_grenshoot
+snd_empty				= weapons\pistol_empty
+snd_close				= weapons\generic_close
+snd_reload				= weapons\pm_reload, 0.8
+snd_shoot_duplet		= weapons\t_mp53_shot, 0.4	;weapons\toz34_shoot_both
+
+snd_open_weapon			= weapons\pistol_empty		;change me
+snd_add_cartridge		= weapons\w1300_load		;was gen_grenload
+snd_close_weapon		= weapons\pistol_empty		;change me
+
+[wpn_desert_eagle_hud_m2]:wpn_desert_eagle_hud
+anim_shoot_both 		= shoot
+
+;for the NPCs
+[wpn_eagle_pg]:wpn_eagle_m2
+rpm                     = 30
+ammo_limit		 		= 4
+ammo_current		 	= 4
+ammo_mag_size		 	= 4
+inv_grid_x				= 14
+inv_grid_y				= 8
+
+[outfit_specnaz_m2]:specops_outfit	;ћодифицированный армейский бронекостюм
+$spawn						= "outfit\uniq\outfit_specnaz_m1"
+inv_name					= specnaz_outfit_name_m2
+inv_name_short				= specnaz_outfit_name_m2
+description					= specnaz_outfit_description_m2
+inv_grid_x					= 18
+inv_grid_y					= 24
+nightvision_sect			= effector_nightvision_good
+
+cost						= 18000
+immunities_sect				= sect_specnaz_outfit_immunities
+
+burn_protection 			= 0.2	;0.3
+strike_protection 			= 0.2
+shock_protection 			= 0.2	;0.3
+wound_protection			= 0.5	;0.4  ;0.7 for military outfit
+radiation_protection 		= 0.2	;0.3
+telepatic_protection 		= 0.0
+chemical_burn_protection 	= 0.2	;0.3
+explosion_protection 		= 0.5	;0.4
+fire_wound_protection  		= 0.5	;0.45 ;0.55 for military outfit
+
+[sect_specnaz_outfit_immunities]
+burn_immunity				= 0.2	;0.02
+strike_immunity				= 0.01
+shock_immunity				= 0.2	;0.02
+wound_immunity				= 0.005	;0.01
+radiation_immunity			= 0.00
+telepatic_immunity			= 0.00
+chemical_burn_immunity		= 0.2	;0.02
+explosion_immunity			= 0.01
+fire_wound_immunity			= 0.003	;0.005
+

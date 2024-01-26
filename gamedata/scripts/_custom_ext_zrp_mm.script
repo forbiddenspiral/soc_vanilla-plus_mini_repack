@@ -1,0 +1,151 @@
+-- MonoMartyr script support
+-- nv120307 changed queue_item_for_insertion() to queue_entity_for_insertion()
+-- nv150314 modified for more universal spawning
+
+local enable_early_spawn = false
+local disable_stranger_spawn = true
+
+local min_spawns_per_level = 1
+local max_spawns_per_level = 10
+local spot_few = 4
+local spot_some = 5
+local spot_many = 8
+
+local spawn_types = {
+	-- clsid.script_stalker is valid here because this module is not initialized until db.add_actor() at the earliest
+	MonoMartyr = { section = "sim_stranger_master", name = "stranger", clsid = clsid.script_stalker }
+}
+
+local level_spawn_spots = {
+	l01_escape = {
+		["garbage"] = {pos=vector():set(31.4,16.56,677.27),lid=312314,gid=3,dist=125,min=1,max=spot_many}
+	},
+	l02_garbage = {
+		["bar"] = {pos=vector():set(6.178,0.457110,243.798),lid=180593,gid=359,dist=50,min=1,max=spot_many},
+		["vcross"] = {pos=vector():set(0.173429,0.484073,-215.672012),lid=174943,gid=265,dist=150,min=1,max=spot_some}
+	},
+	l03_agroprom = {
+		["garbage"] = {pos=vector():set(273.59,0.313,0.272),lid=432735,gid=693,dist=150,min=1,max=spot_many}
+	},
+	l03u_agr_underground = {
+		["agroprom"] = {pos=vector():set(-38.985,-3.9,38.0),lid=4722,gid=724,dist=50,min=1,max=spot_few}
+	},
+	l04_darkvalley = {
+		["garbage"] = {pos=vector():set(-188.88,3.95,-193.7),lid=1321,gid=813,dist=150,min=1,max=spot_many}
+	},
+	l04u_labx18 = {
+		["darkvalley"] = {pos=vector():set(-3.91,9.4,-7.35),lid=2180,gid=1166,dist=25,min=1,max=spot_some}
+	},
+	l05_bar = {
+		["military"] = {pos=vector():set(56.08,-0.493,191.271),lid=26236,gid=1242,dist=100,min=1,max=spot_many}
+	},
+	l06_rostok = {
+		["bar"] = {pos=vector():set(31.4321,-0.6322,140.408),lid=67363,gid=1412,dist=100,min=1,max=spot_many},
+		["rostok_c"] = {pos=vector():set(-260.684631,0.001481,111.174698),lid=6576,gid=1358,dist=100,min=1,max=spot_many}
+	},
+	l07_military = {
+		["radar"] = {pos=vector():set(60.504,-15.813,377.75),lid=359312,gid=1548,dist=150,min=1,max=spot_many}
+	},
+	l08_yantar = {
+		["rostok"] = {pos=vector():set(195.41,5.88,-245.03),lid=136760,gid=1459,dist=135,min=1,max=spot_many}
+	},
+	l08u_brainlab = {
+		["yantar"] = {pos=vector():set(146.514,36.65,-13.285),lid=7724,gid=1541,dist=50,min=1,max=spot_many}
+	},
+	l10_radar = {
+		["pripyat"] = {pos=vector():set(386.262,-35.24,130.83),lid=115746,gid=1866,dist=100,min=1,max=spot_many},
+		["monobase"] = {pos=vector():set(599.633972,-43.826908,184.966049),lid=214676,gid=1907,dist=100,min=1,max=spot_many}
+	},
+	l10u_bunker = {
+		["radar"] = {pos=vector():set(0.0541,-7.38651,-82.571),lid=5824,gid=2790,dist=30,min=1,max=spot_some}
+	},
+	l11_pripyat = {
+		["statue"] = {pos=vector():set(-30.959776,-2.391945,71.606888),lid=68620,gid=2165,dist=50,min=1,max=spot_many},
+		["stadium"] = {pos=vector():set(17.54,0.628,230.13),lid=81838,gid=2164,dist=50,min=1,max=spot_many}
+	},
+	l12_stancia = {
+		["road"] = {pos=vector():set(657.548706,-0.101103,-42.982586),lid=284892,gid=2300,dist=100,min=1,max=spot_many}
+	},
+	l12u_sarcofag = {
+		["l12u_sarcofag1"] = {pos=vector():set(73.201584,0.036805,7.877539),lid=10510,gid=2431,dist=30,min=1,max=2},
+		["l12u_sarcofag2"] = {pos=vector():set(18.447624,11.897419,28.238602),lid=4640,gid=2442,dist=30,min=1,max=2},
+		["l12u_sarcofag3"] = {pos=vector():set(53.627716,16.846638,28.434769),lid=9176,gid=2462,dist=30,min=1,max=2}
+	},
+	l12u_control_monolith = {
+		["l12u_control_monolith1"]={pos=vector():set(-0.205403,-34.479488,27.077591),lid=1992,gid=2512,dist=30,min=1,max=spot_few}
+	}
+}
+
+--entity is a table with name, section, clsid, max_per_level, spawn_spots is a table of level-specific positions (see above)
+function spawn_(entity, spawn_spots)
+	if entity == nil then entity = spawn_types["MonoMartyr"] end
+	if spawn_spots == nil then spawn_spots = level_spawn_spots[level.name()] end
+	local this_level = level.name()
+	local level_entities = 0
+	local level_entities_alive = 0
+	local limit_reached = false
+	local gg = game_graph()
+	local spawn_section = entity.section --"sim_stranger_master"
+	local spawn_name = entity.name or entity.section --"stranger"
+	local spawn_clsid = entity.clsid
+	local max_per_level = entity.max_per_level or max_spawns_per_level
+	local sim = alife()
+	for id_ = 0, 65534, 1 do
+		local lobj = sim:object(id_)
+		if lobj ~= nil and lobj:clsid() == spawn_clsid then -- and lobj:alive() then
+			if string.find(lobj:name(),spawn_section,1,true) ~= nil then
+				local glevel = gg:vertex(lobj.m_game_vertex_id):level_id()
+				-- dbglog("stalker %d - %s on %s",id_, lobj:name(), sim:level_name(glevel))
+				if sim:level_name(glevel) == this_level then
+					if lobj:alive() then level_entities_alive = level_entities_alive + 1 end
+					level_entities = level_entities + 1
+					if level_entities >= max_per_level then
+						limit_reached = true
+						-- break --don't break; need totals 
+					end
+				end
+			end
+		end
+	end
+	local actor_pos = db.actor:position()
+	for k,v in pairs(spawn_spots) do
+		if v.dist == nil then v.dist = 20 end
+		if not limit_reached and actor_pos:distance_to(v.pos) > v.dist then
+			if v.max == nil then v.max = max_per_level end
+			if v.min == nil then v.min = min_spawns_per_level end
+			v.level_max = max_per_level
+			v.section = spawn_section
+			v.name = spawn_name
+			-- dbglog("queuing "..spawn_name.. " at spot "..k)
+			_dev.queue_entity_for_insertion(v)
+		end
+	end
+	_dev.set_current_count_total(spawn_name, level_entities)
+	_dev.set_current_count_alive(spawn_name, level_entities_alive)
+	-- output count if needed even if no new ones
+	bind_stalker.nv_need_update = true
+end
+
+function spawn_custom(item)
+	local new_max = item.max
+	local new_min = item.min
+	if new_min < 1 then new_min = 1 end
+	local new_count = math.random(new_min, new_max)
+	-- dbglog("Max is %s, New count is %s",v.max, new_count)
+	for cc_ = 1, new_count do
+		alife():create(item.section, item.pos, item.lid, item.gid)
+	end
+	dbglog("adding %s new %s",new_count, item.section)
+end
+
+function on_add_actor(actor)
+	if disable_stranger_spawn then return end
+	if _dev == nil then
+		dbglog("_dev.script is NOT valid")
+		return
+	end
+
+	if enable_early_spawn or has_alife_info("zrp_free_play") then
+		spawn_()
+	end
+end

@@ -1,0 +1,167 @@
+
+******************** Modifier ********************
+*  A Mod Configuration Tool for S.T.A.L.K.E.R. SOC
+*  Copyright © 2007-2010 Metacognix
+*  All Worldwide Rights Reserved
+*
+*  Change History:
+*    NatVac, 2010/10/07 - V1.1 - Added modcfg\ dir support
+*    NatVac, 2010/09/17 - Updated text info for ZRP 1.07
+*    NatVac, 2009/09/12 - Added SMM warning text
+*    NatVac, 2009/01/25 - V1.1alphaR3 - Added Field alias support
+*    NatVac, 2008/11/01 - V1.1alphaR2 - Added FileChoice warning
+*    NatVac, 2008/02/15 - V1.1alpha - Checkbox support added
+*    NatVac, 2007/11/08 - v1.0 - Initial release
+**************************************************
+
+Please see the warning about mod compatibility below before using this 
+program.  Also note that some changes may require starting a new game. 
+
+
+==================================================
+Installation:
+
+This program must be placed in the gamedata\ directory of the mod you 
+wish to configure. While its configuration and help files can also be 
+placed there, it is better to keep them in a modcfg\ subdirectory under 
+gamedata\.  If modcfg\ exists, config files elsewhere will be ignored. 
+
+A shortcut can be placed on your desktop by right-click-dragging the 
+Modifier.exe icon from the Windows Explorer pane to the desktop, then 
+selecting "Create shortcuts here". 
+
+You will need write permission for that STALKER gamedata directory and 
+subdirectories to run this program, as it needs to modify the mod's 
+configuration and script files.  While the easiest way to do this is 
+to run the program with administrator rights or at least sufficient 
+privilege to allow this modification, it is recommended that you simply 
+change the directory access permission.
+
+To find out how to do this, consult the help support for your version 
+of Windows.  In Windows XP:  Open Explorer and select Help > Help and 
+Support Center.  Select "System Administration", then select "Access 
+Control".  Select "Set, view, change, or remove file and folder 
+permissions".
+
+      **** IMPORTANT NOTE FOR FOLKS WITH VISTA/WINDOWS 7 ****
+
+It is possible that the game may not see your changes to the STALKER 
+gamedata directory unless you have ownership of the STALKER gamedata 
+subdirectory. This often happens when you use installers -- those can 
+take ownership for themselves. 
+
+This means that your changes go to a shadow copy of the STALKER 
+gamedata subdirectory.  It is like the desktop, where you see several 
+icons.  Some belong to the All Users subdirectory, and some to the 
+directory with your login name.
+
+When you examine the gamedata files in Windows, it seems like the 
+changes are there, but when you launch the game, it will use the 
+original (but now hidden) files put there by the installer.
+
+One possible workaround is to rename the gamedata directory before you 
+make any changes, then copy the renamed directory to the STALKER 
+installation directory and rename the copy as "gamedata".  When this 
+is done in Windows Explorer, the copy should belong to you.
+
+You would still need write permission; see above.
+
+Alternatively, you could take ownership of the directory yourself. 
+Search the web for info on how to do that.
+
+==================================================
+Running the program:
+
+Choose the configuration set from those in the list in the drop-down 
+combobox in the upper left corner. The configurable items will appear 
+in the listbox on the left.
+
+IMPORTANT TIP #1:  It is strongly recommended that you view the 
+Config Notes for each configuration before making any changes to 
+that configuration; just click the "Config Notes" button to display 
+them in your default text editor (probably Notepad).
+
+Select an item in the listbox by clicking on it. This will show the 
+possible choices for that item in the panel on the right. 
+
+IMPORTANT TIP #2:  Hover the mouse pointer over the radio button 
+groupbox or the various edit boxes or checkboxes to see useful pop-up 
+hints about the items. 
+
+Edit boxes will usually have a default value shown to the right as well 
+as the current setting for the parameter if any. Checkbox defaults are 
+shown below the checkboxes.
+
+Select a radio button, check/uncheck checkboxes or change the contents 
+of the edit boxes to suit your desires for each entry. Then click the 
+Apply button to apply any changes to the entry's panel contents.
+
+You will see error messages if the configuration is invalid, or if the 
+expected files are missing. The situation needs to be corrected before 
+the program can be used to change the associated settings. 
+
+The configuration files can be edited with a text editor; see the 
+ModifierNotes.txt file for details.  Instructions are included to help 
+you make your own custom configuration files if you wish.
+
+
+*******************************************************************
+
+                   Mod Compatibility Warning:
+
+Some mods have their own custom screens and configuration files.  You 
+should take care not to replace the custom mod's files with ones from 
+the ZRP.
+
+There are different kinds of entries, FileChoice, Field and LineToggle. 
+Only one of these types can cause conflicts with mods:  FileChoice.
+As of version 1.1 alpha r3, the potentially-dangerous file copy entries 
+are indicated by a red warning above the FileChoice radio-button group.
+
+It is recommended to make FileChoice changes before installing other 
+mods.  This should be done outside of Smart Mod Manager, if you use it. 
+To do this, extract the ZRP directory from the archive, the run the 
+Modifier program in the gamedata directory there to make your changes.  
+Then install the modified ZRP with SMM and follow with the other mods.
+
+It is okay to modify entries afterward if they do not have the warning 
+text on the entry's page.  The SMM program changes files when it merges 
+them, and this might cause the Modifier program to complain.  Follow 
+the advice in the previous paragraph if necessary, or don't use SMM.
+
+You can merge these optional files with other mods beforehand.  View 
+the *.cfg file in a text editor to see what files are copied.  Then 
+compare the related files with the corresponding files in other mods.
+
+*******************************************************************
+
+
+==================================================
+The APPLY button:
+
+When done with the panel changes, click the Apply button. Changes are 
+NOT applied until you do so! Currently, if you select a new item in the 
+listbox without clicking Apply, any changes will be abandoned -- even 
+if you select the same item. 
+
+The REVERT button: 
+
+When the Apply button is first clicked for a setting, the original 
+files if they exist are copied to "filenames.ext.orig_bkup", so that 
+you can revert to the original file if you want by clicking on the 
+Revert button. NOTE: This original file is never overwritten, so 
+reverting will always copy the original unmodified file back. 
+
+The revert process will show a status pop-up of what was copied or not 
+copied. 
+
+The DEFAULT button: 
+
+Currently, this button only appears on panels with fields (edit boxes) 
+and checkboxes.  It allows you to restore the vanilla values as shown 
+to the right of the edit boxes, or the default shown for checkboxes. 
+You will need to click the Apply button to accept the changes. 
+
+The HELP button will show this file, while the ABOUT button will show 
+info about the program. 
+

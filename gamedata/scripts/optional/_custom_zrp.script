@@ -1,0 +1,187 @@
+-- File:        _custom_zip.script
+-- Description: Custom jump points for ZRP Quick Intra-Level Teleport Dialog, custom loadout
+-- Created:     04.03.2008, NatVac
+-- nv120229 custom macro support added
+
+macros = {
+	-- put your custom macros here, or change the key assignments as desired.
+	-- ["keyname"] = {dik_key=DIK_keys.DIK_keyname,func="scriptname.some_function()"},
+	["1"]  = {dik_key=DIK_keys.DIK_1,  func="zx.smart_heal()"},
+	-- ["2"]  = {dik_key=DIK_keys.DIK_2,  func="zx.destroy_weapons_on_body(); zx.jump_to_closest_unsearched_body()"},
+	["3"]  = {dik_key=DIK_keys.DIK_3,  func="zx.jump_to_closest_unsearched_body()"},
+	-- ["4"]  = {dik_key=DIK_keys.DIK_4,  func="zx.destroy_weapons_on_body()"},
+	["F2"] = {dik_key=DIK_keys.DIK_F2, func="zx.heal_if_needed()"},
+	["F3"] = {dik_key=DIK_keys.DIK_F3, func="zx.jump_to_wounded_and_drop_medkit()"},
+	-- Esc F4 - jump to unsearched body and destroy its stored weapons
+	-- meant for use with "store weapon in backpack" option
+	["F4"] = {dik_key=DIK_keys.DIK_F4, func="if zx.jump_to_closest_unsearched_body() then zx.destroy_weapons_on_body() end"},
+	-- enable the next function if you want the entity directly in front of you to die via Esc End
+	-- ["End"] = {dik_key=DIK_keys.DIK_END, func="z.kill_this_thing()"},
+	["="]  = {dik_key=DIK_keys.DIK_EQUALS, func="ui_zrp_utils_dialog.ExecLastCommand()"},
+	-- should use zx.smart_heal() instead; see "1" above
+	-- ["["]  = {dik_key=DIK_keys.DIK_LBRACKET, func="local mk=db.actor:object(\"medkit\"); if mk then db.actor:eat(mk) else _z.show_small_msg(\"No regular medkits available.\") end"},
+	["B"]  = {dik_key=DIK_keys.DIK_B,  func="zx.jump_to_closest_unsearched_body()"},
+	["O"]  = {dik_key=DIK_keys.DIK_O,  func="zx.obtain_mutant_parts()"},
+	-- Home is where the sleeping bag is
+	["Home"]  = {dik_key=DIK_keys.DIK_HOME,  func="_z.resume_game(); abc_sleep.show_sleep_dialog()"},
+	["F1"]  = {dik_key=DIK_keys.DIK_F1,  func=nil} -- last item placeholder never used if antirad hotkey enabled
+}
+
+custom_zip_points = {
+	l01_escape = {
+		["tunnel_to_dv"] = {dik_key=DIK_keys.DIK_C,hotkey="C",dtype="position",pos=vector():set(345.363,15.06,-26.6),dir=vector():set(-0.65,0,0.76),name="l01_escape_dv",pimage="intro\\intro_l01_escape_dv"},
+		["l01_escape0"]={dik_key=DIK_keys.DIK_Z,hotkey="Z",dtype="position",pos=vector():set(133.22344970703,3.5705094337463,339.85272216797),dir=vector():set(0.93864667415619,0,-0.34488037228584),name="House near Fox",pimage="intro\\intro_l01_escape"},
+		["l01_escape1"]={dik_key=DIK_keys.DIK_F,hotkey="F",dtype="position",pos=vector():set(129.00329589844,-0.40884035825729,314.41137695313),dir=vector():set(0.78472453355789,0,-0.61984467506409),name="Fox",pimage="intro\\intro_l01_escape"},
+		["l01_escape2"]={dik_key=DIK_keys.DIK_E,hotkey="E",dtype="position",pos=vector():set(-85.732422,-1.772240,103.233315),dir=vector():set(0.345185,0,0.938535),name="Electro anomaly tunnel",pimage="intro\\intro_l01_escape"},
+		["l01_escape3"]={dik_key=DIK_keys.DIK_T,hotkey="T",dtype="position",pos=vector():set(344.454559,18.881931,243.892609),dir=vector():set(-0.721165,0,-0.692763),name="Train engine top",pimage="intro\\intro_l01_escape"},
+		["l01_escape4"]={dik_key=DIK_keys.DIK_R,hotkey="R",dtype="position",pos=vector():set(-252.982849,-18.528833,-119.584824),dir=vector():set(0.384530,0,-0.923113),name="West of rookie camp",pimage="intro\\intro_l01_escape"},
+		["l01_escape5"]={dik_key=DIK_keys.DIK_B,hotkey="B",dtype="position",pos=vector():set(85.408485,-7.932873,-39.232304),dir=vector():set(0.991189,0,-0.132454),name="Bandit factory",pimage="intro\\intro_l01_escape"}
+	},
+	l02_garbage = {
+		["hangar"] = {dik_key=DIK_keys.DIK_H,hotkey="H",dtype="position",pos=vector():set(2.9, 0.485, 7.42),dir=vector():set(-1,0,0),name="gar_angar",pimage="intro\\intro_l02_garbage"},
+		["nw_body"]={dik_key=DIK_keys.DIK_N,hotkey="N",dtype="position",pos=vector():set(-198.733429,5.885918,211.560638),dir=vector():set(0.93,0,-0.37),name="NW Body",pimage="intro\\intro_l02_garbage"} --,
+	},
+	l03_agroprom={
+		["l03_agroprom1"]={dik_key=DIK_keys.DIK_R,hotkey="R",dtype="position",pos=vector():set(-31.634871,9.431661,3.691110),dir=vector():set(-0.928129,0,-0.372258),name="Agroprom Institute Roof",pimage="intro\\intro_l03_agroprom"},
+		["l03_agroprom2"]={dik_key=DIK_keys.DIK_E,hotkey="E",dtype="position",pos=vector():set(345.077240,3.425666,46.705441),dir=vector():set(-0.926479,0,-0.376347),name="East Twilight Zone",pimage="intro\\intro_l03_agroprom"}
+	},
+	l03u_agr_underground = {
+		["l03u_agr_underground1"]={dik_key=DIK_keys.DIK_S,hotkey="S",dtype="position",pos=vector():set(-88.771576,-16.463055,-69.825409),dir=vector():set(0.969580,0,-0.244774),name="Strelok's Lair",pimage="intro\\intro_l03u_agr_underground"}
+	},
+	l04_darkvalley={
+		["l04_darkvalley1"]={dik_key=DIK_keys.DIK_B,hotkey="B",dtype="position",pos=vector():set(45.458168,0.089259,-234.832550),dir=vector():set(0.964874,0,0.262714),name="Bandit Base South",pimage="intro\\intro_l04_darkvalley"},
+		["l04_darkvalley2"]={dik_key=DIK_keys.DIK_W,hotkey="W",dtype="position",pos=vector():set(-205.752258,3.708802,-179.175201),dir=vector():set(-0.439580,0,-0.898203),name="West Twilight Zone",pimage="intro\\intro_l04_darkvalley"},
+		["l04_darkvalley3"]={dik_key=DIK_keys.DIK_H,hotkey="H",dtype="position",pos=vector():set(-68.387314,22.733397,204.330429),dir=vector():set(0.465701,0,0.884942),name="Helicopter check",pimage="intro\\intro_l04_darkvalley"}
+	},
+	l04u_labx18={
+		["l04u_labx18_1"]={dik_key=DIK_keys.DIK_1,hotkey="1",dtype="position",pos=vector():set(-0.070865,4.185347,-7.939188),dir=vector():set(0.055944,0,-1),name="Codelocked door 1",pimage="intro\\intro_l04u_labx18"},
+		["l04u_labx18_2"]={dik_key=DIK_keys.DIK_F,hotkey="F",dtype="position",pos=vector():set(23.430843,4.188864,17.705324),dir=vector():set(0.822761,0,0.568387),name="First Scientist",pimage="intro\\intro_l04u_labx18"},
+		["l04u_labx18_3"]={dik_key=DIK_keys.DIK_R,hotkey="R",dtype="position",pos=vector():set(-3.124969,-10.816932,19.844790),dir=vector():set(0.712509,0,0.701663),name="Ramp to Pseudogiant",pimage="intro\\intro_l04u_labx18"},
+		["l04u_labx18_4"]={dik_key=DIK_keys.DIK_L,hotkey="L",dtype="position",pos=vector():set(18.690115,-12.112532,69.403641),dir=vector():set(-0.908500,0,0.417884),name="Pseudogiant's Lair",pimage="intro\\intro_l04u_labx18"},
+		["l04u_labx18_5"]={dik_key=DIK_keys.DIK_2,hotkey="2",dtype="position",pos=vector():set(18.628208,-10.828347,-3.505970),dir=vector():set(0.999248,0,0.038778),name="Codelocked door 2",pimage="intro\\intro_l04u_labx18"},
+		["l04u_labx18_6"]={dik_key=DIK_keys.DIK_S,hotkey="S",dtype="position",pos=vector():set(38.891891,-6.354117,-35.545002),dir=vector():set(0.814118,0,0.580699),name="Supply Room",pimage="intro\\intro_l04u_labx18"},
+		["l04u_labx18_7"]={dik_key=DIK_keys.DIK_C,hotkey="C",dtype="position",pos=vector():set(20.947968,-6.618235,-15.641683),dir=vector():set(-0.216498,0,-0.976283),name="Control Room",pimage="intro\\intro_l04u_labx18"}
+	},
+	l05_bar = {
+		["l05_bar0"]={dik_key=DIK_keys.DIK_B,hotkey="B",dtype="position",pos=vector():set(128.797668,-4.82594,25.389664),dir=vector():set(0.463,0,-0.886),name="Barkeep",pimage="intro\\intro_l05_bar"},
+		["l05_bar1"]={dik_key=DIK_keys.DIK_P,hotkey="P",dtype="position",pos=vector():set(211.702606,0.423825,63.048935),dir=vector():set(-0.884,0,-0.467),name="Petrenko",pimage="intro\\intro_l05_bar"},
+		["stash"] = {dik_key=DIK_keys.DIK_S,hotkey="S",dtype="position",pos=vector():set(145.73294,-0.000509,81.433228),dir=vector():set(-0.7,0,0.7),name="Stash",pimage="intro\\intro_l05_bar"},
+		["l05_bar2"]={dik_key=DIK_keys.DIK_V,hotkey="V",dtype="position",pos=vector():set(223.16214,-5.448906,129.487366),dir=vector():set(0.938,0,0.347),name="Voronin",pimage="intro\\intro_l05_bar"},
+		["l05_bar3"]={dik_key=DIK_keys.DIK_N,hotkey="N",dtype="position",pos=vector():set(44.935707,-3.066190,320.576447),dir=vector():set(-0.479591,0,-0.877492),name="North Twilight Zone",pimage="intro\\intro_l05_bar"},
+		["l05_bar4"]={dik_key=DIK_keys.DIK_X,hotkey="X",dtype="position",pos=vector():set(286.221008,3.710335,-134.611450),dir=vector():set(-0.579982,0,0.814629),name="Body stash",pimage="intro\\intro_l05_bar"},
+		["l05_bar6"]={dik_key=DIK_keys.DIK_K,hotkey="K",dtype="position",pos=vector():set(223.291840,-0.012624,-2.471402),dir=vector():set(-0.219373,0,0.975641),name="Sergeant Kitsenko",pimage="intro\\intro_l05_bar"},
+		["l05_bar5"]={dik_key=DIK_keys.DIK_T,hotkey="T",dtype="position",pos=vector():set(-150.934967,-0.001107,196.307083),dir=vector():set(-0.801114,0,-0.598512),name="Twilight Zone West",pimage="intro\\intro_l05_bar"}
+	},
+	l06_rostok={
+		["l06_rostok1"]={dik_key=DIK_keys.DIK_H,hotkey="H",dtype="position",pos=vector():set(-285.202332,2.114483,141.137344),dir=vector():set(0.896954,0,0.442123),name="Near Helicopter",pimage="intro\\intro_l06_rostok"}
+	},
+	l07_military = {
+		["freedom_base"] = {dik_key=DIK_keys.DIK_F,hotkey="F",dtype="position",pos=vector():set(4.5554332733154,-5.2808685302734,85.543586730957),dir=vector():set(0,0,1),name="Freedom Base",pimage="intro\\intro_l07_military"},
+		["l07_military1"]={dik_key=DIK_keys.DIK_S,hotkey="S",dtype="position",pos=vector():set(-233.328156,-12.244912,55.791946),dir=vector():set(0.263354,0,1),name="Skull's Stash",pimage="intro\\intro_l07_military"},
+		["l07_military2"]={dik_key=DIK_keys.DIK_H,hotkey="H",dtype="position",pos=vector():set(-21.539961,-7.363478,-31.993313),dir=vector():set(0.282104,0,0.959384),name="Freedom HQ",pimage="intro\\intro_l07_military"},
+		["l07_military3"]={dik_key=DIK_keys.DIK_C,hotkey="C",dtype="position",pos=vector():set(-32.336018,-24.277683,265.206146),dir=vector():set(0.235348,0,1),name="Crossroads North",pimage="intro\\intro_l07_military"},
+		["l07_military4"]={dik_key=DIK_keys.DIK_A,hotkey="A",dtype="position",pos=vector():set(-217.680420,-17.002834,245.312546),dir=vector():set(-0.491397,0,-0.870936),name="Village attic",pimage="intro\\intro_l07_military"},
+		["l07_military5"]={dik_key=DIK_keys.DIK_N,hotkey="N",dtype="position",pos=vector():set(182.984039,3.366285,413.568329),dir=vector():set(-0.372251,0,0.928132),name="North Twilight Zone",pimage="intro\\intro_l07_military"},
+		["l07_military6"]={dik_key=DIK_keys.DIK_W,hotkey="W",dtype="position",pos=vector():set(-414.267883,-20.598532,8.507579),dir=vector():set(0.754004,0,-0.656870),name="West Twilight Zone",pimage="intro\\intro_l07_military"},
+		["l07_military7"]={dik_key=DIK_keys.DIK_X,hotkey="X",dtype="position",pos=vector():set(-366.500824,-21.763269,-4.190831),dir=vector():set(-0.999759,0,-0.021941),name="Quick exit to bar",pimage="intro\\intro_l07_military"}
+	},
+	l08_yantar = {
+		["l08_yantar0"]={dik_key=DIK_keys.DIK_S,hotkey="S",dtype="position",pos=vector():set(46.653968811035,-11.88002204895,-272.17807006836),dir=vector():set(-0.99917382001877,0,-0.040640763938427),name="Sakharov",pimage="intro\\intro_l08_yantar"},
+		["l08_yantar1"]={dik_key=DIK_keys.DIK_L,hotkey="L",dtype="position",pos=vector():set(-239.182266,-19.088873,-43.015903),dir=vector():set(0.994113,0,-0.108345),name="Yantar Lower Level",pimage="intro\\intro_l08_yantar_tunnels"},
+		["l08_yantar2"]={dik_key=DIK_keys.DIK_Z,hotkey="Z",dtype="position",pos=vector():set(-85.618317,-4.496052,-316.335419),dir=vector():set(-0.329018,0,0.944324),name="Near helicopter zombies",pimage="intro\\intro_l08_yantar"},
+		["l08_yantar3"]={dik_key=DIK_keys.DIK_E,hotkey="E",dtype="position",pos=vector():set(259.783508,6.323296,-286.616699),dir=vector():set(-0.523985,0,0.851727),name="East Twilight Zone",pimage="intro\\intro_l08_yantar"}
+	},
+	l08u_brainlab={
+		["l08u_brainlab1"]={dik_key=DIK_keys.DIK_T,hotkey="T",dtype="position",pos=vector():set(-7.135713,1.116412,-8.516461),dir=vector():set(-0.902705,0,-0.430260),name="Start the Timer",pimage="intro\\intro_l08u_brainlab"},
+		["l08u_brainlab2"]={dik_key=DIK_keys.DIK_P,hotkey="P",dtype="position",pos=vector():set(32.944172,5.585055,-9.067546),dir=vector():set(0.030592,0,0.999532),name="Former Pseudogiant Lair",pimage="intro\\intro_l08u_brainlab"}
+	},
+	l10_radar={
+		["l10_radar0"]={dik_key=DIK_keys.DIK_S,hotkey="S",dtype="position",pos=vector():set(393.444397,-34.142925,153.095566),dir=vector():set(-1,0,0),name="North Shack",pimage="intro\\intro_l10_radar"},
+		["l10_radar1"]={dik_key=DIK_keys.DIK_R,hotkey="R",dtype="position",pos=vector():set(314.969543,-47.124226,-23.949379),dir=vector():set(1,0,0),name="Below Sniper Roost",pimage="intro\\intro_l10_radar"},
+		["l10_radar2"]={dik_key=DIK_keys.DIK_C,hotkey="C",dtype="position",pos=vector():set(657.682617,-43.880131,173.361618),dir=vector():set(0.939712,0,-0.341966),name="NE Cul-de-sac",pimage="intro\\intro_l10_radar"},
+		["l10_radar3"]={dik_key=DIK_keys.DIK_D,hotkey="D",dtype="position",pos=vector():set(571.665833,-63.069309,-200.252960),dir=vector():set(0.684382,0,0.729123),name="Dogs",pimage="intro\\intro_l10_radar"},
+		["l10_radar4"]={dik_key=DIK_keys.DIK_N,hotkey="N",dtype="position",pos=vector():set(382.698578,-31.656538,179.849197),dir=vector():set(-0.209232,0,-0.977866),name="North Twilight Zone",pimage="intro\\intro_l10_radar"},
+		["l10_radar5"]={dik_key=DIK_keys.DIK_E,hotkey="E",dtype="position",pos=vector():set(608.772095,-50.944714,-39.152813),dir=vector():set(-0.296742,0,0.954958),name="East End of Tunnel",pimage="intro\\intro_l10_radar"}
+	},
+	l10u_bunker = {
+		["ScorcherSwitch"] = {dik_key=DIK_keys.DIK_S,hotkey="S",dtype="position",pos=vector():set(3.331,-19.4672,25.1),dir=vector():set(-1,0,0),name="Switch",pimage="intro\\intro_l10u_bunker"} --,
+	},
+	l11_pripyat={
+		["l11_pripyat1_"]={dik_key=DIK_keys.DIK_S,hotkey="S",dtype="position",pos=vector():set(-21.9,12.136255,-175.367432),dir=vector():set(0.221122,0,-0.975246),name="Sniper Roost 1",pimage="intro\\intro_l11_pripyat"},
+		["l11_pripyat2_"]={dik_key=DIK_keys.DIK_D,hotkey="D",dtype="position",pos=vector():set(45.759548,-0.627185,252.021240),dir=vector():set(-0.745466,0,-0.666543),name="South of Stadium",pimage="intro\\intro_l11_pripyat"},
+		["l11_pripyat3_"]={dik_key=DIK_keys.DIK_F,hotkey="F",dtype="position",pos=vector():set(-32.736755,-2.392705,-93.433372),dir=vector():set(-0.802279,0,0.596950),name="Freedom post",pimage="intro\\intro_l11_pripyat"},
+		["l11_pripyat4_"]={dik_key=DIK_keys.DIK_V,hotkey="V",dtype="position",pos=vector():set(35.121632,9.329843,-154.999817),dir=vector():set(-0.578909,0,-0.815392),name="Spawn Room",pimage="intro\\intro_l11_pripyat"},
+		["l11_pripyat5_"]={dik_key=DIK_keys.DIK_A,hotkey="A",dtype="position",pos=vector():set(-17.583878,15.564425,-93.598579),dir=vector():set(0.474708,0,-0.880144),name="Attic",pimage="intro\\intro_l11_pripyat"}
+	},
+	l12_stancia_2 = {
+		["ScenicView"] = {dik_key=DIK_keys.DIK_V,hotkey="V",dtype="position",pos=vector():set(552.9,145,205.82),dir=vector():set(0,0,1),name="Scenic View",pimage="intro\\intro_l12_stancia_2"},
+		["ScenicView2"] = {dik_key=DIK_keys.DIK_F,hotkey="F",dtype="position",pos=vector():set(555.3,150.606,202),dir=vector():set(1,0,0),name="Final Cutscene Location",pimage="intro\\intro_l12_stancia_2"},
+		["LastBattle"] = {dik_key=DIK_keys.DIK_L,hotkey="L",dtype="position",pos=vector():set(903.66,18.05,121.94),dir=vector():set(-0.722,0,-0.692),name="Near Last Battle Zone",pimage="intro\\intro_l12_stancia_2"},
+		["OrigTeleport"] = {dik_key=DIK_keys.DIK_T,hotkey="T",dtype="position",pos=vector():set(889.5,24,111.2),dir=vector():set(0,0,1),name="Original Free Play Teleport",pimage="intro\\intro_l12_stancia_2"},
+		["Snorkspawn"] = {dik_key=DIK_keys.DIK_X,hotkey="X",dtype="position",pos=vector():set(873.172485351563,13.1421432495117,272.301422119141),dir=vector():set(0,0,1),name="Snork spawn restrictor",pimage="intro\\intro_l12_stancia_2"},
+		["NorthGate"] = {dik_key=DIK_keys.DIK_N,hotkey="N",dtype="position",pos=vector():set(844,-0.1,514),dir=vector():set(0,0,1),name="North Gate",pimage="intro\\intro_l12_stancia_2"}
+	}
+}
+
+last_zip_point = nil
+
+zrp_temp_level = ""
+zrp_temp_pos = vector():set(0,0,0)
+zrp_temp_dir = vector():set(0,0,0)
+function set_temp_vector(cpos, cdir, snap_cnt)
+	zrp_temp_pos = cpos
+	zrp_temp_dir = cdir
+	zrp_temp_level = level.name()
+	if custom_zip_points[zrp_temp_level] == nil then
+		custom_zip_points[zrp_temp_level] = {}
+	end
+	if snap_cnt == nil or snap_cnt == 0 then
+		last_zip_point = {}
+		table.insert(last_zip_point, 1,
+			{dik_key = DIK_keys.DIK_BACKSLASH, hotkey="\\", dtype="position",
+			pos=cpos, dir=cdir, name="Last Snapshot Position",pimage="intro\\intro_"..zrp_temp_level})
+		return
+	end
+	cnt_str = tostring(snap_cnt)
+	table.insert(custom_zip_points[zrp_temp_level],
+		{dik_key = 58+snap_cnt, hotkey="F"..cnt_str, dtype="position",
+		pos=cpos, dir=cdir, name="Zip"..cnt_str,pimage="intro\\intro_"..zrp_temp_level})
+end
+
+-- set this to true to use the following loadout
+use_my_special_loadout = false
+
+-- special loadout for mod level testing (change to suit)
+-- NOTE: if you already have the item in inventory, you won't get any more
+-- (the cheat should be obvious)
+function add_my_special_loadout()
+	_dev.add_if_needed("military_outfit")
+	_dev.add_if_needed("wpn_fn2000")
+	-- _dev.add_if_needed("wpn_val_m1")
+	-- _dev.add_if_needed("wpn_addon_scope")
+	_dev.add_if_needed("wpn_eagle_m1")
+	_dev.add_if_needed("wpn_vintorez_coll")
+	-- _dev.add_if_needed("wpn_val_m2")
+	-- _dev.add_if_needed("wpn_addon_scope_m1")
+	_dev.add_if_needed("ammo_5.56x45_ap",20) --20 = 20 boxes
+	_dev.add_if_needed("ammo_5.56x45_ap",20) --20 = 20 boxes
+	_dev.add_if_needed("ammo_9x39_ap",20)
+	_dev.add_if_needed("ammo_9x39_ap",20)
+	-- _dev.add_if_needed("af_soul")
+	-- _dev.add_if_needed("af_dummy_glassbeads")
+	-- _dev.add_if_needed("af_night_star")
+	-- _dev.add_if_needed("af_electra_moonlight")
+	-- _dev.add_if_needed("af_cristall",2)
+	-- _dev.add_if_needed("af_ameba_mica")
+	_dev.add_if_needed("af_niphty")
+	_dev.add_if_needed("af_niphty_shield",2)
+
+	-- this is the invulnerability artifact per barin with fatrap's help
+	-- _dev.add_if_needed("af_ultimashield")
+
+	-- this is a cool toy
+	_dev.add_if_needed("wpn_eagle_m2")
+
+	db.actor:give_money(40000)
+end
+

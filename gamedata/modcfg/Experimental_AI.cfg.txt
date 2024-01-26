@@ -1,0 +1,192 @@
+ File: Experimental_AI.cfg
+
+This configuration controls the installation and tweaking of 
+third-party AI enhancements and tweaks.  They have not been 
+fully tested.
+
+
+===============
+Grenadier by xStream
+
+ZaGaR has adapted xstream's Grenadier mod for the ZRP.  When this 
+is installed, NPCs will be able to use grenades.  Life will be 
+much more fragile and fleeting in the Zone.
+
+If you wish to use only this feature, this version is more 
+efficient than the same one used in the complete AIPack version. 
+If you install it after installing the AIPack, it will disable 
+most of the AIPack's features, so you should just choose one or 
+the other.
+
+
+===============
+Live Stalker Ranking
+
+Mr. Fusion has provided a means of simulating the advancement of 
+other NPCs in the game.  You can install a couple of scripts here 
+that can give you some competition in the rankings.
+
+
+===============
+xStream's AIPack, Rulix (AKA Bak)'s AI Additions
+
+These are special versions of the famous AI enhancements by 
+xStream and Rulix, customized for easy install and configuration 
+with the ZRP.  The main documentation can be found in the 
+gamedata\docs\mod_docs\ subdirectory.
+
+These mods are meant to be installed on an unmodified ZRP 
+gamedata subdirectory, and then configured for use.  The 
+install will overwrite a few ZRP files, so any Modifier changes 
+you have made may need to be repeated.  Some of the functions 
+affected (if you have changed them): time on HUD, sleeping bag, 
+smart autosaves, automatic quests (all in bind_stalker.script), 
+and store weapons in backpack (death_manager.script).  There 
+may be others.
+
+You will first need to install either xStream's AIPack, 
+Rulix's AI Addition package, or both enhancements.  You can also 
+use the installation entry to restore the ZRP default behavior.
+
+The AIPack has four options:  NPCs as medics, NPCs can use 
+grenades, NPCs can upgrade their armor, and NPCs can remove 
+dead bodies from camp areas.  The first three options require 
+the AIPack installation, while the fourth is a standalone 
+option.  All four are pre-installed when you install the 
+AIPack.
+
+Rulix's AI Additions are also separately configured for use. 
+The installation default is all nine features enabled. 
+Additional configuration is possible via the rx_*.ltx files 
+located in the gamedata\config\misc\ subdirectory after Rulix 
+installation.
+
+You can easily adapt the collection of mini-mods to your 
+preferences.  The Revert function of the Modifier is not 
+likely to work properly after your second AI Installation 
+choice because the original backups won't be overwritten, 
+so you should not use that feature -- just install anew, 
+configure your game and play.
+
+
+Some important notes:
+
+1) These are provided "as is".  The ZRP supporters are not 
+under any obligation to fix any issues arising from the use 
+of these addons.
+
+2) The extra items added to the game are not removed when the 
+addons are disabled or removed.  This prevents possible game 
+crashes due to items remaining in saves but no longer defined 
+in the configuration files.
+
+3) When enabled, these options impose an additional processing 
+load on the game.  There may be longer load times, lower 
+framerates and more and/or longer game pauses or stuttering. 
+The use of faster PCs with more memory should mitigate the 
+severity of these issues.
+
+4) While you can mix and match and use existing saves, you 
+should not make these AI changes via the Modifier while the 
+game is running.  Exit the game, install/uninstall/configure 
+the mods, optionally reconfigure other features, then relaunch 
+the game and load an existing save -- or start a new game.
+
+
+These AI abilities are quirky and there are some idiosyncrasies 
+present.  Here are some I've noted:
+
+a) Stalkers will heal themselves if they can't see enemies, 
+but they can still be seen; the Freedom sacrifice victims 
+can self-heal in the middle of the slaughter (A crash has 
+been reported here.  Disable the invisible self-healing as 
+a test if you have trouble.)
+
+b) Inventory boxes can be left behind by the code.
+
+c) You can change levels and immediately be assaulted with 
+a melee attack that disarms you and leaves you briefly 
+stunned -- and maybe even dead after that.  You won't have 
+the opportunity to avoid this except by waiting for the 
+enemy to move on before you reattempt your level change.
+
+d) A dialog option with Skull's minion after the slaughter 
+can turn you enemy.  You will be a melee victim before the 
+dialog window even disappears.
+
+e) The Duty defense of the Yantar bunker becomes much 
+easier when they can use their attached grenade launchers. 
+
+f) Not everyone gets healed.  But there will be very few 
+"walking wounded".
+
+g) Battles can be a bit more confusing when bandits wear 
+Duty uniforms.
+
+h) Stalkers wounded while attempting to throw might remain 
+standing despite a test for move.crouch.
+
+i) I experienced flashing triangles during rainfall after 
+alt-tabbing out and back into the game.  I used the ZSU 
+Temporary Weather Reset, but one can also quit and restart 
+the game to correct this re-initialization bug.
+
+j) The NPCs never healed their buddies while both the AIPack 
+and Rulix's AI Additions were used, but that might be 
+just coincidental, perhaps due to no spare medkits.
+
+k) There might be some conflicts with scripted events.  With 
+just Rulix running, a member of the initial Pripyat Loner 
+assault team was heading toward the underground parking 
+garage when he just stopped.  His health was 51, so perhaps 
+he was intending to heal himself in the absence of any 
+immediate threat and had already applied a bandage (+10).
+
+
+===============
+NPC Sawn-Off Fix
+
+NPCs prefer sawn-off shotguns over rifles because the game 
+tells them the sawn-offs are better. Checking this option 
+allows NPCs to choose a rifle instead, as long as the rifle 
+has ammo or the NPCs have at least one ammo type for that 
+rifle. They might take a few moments or even a save/reload 
+to select the rifle.
+
+A side-effect to selecting this is that the NPCs will often 
+rapidly fire both barrels of the sawn-off while they have one.
+
+See also "Sell Guns/Ammo to NPCs" in _ZRP.cfg.
+
+
+===============
+NPC Smart Flashlights
+
+You can allow NPCs to turn off their flashlights if they 
+perceive an enemy while underground or at night.  This might 
+actually improve framerate by reducing the load on the video 
+card's hardware transform and lighting support during 
+firefights, something useful in Pripyat at night.
+
+Note that NPCs can still leave their lights on while on alert, 
+if they don't see any enemies.
+
+
+===============
+NPC Use Single Item Rule
+
+Vanilla defaults to prohibiting non-trader NPCs from holding 
+more than one item of a single type (e.g., rifle).  This has 
+been exploited to obtain perfect weapons or to repeat certain 
+quests, so the ZRP default is to let NPCs hold as many weapons 
+and other items as they wish.
+
+A disadvantage: this interferes with the ability of NPCs to use 
+better weapons in vanilla.  Unchecking this can restore the 
+vanilla behavior.
+
+The Rulix weapons manager requires that this be checked.  This 
+avoids the problem entirely at the cost of some extra 
+processing.
+
+
