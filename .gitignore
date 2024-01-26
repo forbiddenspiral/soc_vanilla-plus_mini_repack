@@ -1,0 +1,9 @@
+# project files
+.vscode
+Copy-SOC.ps1
+Dev-Notes.md
+Run-SOC.ps1
+SOC_VANILLA_MINI_REPACK.code-workspace
+Unset-Read-Only.ps1
+
+# debugging files
