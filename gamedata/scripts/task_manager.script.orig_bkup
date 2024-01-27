@@ -2,13 +2,13 @@
 -- nv140407 separated return task types for better map hint management
 
 -- nv 070924 set quest_time_factor 0 for unlimited quest time
-quest_time_factor = 0
+quest_time_factor = 3
 
 -- nv 070924 set autoquest_time_factor 0 for unlimited time
 autoquest_time_factor = 0
 
 -- nv 070924 set idle_time_factor 0 for infinite delay
-idle_time_factor = 0
+idle_time_factor = 2
 
 -- nv 070924 set this to false if you don't want to know what you'll get
 show_quest_rewards = true
