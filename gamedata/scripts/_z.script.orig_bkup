@@ -18,7 +18,7 @@ zrp_debug_enabled = false
 mainmenu_anims = true
 
 -- set this true/false to enable/disable IG2007's dunin_ammo_fix
-ammo_aggregation = true
+ammo_aggregation = false
 
 -- set this true/false to enable/disable Stalkers Are Not Blind anomaly evasion
 sanb_enabled = false
