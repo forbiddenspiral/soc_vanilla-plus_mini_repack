@@ -8,7 +8,7 @@
 -- nv100216 support to prevent save-after-punch load crash
 punch_recovery_time = 30
 local disable_npp_earthshaking = false
-local freeplay_at_end = true
+local freeplay_at_end = false
 
 function disable_ui_elements(actor, npc, p)
     local i, v = 0, 0

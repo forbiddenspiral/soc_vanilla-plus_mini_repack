@@ -33,10 +33,10 @@ local use_quit_hotkey = true
 allow_zrp_utilities = false
 
 -- set this true if you want the ability to fast travel on a level
-allow_level_jump = true
+allow_level_jump = false
 
 -- set this true if you want TZIO chapter selection (see docs)
-allow_TZIO = true
+allow_TZIO = false
 
 -- set this filename prefix to identify unique sets of savegames
 -- for named saves made via save dialog, and Esc S, Esc F5/F6 saves
