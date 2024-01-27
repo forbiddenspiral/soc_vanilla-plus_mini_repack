@@ -86,6 +86,9 @@ function actor_binder:net_spawn(data)
 	--' Загружаем настройки дропа
 	death_manager.init_drop_settings()
 
+	--;;;;;;;; for standalone grenadier support - xrs_ai bind_stalker.script is different
+	if xrs_grenade then xrs_grenade.net_spawn() end
+
 	return true
 end
 ----------------------------------------------------------------------------------------------------------------------
@@ -246,6 +249,7 @@ function actor_binder:on_item_take (obj)
 	if device().precache_frame >1 then return end
 	--game_stats.update_take_item (obj, self.object)
 	_z.on_item_take(obj, self.object)
+	if xrs_grenade then xrs_grenade.fake_pickup(obj) end
 end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:on_item_drop (obj)
@@ -503,6 +507,9 @@ function actor_binder:update(delta)
 
 		self.bCheckStart = false
 	end
+	--;;;;;;;; Crazy grenadier additions / Zag2011 ;;;;;;;;
+	if xrs_grenade then xrs_grenade.update(delta) end
+	--;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:save(packet)

@@ -188,11 +188,6 @@ function motivator_binder:hit_callback(obj, amount, local_direction, who, bone_i
 end
 
 function motivator_binder:death_callback(victim, who)
-
-	--;;;;;;;; Crazy grenadier additions /Zag2011 ;;;;;
-	if xrs_grenade then xrs_grenade.death_callback(self.object) end
-	--;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 	if who:id() == db.actor:id() then
 		if show_hit_damage then
 			if log_hits then
@@ -352,10 +347,6 @@ function motivator_binder:update(delta)
 			break
 		end
 	end]]
-
-	--;;;;;;;; Crazy grenadier additions /Zag2011 ;;;;;
-	if xrs_grenade then xrs_grenade.npc_update(self) end
-	--;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 end
 
 function motivator_binder:reload(section)
@@ -476,10 +467,4 @@ function addCommonPrecondition(action)
 	if _z and _z.sanb_enabled and anomaly_evader then
 		action:add_precondition (world_property(1099,false))
 	end
-	--;;;;;;;;;;; Crazy grenadier additions /Zag2011 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-	if xrs_grenade then
-		action:add_precondition (world_property(xrs_grenade.evid_crazy_grenadier, false))
-		action:add_precondition (world_property(xrs_grenade.evid_aaa_grenade, false))
-	end
-	--;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 end

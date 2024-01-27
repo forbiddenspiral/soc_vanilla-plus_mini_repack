@@ -221,11 +221,6 @@ function disable_generic_schemes(npc, stype)
     xr_meet.disable_scheme(npc, "actor_dialogs")
     xr_heli_hunter.disable_scheme(npc, "heli_hunter")
     xr_combat_ignore.disable_scheme(npc, "combat_ignore")
-
-    --;;;;;;;; Crazy grenadieradditions /Zag2011 ;;;;;
-    if xrs_grenade then xrs_grenade.disable_scheme(npc, "grenadier") end
-    --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
   elseif stype == modules.stype_mobile then
     mob_combat.disable_scheme(npc, "mob_combat")
     mob_trade.disable_scheme(npc, "mob_trade")
@@ -284,10 +279,6 @@ function enable_generic_schemes(ini, npc, stype, section)
 		if _z and _z.sanb_enabled and anomaly_evader then
 			anomaly_evader.set_evade(npc,ini,"evader",section)
 		end
-
-	--;;;;;;;; Crazy grenadier additions /Zag2011 ;;;;;;;;;;;;;;;
-		if xrs_grenade then xrs_grenade.set_scheme(npc, ini, "grenadier", "grenadier")  end
-	--;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 		-- local meet_section
 		field_value = get_string(ini, section, "meet", npc, false, "")
