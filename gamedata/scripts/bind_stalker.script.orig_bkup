@@ -26,9 +26,9 @@ nv_timer_pending = false
 -- time-on-hud flag (normally set by player via Modifier; requires _z.script)
 local nv_show_time = true
 -- set this true to automatically copy or rename autosaves to level_autosaves
-local level_autosaves = false
+local level_autosaves = true
 -- set this true to rename autosave, false to copy it (if level_autosaves = true)
-local rename_autosave = false
+local rename_autosave = true
 -- set this true to preserve your first access to a level if level_autosaves = true
 local keep_first_level_access = true
 -- set this true to preserve your first access to a level after key progress points
