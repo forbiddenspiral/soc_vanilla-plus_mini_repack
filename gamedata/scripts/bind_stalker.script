@@ -503,7 +503,7 @@ function actor_binder:update(delta)
 		level_tasks.add_lchanger_location()
 
 		if use_sleeping_bag and abc_sleep then abc_sleep.add_bag_if_needed(true) end
-		-- if zx then zx.fix_weather() end
+		if zx then zx.fix_weather() end
 
 		self.bCheckStart = false
 	end
