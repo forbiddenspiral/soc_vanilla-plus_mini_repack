@@ -9,7 +9,7 @@
 ----------------------------------
 
 -- Put your mod's name and version here
-mod_version_str = "ZRP 1.07 R5 RC"
+mod_version_str = "ZRP 1.07 R5 RC - Mini Repack 0.0"
 
 -- set this var true if you want debug and bug workaround support
 zrp_debug_enabled = false
@@ -615,7 +615,7 @@ function on_add_actor(actor)
 			cur_svr_entity_version, game_version_string, game_engine_version)
 	-- assert(savegame_script_version > 5, incompatible_save)
 	elseif savegame_script_version < 6 or savegame_script_version > cur_svr_entity_version then
-		alarm_reason = sf("Saved game (%s) is incompatible with game version %s (%s)", 
+		alarm_reason = sf("Saved game (%s) is incompatible with game version %s (%s)",
 		savegame_script_version, game_version_string, cur_svr_entity_version)
 	-- assert(savegame_script_version <= cur_svr_entity_version, incompatible_save)
 	-- elseif savegame_script_version > cur_svr_entity_version then
