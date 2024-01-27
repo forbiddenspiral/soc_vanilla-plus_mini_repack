@@ -24,7 +24,7 @@ nv_need_update = false
 -- this is set true by events needing longer time delays
 nv_timer_pending = false
 -- time-on-hud flag (normally set by player via Modifier; requires _z.script)
-local nv_show_time = true
+local nv_show_time = false
 -- set this true to automatically copy or rename autosaves to level_autosaves
 local level_autosaves = false
 -- set this true to rename autosave, false to copy it (if level_autosaves = true)
