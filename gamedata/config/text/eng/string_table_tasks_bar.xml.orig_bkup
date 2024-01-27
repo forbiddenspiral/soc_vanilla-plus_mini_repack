@@ -17,7 +17,7 @@
 		<text>Find the Duty guard commander and register yourself</text>
 	</string>
 	<string id="bar_dolg_bring_rg6">
-		<text>Get an RG-6 for General Voronin</text>
+		<text>Get a Bulldog 6 for General Voronin</text>
 	</string>
 	<string id="bar_dolg_community_quest">
 		<text>Join the Duty faction</text>
@@ -32,10 +32,10 @@
 		<text>Prove your loyalty to Duty</text>
 	</string>
 	<string id="bar_dolg_find_cook">
-		<text>Earn the Freedom cook's trust and find out where the RG-6 is stored</text>
+		<text>Earn the Freedom cook's trust and find out where the Bulldog 6 is stored</text>
 	</string>
 	<string id="bar_dolg_find_rg6">
-		<text>Infiltrate the Freedom base, find and steal an RG-6</text>
+		<text>Infiltrate the Freedom base, find and steal a Bulldog 6</text>
 	</string>
 	<string id="bar_dolg_info_gain">
 		<text>Find the intercepted information about Lab X18</text>
@@ -47,7 +47,7 @@
 		<text>Return information about Lab X18 to General Voronin</text>
 	</string>
 	<string id="bar_dolg_return_rg6">
-		<text>Bring the RG-6 to General Voronin</text>
+		<text>Bring the Bulldog 6 to General Voronin</text>
 	</string>
 	<string id="bar_dolg_rg6_quest">
 		<text>Mission required to join Duty</text>
