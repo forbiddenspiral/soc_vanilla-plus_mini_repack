@@ -274,7 +274,7 @@ function send_treasure(name)
 	local task_texture, task_rect = get_texture_info("ui_iconsTotal_found_thing")
 	
 	local news_text = "%c[255,160,160,160]"..game.translate_string("st_found_new_treasure").."\\n".."%c[120,255,120,160]"..
-		-- string.sub(name,1,string.find(name,"_s",1,true)-1)..": "..
+		string.sub(name,1,string.find(name,"_s",1,true)-1)..": "..
 		game.translate_string(name)
 	
 	db.actor:give_game_news(news_text, task_texture, task_rect, 0, news_display_time)
