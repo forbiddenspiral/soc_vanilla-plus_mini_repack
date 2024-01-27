@@ -2,7 +2,7 @@
 -- nv 120704 sleeping NPCs now douse headlamps per ZaGaR
 -- nv 121025 removed unused levels from list
 
-ai_smart_lights = true
+ai_smart_lights = false
 
 local light_zones = {}
 
