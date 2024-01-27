@@ -1,7 +1,7 @@
 allow_join_freedom = false
 
-allow_screw_repair = true
-allow_ivantsov_repair = true
+allow_screw_repair = false
+allow_ivantsov_repair = false
 allow_skinflint_artifact_trade = false
 
 pistol_markup = 1.4
