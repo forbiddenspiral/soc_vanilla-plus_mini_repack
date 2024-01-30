@@ -36,7 +36,7 @@
 	</static_weapon>
 
 	<static_ammo x="75" y="22" width="70" height="30">
-		<text align="r" complex_mode="0" font="graffiti32" r="238" g="155" b="23" a="255">Ammo</text>
+		<text align="r" complex_mode="0" font="graffiti32" r="238" g="155" b="23" a="0">Ammo</text>
 	</static_ammo>
 
 	<static_wpn_icon x="0" y="13" width="80" height="42"/>
