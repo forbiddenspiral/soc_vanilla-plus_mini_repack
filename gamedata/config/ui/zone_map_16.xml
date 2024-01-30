@@ -6,7 +6,7 @@
 			<texture>ui_hud_map</texture>
 			
 			<dist_text x="23" y="3" width="113" height="20">
-				<text align="l" font="letterica16" color="ui_clr_1"/>
+				<text align="l" font="letterica16" color="ui_alpha"/>
 			</dist_text>
 		</background>
 		
