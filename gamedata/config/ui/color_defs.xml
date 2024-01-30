@@ -11,5 +11,7 @@
 	<color name="ui_clr_1"  r="240" g="217" b="182"/>
 	<color name="ui_clr_2"  r="216" g="186" b="140"/>
 	<color name="ui_clr_3"  r="135" g="123" b="116"/>
+	
+	<color name="ui_alpha"  r="0" g="0" b="0" a="0"/>
 	<!-- Use "%cDEFAULT" color when need to switch to default color of UI element -->
 </colors>
