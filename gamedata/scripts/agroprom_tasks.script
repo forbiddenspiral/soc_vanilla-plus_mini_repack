@@ -6,7 +6,7 @@ function proceed()
 
 	-- -- gunslinger's flash
 	-- if not has_alife_info("agr_find_ghost_start") and
-			-- actor:object("gunslinger_flash") then 
+			-- actor:object("gunslinger_flash") then
 		-- actor:give_info_portion("agr_find_ghost_start")
 		-- return true
 	-- end
@@ -109,7 +109,7 @@ function have_krots_flash(task, objective)
     if db.actor:object("krot_flash") ~= nil then
        db.actor:give_info_portion ("agr_krot_task_complete")
        return true
-    end   
+    end
 	return false
 end
 
@@ -124,11 +124,11 @@ function have_gunslingers_flash(task, objective)
        -- db.actor:give_info_portion ("agr_find_gunslinger_cache_final")
        return true
     end
-    return false   
+    return false
 end
 
 function ghost_tips ()
-	news_manager.send_tip( db.actor, "ghost_tips", nil, "prizrak", nil )
+	news_manager.send_tip( db.actor, "ghost_tips", nil, "ghost", nil )
 	db.actor:give_info_portion ("agr_gunslinger_flash_have")
 	-- nv140820 this adds "Find out what happened to Ghost" task
 	db.actor:give_info_portion ("agr_find_ghost_start")

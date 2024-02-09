@@ -72,7 +72,8 @@ local snd = {
 		[[characters_voice\scenario\trader\trader_script1a_2]],
 		[[characters_voice\scenario\trader\trader_script1a_3]],
 		[[characters_voice\scenario\trader\trader_script1a_4]],
-		[[characters_voice\scenario\trader\trader_script1a_5]]
+		[[characters_voice\scenario\trader\trader_script1a_5]],
+		[[characters_voice\scenario\trader\trader_script1a_6]]
 	},
 
 	trader_bye = {

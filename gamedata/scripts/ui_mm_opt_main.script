@@ -112,6 +112,23 @@ function options_dialog:UpdateControls()
 	end
 	
 	self:UpdateDependControls()
+
+	if closecaption then
+	if (alife() ~= nil) then
+		if db.cc_npc == nil then closecaption.read_cc_ini() end
+		self.check_playigm:SetCheck(db.p_igm)
+		self.check_ccigm:SetCheck(db.cc_igm)
+		self.radio_captioning:SetNewActiveTab((db.cc_npc and 1 or 0) * (db.cc_icc and 2 or 1))
+		if closecaption.is_version_ok() == false then
+			self.check_ccigm:Show(false)
+		end
+	else
+		self.check_playigm:Show(false)
+		self.check_ccigm:Show(false)
+		self.frame_captioning:Show(false)
+		self.radio_captioning:Show(false)
+	end
+	end
 end
 
 function options_dialog:UpdateDependControls()
@@ -205,6 +222,20 @@ function options_dialog:OnBtnAccept()
 	opt:SaveValues("mm_opt_sound")	
 	opt:SaveValues("mm_opt_controls")
 	opt:OptionsPostAccept()	
+
+	if closecaption then
+	if (alife() ~= nil) then
+		db.p_igm = self.check_playigm:GetCheck()
+		db.cc_igm = self.check_ccigm:GetCheck()
+		local rcap = self.radio_captioning:GetActiveIndex()
+		db.cc_npc = (rcap > 0)
+		db.cc_icc = (rcap > 1)
+		closecaption.save_variable("cc_icc", db.cc_icc)
+		closecaption.save_variable("cc_npc", db.cc_npc)
+		closecaption.save_variable("cc_igm", db.cc_igm)
+		closecaption.save_variable("p_igm", db.p_igm)
+	end
+	end
 
 	self:GetHolder():start_stop_menu	(self.owner, true) --new(show main window)
 	self:GetHolder():start_stop_menu	(self,true)

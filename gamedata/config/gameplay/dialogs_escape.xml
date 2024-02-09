@@ -830,6 +830,7 @@
             </phrase>
             <phrase id="611">
                 <text>escape_trader_jobs_611</text>
+                <action>closecaption.giveinfo_trader_monolog2</action>
                 <next>6111</next>
             </phrase>
             <phrase id="6">

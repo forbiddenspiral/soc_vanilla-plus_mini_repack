@@ -1,13 +1,13 @@
 function proceed()
 	-- nv 071008 some optimization
 	if has_alife_info("agr_krot_band_start") then return end
-	if db.actor ~= nil and 
+	if db.actor ~= nil and
 		has_alife_info("garbage_meetstalker_die") and
 		has_alife_info("agr_can_ask_krot_about_gunslinger") -- and
 		-- not has_alife_info("agr_krot_band_start")
 	then
 		db.actor:give_info_portion("agr_krot_band_start")
-		news_manager.send_tip(db.actor, "gar_seryi_info")
+		news_manager.send_tip(db.actor, "gar_seryi_info", nil, "seriy")
 	end
 end
 
@@ -51,20 +51,22 @@ function process_info_portion(info_id)
 	if info_id == "gar_hellcar_death" then
 		level_tasks.remove_location(107, "green_location")
 		return true
-		
+
 	elseif info_id == "gar_wounded_help" then
-		news_manager.send_tip(db.actor, "val_sos_pda", nil, "stalker", nil)
+		news_manager.send_tip(db.actor, "gar_sos_pda", nil, "wounded_1", nil)
 		level_tasks.add_location(109, "green_location", "gar_wounded_help", 1)
 		return true
 	elseif info_id == "gar_wounded_fight" then
 		level_tasks.remove_location(109, "green_location")
 		return true
-	
+
 	elseif info_id == "gar_distance_shooting" then
+--[[ mrs240419 - disabled in favor of InGameCC method
 		if not has_alife_info("gar_seryi_actor_enter") then --level.name() == "l02_garbage" then --checked above
 			news_manager.send_tip(db.actor, "tips_gar_seryi_help_1", 5, "stalker", nil)
 			news_manager.send_tip(db.actor, "tips_gar_seryi_help_2", 12, "stalker", nil)
 		end
+--]]
 		return true
 
 	-- Fake_spots management by MrFusion
@@ -105,7 +107,7 @@ function process_info_portion(info_id)
 	--	elseif info_id == "gar_remove_fake_spot11" then
 	--		level_tasks.remove_location(122, "crlc_big")
 
-	-- This infoportion always given right after "gar_add_fake_spot6", 
+	-- This infoportion always given right after "gar_add_fake_spot6",
 	-- removing in cleanup block at end of list instead
 	--	elseif info_id == "gar_remove_fake_spot6" then
 	--		level_tasks.remove_location(117, "gar_spot_bandit_agr_location")

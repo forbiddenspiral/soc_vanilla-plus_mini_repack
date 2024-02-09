@@ -4,6 +4,7 @@
 --	update: Чугай Александр (Chugai)
 -- nv 100808 removed rnd and prior (only rnd was used by xr_sounds.script, itself not used)
 -- nv 100808 removed some unused references, added rmk_type to sound tables
+-- nv 121025 minor tweaks to Yurik robbery, enemy, idle camp chatter
 ----------------------------------------------------------------------------------------------------------------------
 -- keep these the same as in xr_sound.script
 local const rmk_chatter   = 0 -- one second
@@ -19,7 +20,7 @@ nstl = 64
 snd_ini = ini_file("misc\\script_sound.ltx")
 
 theme = {}
-ph_snd_themes = {}           
+ph_snd_themes = {}
 ph_snd_themes["music"] = {  "characters_voice\\scenario\\megafon\\megafon_music_1",
 	                        "characters_voice\\scenario\\megafon\\megafon_music_2",
 	                        "characters_voice\\scenario\\megafon\\megafon_music_3"
@@ -41,12 +42,12 @@ ph_snd_themes["humor"] = {  "characters_voice\\scenario\\escape\\comandir_megafo
 							"characters_voice\\scenario\\escape\\comandir_megafon_15",
 							"characters_voice\\scenario\\escape\\comandir_megafon_16",
 							"characters_voice\\scenario\\escape\\comandir_megafon_17"
-	                        }	  
+	                        }
 ph_snd_themes["epic"] = { "characters_voice\\scenario\\escape\\megafon_1",
 							"characters_voice\\scenario\\escape\\megafon_2",
 							"characters_voice\\scenario\\escape\\megafon_3",
 							"characters_voice\\scenario\\escape\\megafon_4"
-	                        }                      
+	                        }
 ph_snd_themes["alarm1"] = { "characters_voice\\scenario\\megafon\\megafon_alarm_1",
 	                        "characters_voice\\scenario\\megafon\\megafon_alarm_10",
 	                        "characters_voice\\scenario\\megafon\\megafon_alarm_11",
@@ -102,13 +103,14 @@ ph_snd_themes["mon_monolith_heavy_damaged"]		= {[[characters_voice\scenario\sarc
 ph_snd_themes["mon_monolith_alarm"]				= {[[characters_voice\scenario\sarcofag\monolith_alarm]]}
 ph_snd_themes["mon_monolith_recharged"]			= {[[characters_voice\scenario\sarcofag\monolith_recharged]]}
 
-ph_snd_themes["sar_monolith_call"]			= {[[characters_voice\scenario\sarcofag\monolith_call_1]],
-												[[characters_voice\scenario\sarcofag\monolith_call_2]],
-												[[characters_voice\scenario\sarcofag\monolith_call_3]],
-												[[characters_voice\scenario\sarcofag\monolith_call_4]],
-												[[characters_voice\scenario\sarcofag\monolith_call_5]],
-												[[characters_voice\scenario\sarcofag\monolith_call_6]],
-												[[characters_voice\scenario\sarcofag\monolith_call_7]]}
+-- Monolith voice in English by default
+ph_snd_themes["sar_monolith_call"]			= {[[characters_voice\scenario\sarcofag\monolith_call_e1]],
+												[[characters_voice\scenario\sarcofag\monolith_call_e2]],
+												[[characters_voice\scenario\sarcofag\monolith_call_e3]],
+												[[characters_voice\scenario\sarcofag\monolith_call_e4]],
+												[[characters_voice\scenario\sarcofag\monolith_call_e5]],
+												[[characters_voice\scenario\sarcofag\monolith_call_e6]],
+												[[characters_voice\scenario\sarcofag\monolith_call_e7]]}
 
 ph_snd_themes["gar_seryi_shooting"]	= {[[characters_voice\scenario\garbage\distance_shooting]]}
 ph_snd_themes["gar_seryi_shooting_2"]	= {[[characters_voice\scenario\bandits\bandit_replic_2]]}
@@ -116,7 +118,7 @@ ph_snd_themes["gar_seryi_shooting_2"]	= {[[characters_voice\scenario\bandits\ban
 -- ph_snd_themes["aes_battle2"] = {"ambient\\battle_2"}
 ph_snd_themes["aes_battle1"] = {"ambient\\battle_1"}
 ph_snd_themes["aes_battle2"] = {"ambient\\battle_2"}
-ph_snd_themes["gar_bandits_seryi"] =   {[[characters_voice\scenario\garbage\grey_bandit_1]],      
+ph_snd_themes["gar_bandits_seryi"] =   {[[characters_voice\scenario\garbage\grey_bandit_1]],
 										[[characters_voice\scenario\garbage\grey_bandit_2]],
 										[[characters_voice\scenario\garbage\grey_bandit_3]],
 										[[characters_voice\scenario\garbage\grey_bandit_4]],
@@ -129,9 +131,9 @@ ph_snd_themes["aes_teleport"] = {"anomaly\\teleport_incoming"}
 ph_snd_themes["yan_antenna"] = {{"characters_voice\\scenario\\yantar\\psy_voices_1"}} --' Стерео
 
 ph_snd_themes["radar_meh_on"] = {"ambient\\cooling_run"}
-ph_snd_themes["radar_meh_off"] = {"ambient\\cooling_stop"}                               
+ph_snd_themes["radar_meh_off"] = {"ambient\\cooling_stop"}
 ph_snd_themes["radar_meh_loud_on"] = {"ambient\\cooling_run_loud"}
-ph_snd_themes["radar_meh_loud_off"] = {"ambient\\cooling_stop_loud"}                               
+ph_snd_themes["radar_meh_loud_off"] = {"ambient\\cooling_stop_loud"}
 ph_snd_themes["system_message_1"]	= {[[characters_voice\scenario\yantar\system_message_1]]}
 ph_snd_themes["system_message_2"]	= {[[characters_voice\scenario\yantar\system_message_2]]}
 ph_snd_themes["system_message_3"]	= {[[characters_voice\scenario\yantar\system_message_3]]}
@@ -257,12 +259,12 @@ end
 
 theme = {
 	-- погода
-	weather = {	exec = sound_theme.weather_class, 
-				types = {weather_bad	= {rmk_type = rmk_muse, rnd_id = id(), max_ids = {}},
-						 weather_good	= {rmk_type = rmk_muse, rnd_id = id(), max_ids = {}} }},
+	weather = {	exec = sound_theme.weather_class,
+				types = {weather_bad	= {rmk_type = rmk_sporadic, min_snd=25, max_snd=60, rnd_id = id(), max_ids = {}},
+						 weather_good	= {rmk_type = rmk_sporadic, min_snd=25, max_snd=60, rnd_id = id(), max_ids = {}} }},
 
 	-- состояния тела
-	state = {	exec = sound_theme.combat_class, 
+	state = {	exec = sound_theme.combat_class,
 				types = {state	= {rmk_type = rmk_sporadic, min_snd=25, max_snd=60, rnd_id=id(), max_ids={}, rnd = 75}} },
 
 	sleep				= {rmk_type = rmk_sporadic, min_snd = 10, max_snd = 15, rnd_id = id(), max_ids = {}, rnd = 75},
@@ -286,7 +288,7 @@ theme = {
     speech				= {rmk_type = rmk_once, rnd_id = id(), into_id = id(), max_ids = {}},
 	-- only used for krot (Mole) -- cheesy duplicate of Shaggy whine
     speech1				= {rmk_type = rmk_muse, rnd_id = id(), max_ids = {}},
-    
+
 	-- угрозы
 	threat_weap			= {rmk_type = rmk_muse, into_id = id(), max_ids = {}},
 	threat_back			= {rmk_type = rmk_muse, into_id = id(), max_ids = {}},
@@ -294,7 +296,7 @@ theme = {
 
 	-- реакции
 --	reac_hear				= {rmk_type = rmk_muse, rnd_id = id(), max_ids = {}},
-	reac_see				= {rmk_type = rmk_muse, rnd_id = id(), max_ids = {}},
+	reac_see				= {rmk_type = rmk_react, rnd_id = id(), max_ids = {}},
 --	reac_crps_monstr		= {rmk_type = rmk_muse, rnd_id = id(), max_ids = {}},
 --	reac_crps_enemy			= {rmk_type = rmk_muse, rnd_id = id(), max_ids = {}},
 --	reac_crps_neutral		= {rmk_type = rmk_muse, rnd_id = id(), max_ids = {}},
@@ -325,49 +327,51 @@ theme = {
 	use_abuse				= {rmk_type = rmk_muse, rnd_id = id(), max_ids = {}},
 
 	-- бой
-	fight_attack			= {rmk_type = rmk_muse, rnd_id = id(), max_ids = {}},
+	-- fight_attack			= {rmk_type = rmk_muse, rnd_id = id(), max_ids = {}},
+	fight_attack			= {rmk_type = rmk_once, rnd_id = id(), max_ids = {}},
 	zombied_fight_attack	= {rmk_type = rmk_sporadic, min_snd = 5, max_snd = 10, rnd_id = id(), max_ids = {}},
-	fight_search			= {rmk_type = rmk_muse, rnd_id = id(), max_ids = {}},
-	fight_enemy				= {rmk_type = rmk_muse, rnd_id = id(), max_ids = {}},
-	
+	fight_search			= {rmk_type = rmk_once, rnd_id = id(), max_ids = {}},
+	-- fight_enemy				= {rmk_type = rmk_muse, rnd_id = id(), max_ids = {}},
+	fight_enemy				= {rmk_type = rmk_sporadic, min_snd = 5, max_snd = 20, rnd_id = id(), max_ids = {}},
+
 	-- торговля
 	trade_yes				= {rmk_type = rmk_muse, rnd_id = id(), max_ids = {}},
 	trade_no				= {rmk_type = rmk_muse, rnd_id = id(), max_ids = {}},
 
 	-- игра на губной гармошке
-	intro_music				= {rmk_type = rmk_muse, rnd_id = id(), max_ids = {}},
+	intro_music				= {rmk_type = rmk_once, rnd_id = id(), max_ids = {}},
 	harmonica				= {rmk_type = rmk_react, rnd_id = id(), max_ids = {}}, -- normally 3 to 5
 
 	-- игра на гитаре
 	guitar					= {rmk_type = rmk_react, rnd_id = id(), max_ids = {}}, -- normally 3 to 5
-	
+
 	-- шутки, прибаутки
-	intro_joke				= {rmk_type = rmk_muse, rnd_id = id(), max_ids = {}},
-	joke					= {rmk_type = rmk_muse, rnd_id = id(), max_ids = {}},
+	intro_joke				= {rmk_type = rmk_once, rnd_id = id(), max_ids = {}},
+	joke					= {rmk_type = rmk_once, rnd_id = id(), max_ids = {}},
 
 	-- Истории
-	story_01				= {rmk_type = rmk_muse, into_id = id(), max_ids = {},
+	story_01				= {rmk_type = rmk_once, into_id = id(), max_ids = {},
 					depence	= {	[2] = {theme = "story_reac_cool_info", min = 1, max = 1},
 								[3] = {theme = "story_reac_continue", min = 2, max = 3},
 								[5] = {theme = "story_reac_laughter", type = "all"}}},
-	story_02				= {rmk_type = rmk_muse, into_id = id(), max_ids = {},
+	story_02				= {rmk_type = rmk_once, into_id = id(), max_ids = {},
 					depence	= {	[2] = {theme = "story_reac_yes", min = 1, max = 2},
 								[3] = {theme = "story_reac_continue", min = 1, max = 1},
 								[4] = {theme = "story_reac_action_right", min = 1, max = 1},
 								[5] = {theme = "story_reac_cool_teller", min = 1, max = 1},
 								[6] = {theme = "story_reac_continue", min = 1, max = 1},
 								[7] = {theme = "story_reac_belief_story, story_reac_final_happy, story_reac_yes", min = 2, max = 4}}},
-	story_03				= {rmk_type = rmk_muse, into_id = id(), max_ids = {},
+	story_03				= {rmk_type = rmk_once, into_id = id(), max_ids = {},
 					depence	= {	[1] = {theme = "story_reac_continue", min = 1, max = 1},
 								[2] = {theme = "story_reac_final_tragic", min = 1, max = 1},
 								[3] = {theme = "story_reac_belief_story", min = 2, max = 3}}},
-	story_04				= {rmk_type = rmk_muse, into_id = id(), max_ids = {},
+	story_04				= {rmk_type = rmk_once, into_id = id(), max_ids = {},
 					depence	= {	[1] = {theme = "story_reac_continue", min = 1, max = 1},
 								[2] = {theme = "story_reac_final_tragic", min = 1, max = 1},
 								[3] = {theme = "story_reac_belief_story", min = 2, max = 3}}},
-	story_05				= {rmk_type = rmk_muse, into_id = id(), max_ids = {},
+	story_05				= {rmk_type = rmk_once, into_id = id(), max_ids = {},
 					depence	= {	[1] = {theme = "story_reac_advice_sceptic, story_reac_advice_support", min = 1, max = 1}}},
-	story_06				= {rmk_type = rmk_muse, into_id = id(), max_ids = {},
+	story_06				= {rmk_type = rmk_once, into_id = id(), max_ids = {},
 					depence	= {	[2] = {theme = "story_reac_continue", min = 1, max = 1},
 								[3] = {theme = "story_reac_cool_teller", min = 1, max = 1},
 								[4] = {theme = "story_reac_action_right", min = 1, max = 1},
@@ -377,25 +381,25 @@ theme = {
 								[8] = {theme = "story_reac_wonder", min = 1, max = 1},
 								[9] = {theme = "story_reac_disbelief_story, story_reac_belief_story, story_reac_yes", min = 2, max = 4}}},
 
-	legend_01				= {rmk_type = rmk_muse, into_id = id(), max_ids = {},
+	legend_01				= {rmk_type = rmk_once, into_id = id(), max_ids = {},
 					depence	= { [1] = {theme = "story_reac_doubt", min = 1, max = 1},
 								[2] = {theme = "story_reac_wonder, story_reac_disbelief_story", min = 1, max = 1},
 								[3] = {theme = "story_reac_yes", min = 2, max = 3},
 								[4] = {theme = "story_reac_yes, story_reac_belief_story", min = 2, max = 4}}},
-	legend_02				= {rmk_type = rmk_muse, into_id = id(), max_ids = {},
+	legend_02				= {rmk_type = rmk_once, into_id = id(), max_ids = {},
 					depence	= { [1] = {theme = "story_reac_doubt", min = 1, max = 1},
 								[2] = {theme = "story_reac_disbelief_story", min = 1, max = 1},
 								[3] = {theme = "story_reac_wonder", min = 1, max = 1},
 								[4] = {theme = "story_reac_laughter", min = 1, max = 1},
 								[5] = {theme = "story_reac_yes, story_reac_belief_story", min = 2, max = 4}}},
-	legend_03				= {rmk_type = rmk_muse, into_id = id(), max_ids = {},
+	legend_03				= {rmk_type = rmk_once, into_id = id(), max_ids = {},
 					depence	= { [1] = {theme = "story_reac_cool_info", min = 1, max = 1},
-								[2] = {theme = "story_reac_yes, story_reac_doubt", min = 2, max = 4}}},								
-	legend_04				= {rmk_type = rmk_muse, into_id = id(), max_ids = {},
+								[2] = {theme = "story_reac_yes, story_reac_doubt", min = 2, max = 4}}},
+	legend_04				= {rmk_type = rmk_once, into_id = id(), max_ids = {},
 					depence	= { [1] = {theme = "story_reac_fear", min = 1, max = 1},
 								[2] = {theme = "story_reac_yes, story_reac_belief_story", min = 2, max = 4}}},
-								
-	legend_05				= {rmk_type = rmk_muse, into_id = id(), max_ids = {},
+
+	legend_05				= {rmk_type = rmk_once, into_id = id(), max_ids = {},
 					depence	= { [1] = {theme = "story_reac_yes", min = 2, max = 3},
 								[2] = {theme = "story_reac_doubt", min = 1, max = 1},
 								[3] = {theme = "story_reac_disbelief_story, story_reac_belief_story", min = 2, max = 4}}},
@@ -421,7 +425,7 @@ theme = {
 	story_reac_wonder			= {rmk_type = rmk_chatter, rnd_id = id(), max_ids = {}},
 	story_reac_yes				= {rmk_type = rmk_chatter, rnd_id = id(), max_ids = {}},
 
-	-- УНИКАЛЬНЫЕ ТЕМЫ	
+	-- УНИКАЛЬНЫЕ ТЕМЫ
 	-- Escape
 	esc_tolik_help				= {rmk_type = rmk_sporadic, min_snd = 7, max_snd = 10, rnd_id = id(), max_ids = {}},
 	-- esc_guard_camp				= {rmk_type = rmk_sporadic, min_snd = 7, max_snd = 10, rnd_id = id(), max_ids = {}},
@@ -454,7 +458,7 @@ theme = {
 	-- Garbage DramMoment
 	gar_dm_bandit_backoff1		= {rmk_type = rmk_chatter, into_id = id(), max_ids = {}},
 	gar_dm_bandit_backoff2		= {rmk_type = rmk_chatter, into_id = id(), max_ids = {}},
-	gar_dm_bandit_demand		= {rmk_type = rmk_sporadic, min_snd = 7, max_snd = 9, rnd_id = id(), max_ids = {}},
+	gar_dm_bandit_demand		= {rmk_type = rmk_once, rnd_id = id(), max_ids = {}},
 	gar_dm_newbie_no_money		= {rmk_type = rmk_muse, rnd_id = id(), max_ids = {}},
 	gar_dm_newbie_help_me		= {rmk_type = rmk_once, rnd_id = id(), max_ids = {}},
 	gar_dm_newbie_thank_you		= {rmk_type = rmk_once, rnd_id = id(), max_ids = {}},
@@ -545,8 +549,8 @@ theme = {
 	-- Bar dolg hangar bridge
 	bar_dolg_hangar_bridge_hello	= {rmk_type = rmk_greet, min_snd = 160, max_snd = 250, rnd_id = id(), max_ids = {}},
 
-	bar_guard_enter					= {rmk_type = rmk_greet, min_snd = 6, max_snd = 10, into_id = id(), max_ids = {}},      
-	bar_guard_stop					= {rmk_type = rmk_greet, min_snd = 6, max_snd = 15, rnd_id = id(), max_ids = {}},      
+	bar_guard_enter					= {rmk_type = rmk_greet, min_snd = 6, max_snd = 10, into_id = id(), max_ids = {}},
+	bar_guard_stop					= {rmk_type = rmk_greet, min_snd = 6, max_snd = 15, rnd_id = id(), max_ids = {}},
 
 	-- Bar dolg Petrenko
 	bar_dolg_petrenko_hello			= {rmk_type = rmk_sporadic, min_snd = 30, max_snd = 150, rnd_id = id(), max_ids = {}, rnd = 50},
@@ -559,7 +563,7 @@ theme = {
 	bar_arena_public				= {rmk_type = rmk_sporadic, min_snd = 5, max_snd = 10, rnd_id = id(), max_ids = {}, rnd = 80},
 
 	-- Rostok volkodav
-	rostok_volkodav_talk_1				= {rmk_type = rmk_chatter, into_id = id(), max_ids = {}},      
+	rostok_volkodav_talk_1				= {rmk_type = rmk_chatter, into_id = id(), max_ids = {}},
 	rostok_volkodav_talk_2				= {rmk_type = rmk_chatter, into_id = id(), max_ids = {}},
 	rostok_volkodav_assistant_talk_1	= {rmk_type = rmk_chatter, into_id = id(), max_ids = {}},
 	rostok_volkodav_assistant_talk_2	= {rmk_type = rmk_chatter, into_id = id(), max_ids = {}},
@@ -611,9 +615,9 @@ theme = {
 
 	-- test_mega_remark					= {rmk_type = rmk_chatter, rnd_id = id(), into_id = id(), max_ids = {}},
 
-    
+
     -- Brainlab sounds -- not used; ph_sound used instead
-    
+
     -- brainlab_system_message_1           = {rmk_type = rmk_chatter, into_id = id(), max_ids = {}},
     -- brainlab_system_message_2           = {rmk_type = rmk_chatter, into_id = id(), max_ids = {}},
     -- brainlab_system_message_3           = {rmk_type = rmk_chatter, into_id = id(), max_ids = {}},
@@ -677,13 +681,13 @@ theme = {
     mil_freedom_victory3           = {rmk_type = rmk_once, into_id = id(), max_ids = {}},
     mil_freedom_victory4           = {rmk_type = rmk_once, into_id = id(), max_ids = {}},
     mil_freedom_victory5           = {rmk_type = rmk_once, into_id = id(), max_ids = {}},
-    mil_dolg_before_attack1        = {rmk_type = rmk_once, into_id = id(), max_ids = {}}, 
+    mil_dolg_before_attack1        = {rmk_type = rmk_once, into_id = id(), max_ids = {}},
     mil_dolg_before_attack2        = {rmk_type = rmk_once, into_id = id(), max_ids = {}},
     mil_dolg_fight                 = {rmk_type = rmk_muse, rnd_id = id(), max_ids = {}},
     mil_dolg_silent                = {rmk_type = rmk_once, into_id = id(), max_ids = {}},
     mil_cherep_hi                  = {rmk_type = rmk_greet, min_snd = 15, max_snd = 30, into_id = id(), max_ids = {}}
 }
-   
+
 --' В темах для игрока интервал задается в миллисекундах!!!
 actor_theme = {
 	level_border_detector = {min_snd = 10, max_snd = 100,
@@ -734,7 +738,7 @@ function check_prefix(s)
 end
 
 function load_sound(obj)
-	local k,v = 0,0
+	-- local k,v = 0,0
 
 	-- загрузка звуков на основе данных ltx
 	function load_sound_from_ltx(obj, name, tbl)
@@ -792,7 +796,7 @@ function load_sound(obj)
 
 					if flag == "0" then
 						obj:sound_prefix(character_prefix)
-					end	
+					end
 				end
 			end
 		end

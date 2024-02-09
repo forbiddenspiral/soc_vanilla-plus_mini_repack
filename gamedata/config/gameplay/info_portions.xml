@@ -118,4 +118,6 @@
 
 	<info_portion id="autojump_enabled"></info_portion>
 
+#include "gameplay\info_closecaption.xml"
+
 </game_information_portions>
