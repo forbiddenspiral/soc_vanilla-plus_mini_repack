@@ -60,9 +60,17 @@
 	</autosave>
 
 	<item_used  x="112" y="740" width="800" height="26">
-		<text font="graffiti22"  r="240" g="217" b="182" a="255" align="c"/>
+		<text font="graffiti22"  r="240" g="217" b="182" a="0" align="c"/><!-- a="255 -->
 	</item_used>
 
+	<item_used_custom x="112" y="740" width="800" height="26" la_cyclic="1" la_texture="0" la_text="1" la_alpha="1"><!--  light_anim="ui_slow_blinking_alpha" -->
+		<text font="graffiti22" r="240" g="217" b="182" a="255" align="c"/>
+	</item_used_custom>
+
+	<item_use_error x="112" y="740" width="800" height="26" la_cyclic="1" la_texture="0" la_text="1" la_alpha="1"><!-- light_anim="ui_slow_blinking_alpha" -->
+		<text font="graffiti22" r="240" g="217" b="182" a="255" align="c"/>
+	</item_use_error>	
+	
 	<gun_jammed x="212" y="70" width="600" height="50" ttl="3">
 		<text font="graffiti32"  r="240" g="217" b="182" a="255" align="c">gun_jammed</text>
 	</gun_jammed>

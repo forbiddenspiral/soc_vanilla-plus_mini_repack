@@ -112,7 +112,7 @@ function actor_binder:net_destroy()
 	self.object:set_callback(callback.level_border_enter, nil)
 	self.object:set_callback(callback.level_border_exit, nil)
 	self.object:set_callback(callback.take_item_from_box, nil)
-	-- self.object:set_callback(callback.use_object, nil)
+	self.object:set_callback(callback.use_object, nil) -- Medicine mod
 	self.object:set_callback(callback.death, nil)
 
 	if sr_psy_antenna.psy_antenna then
@@ -123,6 +123,11 @@ function actor_binder:net_destroy()
 	xr_sound.stop_all_sound_object()
 
 	object_binder.net_destroy(self)
+end
+
+-- Medicine mod
+function actor_binder:use_inventory_item(obj)
+  use_item.CheckSection(obj:section())
 end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:reinit()
@@ -149,6 +154,7 @@ function actor_binder:reinit()
 	self.object:set_callback(callback.level_border_exit, self.level_border_exit, self)
 	self.object:set_callback(callback.take_item_from_box, self.take_item_from_box, self)
 	-- self.object:set_callback(callback.use_object, self.use_object, self)
+	self.object:set_callback(callback.use_object, self.use_inventory_item, self) -- Medicine mod
 	self.object:set_callback(callback.death, self.on_death, self)
 end
 ----------------------------------------------------------------------------------------------------------------------
@@ -363,7 +369,9 @@ function actor_binder:update(delta)
 
 		-- nv 100521 moved this below to reduce processing
 	-- game_stats.update (delta, self.object)
-
+	
+	xr_s.on_actor_update(delta) -- Medicine mod
+	
 	-- апдейт погоды
 	self.weather_manager:update()
 

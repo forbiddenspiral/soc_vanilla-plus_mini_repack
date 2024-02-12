@@ -1,0 +1,10 @@
+----------------------------------
+-- forgottenspiral
+-- based on _z.script by NatVac and PartyBoat
+----------------------------------
+function show_HUD_msg(static_id_string, msg_text, time)
+	local hud = get_hud()
+	local custom_static = hud:AddCustomStatic(static_id_string, true)
+	custom_static:wnd():SetTextST(msg_text)
+	custom_static.m_endTime = time_global()/1000 + time
+end
