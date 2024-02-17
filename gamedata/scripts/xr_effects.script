@@ -107,7 +107,7 @@ function stop_postprocess(actor, npc, p)
 end
 
 function run_tutorial(actor, npc, p)
-	-- if not has_alife_info("esc_trader_newbie") then db.actor:give_info_portion("tutorial_part_15_hide_weapon") return end
+	if not has_alife_info("esc_trader_newbie") then db.actor:give_info_portion("tutorial_part_15_hide_weapon") return end
 	game.start_tutorial(p[1])
 end
 function run_tutorial_if_newbie(actor, npc, p)
