@@ -28,6 +28,7 @@ Used addons/mods/code/files plus source + modder (some of them are used only as 
 - pseudononymous: "Fixed Widescreen Scopes (16:9)" https://www.gamefront.com/games/stalker/file/fixed-widescreen-scopes-16-9
 - Shen: "Helcopters at CNPP to no longer use rockets on the player" heli.ltx.
 - Teleshot: "Shadow of Chernobyl: How to remove artifacts (on the lower left) from the HUD?" https://www.reddit.com/r/stalker/comments/bfc2xd/shadow_of_chernobyl_how_to_remove_artifacts_on/
+- TWiST3D: "Revised Weapon HUD Placement" https://www.moddb.com/mods/revised-weapon-hud-placement/downloads/revised-weapon-hud-placement
 - XoBaaR: "Light HUD v1.2 (STALKER SoC)" https://www.moddb.com/games/stalker/addons/light-hud-v12
 ```
 

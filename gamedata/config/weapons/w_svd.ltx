@@ -149,13 +149,13 @@ snd_reload		= weapons\svd_reload
  
 [wpn_svd_hud]
 
-shell_point			= -0.140000,-0.030000,0.080000
+shell_point			= -0.115000,0.015000,0.065000
 shell_dir		 		= 0.0, 1.0, 0.0
 
-fire_point			= 0.200000,-0.070000,0.090000
+fire_point			= 0.020000,-0.030000,0.090000
 fire_bone               = wpn_body
-orientation             = 0, 0, 0
-position                = 0, 0, 0
+orientation             = -1,-0.4,0
+position                = -0.005,-0.021,0.1
 visual                  = weapons\svd\wpn_svd_hud.ogf
 
 anim_holster	= holster
@@ -167,6 +167,8 @@ anim_holster	= holster
 anim_shoot		= shoot
 
 ;смещения HUD для режима приближения
-zoom_offset				= -0.020000,-0.030000,0.030000
-zoom_rotate_x			= 0.000000
-zoom_rotate_y			= -0.020000
+zoom_offset				= -0.070000,0.010000,-0.150000
+zoom_rotate_x			= -0.035000
+zoom_rotate_y			= -0.030000
+
+zoom_hide_crosshair	= true						;to hide crosshair in zoom 

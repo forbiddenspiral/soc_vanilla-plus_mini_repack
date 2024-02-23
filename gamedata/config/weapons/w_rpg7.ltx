@@ -162,7 +162,7 @@ fire_point               	= 0.00, 0.00, 0
 fire_bone                	= grenade_0
 grenade_bone			 	= grenade_0
 orientation              	= 0,0,0
-position                 	= 0,0,0
+position                 	= -0.015,0,0.1
 visual                   	= weapons\rpg_7\wpn_rpg_7_hud.ogf
 
 anim_idle					= idle
@@ -173,9 +173,11 @@ anim_shoot					= shoot
 anim_idle_aim				= idle
 
 ;смещения HUD для режима приближения
-zoom_offset					= -0.046700,-0.022000,0.000000
+zoom_offset					= -0.086700,0.003000,-0.150000
 zoom_rotate_x				= 0.020000
-zoom_rotate_y				= 0.031400
+zoom_rotate_y				= 0.006400
+
+zoom_hide_crosshair	= true						;to hide crosshair in zoom 
 
 [wpn_rpg7_missile]:identity_immunities
 GroupControlSection			= spawn_group
