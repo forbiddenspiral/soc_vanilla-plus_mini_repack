@@ -156,13 +156,13 @@ grenade_launcher_x 			= 130
 grenade_launcher_y 			= 31
 
 ;звуки
-snd_draw					= weapons\ak74_draw
+snd_draw					= weapons\vss_draw
 snd_holster					= weapons\generic_holster
 snd_shoot					= weapons\t_sig550_shot      ;test_shoot ;was ak74_shoot
 snd_empty					= weapons\gen_empty, 0.5
 snd_reload					= weapons\g36_reload, 0.7, 0.35
 snd_shoot_grenade			= weapons\gen_grenshoot
-snd_reload_grenade			= weapons\gen_grenload, 1.0, 0.8
+snd_reload_grenade			= weapons\gsg_grenload ; 1.0, 0.8
 snd_switch					= weapons\groza_switch, 1.0, 0.5
 
 
@@ -175,7 +175,7 @@ silencer_bullet_speed	 	= 600
 ;silencer_flame_particles 	= weapons\generic_weapon01
 silencer_smoke_particles 	= weapons\generic_shoot_00
 
-snd_silncer_shot			= weapons\vintorez_shoot	;weapons\w_ak74_shot1 
+snd_silncer_shot			= weapons\w_ak74_shot1 
 
 silencer_light_color		= 0.6,0.5,0.3
 silencer_light_range		= 0.01
@@ -202,7 +202,7 @@ anim_idle					= idle
 anim_idle_aim				= idle
 anim_reload					= reload
 anim_draw					= draw
-anim_holster				= shoot
+anim_holster				= holster_w_gl
 anim_shoot					= shoot
 anim_idle_sprint			= idle_sprint
 			
@@ -214,7 +214,7 @@ anim_reload_g				= reload_grenade
 anim_shoot_g				= shoot_grenade
 anim_switch_grenade_on		= switch_on
 anim_switch_grenade_off		= switch_off
-anim_draw_g					= switch_on
+anim_draw_g					= draw_w_gl
 anim_holster_g				= switch_off
 ;(режим обычной стрельбы)			  
 anim_idle_gl				= idle_w_gl

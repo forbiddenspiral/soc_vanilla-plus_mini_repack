@@ -19,6 +19,7 @@ Used addons/mods/code/files plus source + modder (some of them are used only as 
 - forgottenspiral: "Mini-update patch for the InGameCC mod" https://www.moddb.com/games/stalker/addons/mini-update-patch-for-the-ingamecc-mod
 - Helios: "Atlas (Spawn Menu) Mod 1.1" https://www.moddb.com/mods/atlas-spawn-menu/downloads/atlas-spawn-menu-mod-1-1
 - imperialreign: "Additional Nightvisions + Anomaly Effects 1.5" https://www.moddb.com/games/stalker/addons/additional-nightvisions-anomaly-effects-1-5
+- Kardiofatim: "Vanilla sounds reworked - weapon audio mod" https://www.moddb.com/games/stalker/addons/vanilla-sounds-reworked-weapon-audio-mod
 - MrSeyker: "PRP v1.2" https://www.moddb.com/mods/pripyat-reclamation-patch
 - NatVac: "silence.ogg for contact_1.ogg and contact_8.ogg and other things" SAVandT_1.1.
 - NatVac: "SoC_SoundFixes_1.0" SoC_SoundFixes_1.0.7z.
@@ -27,6 +28,7 @@ Used addons/mods/code/files plus source + modder (some of them are used only as 
 - PartyBoat: "STALKER - Vanilla Twist (v1.0 w/ ZRP Modifier)" https://www.moddb.com/mods/stalker-vanilla-twist/downloads/stalker-vanilla-twist-v10-w-zrp-modifier
 - pseudononymous: "Fixed Widescreen Scopes (16:9)" https://www.gamefront.com/games/stalker/file/fixed-widescreen-scopes-16-9
 - Shen: "Helcopters at CNPP to no longer use rockets on the player" heli.ltx.
+- StreloksAmnesia: "Vanilla Weapons Adjusted - Final" https://www.moddb.com/mods/vanilla-weapons-adjusted/downloads/vanilla-weapons-adjusted-final
 - Teleshot: "Shadow of Chernobyl: How to remove artifacts (on the lower left) from the HUD?" https://www.reddit.com/r/stalker/comments/bfc2xd/shadow_of_chernobyl_how_to_remove_artifacts_on/
 - TWiST3D: "Revised Weapon HUD Placement" https://www.moddb.com/mods/revised-weapon-hud-placement/downloads/revised-weapon-hud-placement
 - XoBaaR: "Light HUD v1.2 (STALKER SoC)" https://www.moddb.com/games/stalker/addons/light-hud-v12
