@@ -145,16 +145,16 @@
 		<text>An interesting assignment. The name rings a bell... but where do I know him from?</text>
 	</string>
 	<string id="barmen_find_item_2_text">
-		<text>There once was this foreigner in our neck of the woods... Gordon was his name? His whole manner gave out an experienced stalker, but he said he’d never been to the Zone. But anyway, that’s not the point. He did vanish somewhere in the Zone eventually. But he had this rather curious thing, the Black Kite. If I could just take a closer look at it...</text>
+		<text>There once was this foreigner in our neck of the woods... Gordon was his name? His whole manner gave out an experienced stalker, but he said he’d never been to the Zone. But anyway, that’s not the point. He did vanish somewhere in the Zone eventually. But he had this rather curious thing, the Desert Eagle. If I could just take a closer look at it...</text>
 	</string>
 	<string id="barmen_find_item_3">
-		<text>Find the modified Vintar</text>
+		<text>Find the modified Vintorez</text>
 	</string>
 	<string id="barmen_find_item_3_descr">
-		<text>Find the modified Vintar. Apparently, the place to look is the Red Forest area.</text>
+		<text>Find the modified Vintorez. Apparently, the place to look is the Red Forest area.</text>
 	</string>
 	<string id="barmen_find_item_3_text">
-		<text>There was this odd story. This one fellow pops up, pockets full of dough, and sets off hiring himself a gang, not the old-timers though, but more of the nippy type. Bought tons of gear... I had this one brand new Vintar, a marvelous gun! - so I was fool enough to sell it to him. I won’t lie to you, I made quite a bit of money... except this whole crew got knocked out close to the Red Forest. What can I say, they died for nothing... well, a good lesson for all to learn: you can’t pave your way through the Zone with money. But anyway... I can't stop thinking about that Vintar, such a bang-up gun rusting somewhere! Won’t you find it for me? I’m paying good money!</text>
+		<text>There was this odd story. This one fellow pops up, pockets full of dough, and sets off hiring himself a gang, not the old-timers though, but more of the nippy type. Bought tons of gear... I had this one brand new Vintorez, a marvelous gun! - so I was fool enough to sell it to him. I won’t lie to you, I made quite a bit of money... except this whole crew got knocked out close to the Red Forest. What can I say, they died for nothing... well, a good lesson for all to learn: you can’t pave your way through the Zone with money. But anyway... I can't stop thinking about that Vintorez, such a bang-up gun rusting somewhere! Won’t you find it for me? I’m paying good money!</text>
 	</string>
 	<string id="barmen_kill_stalker_1">
 		<text>Kill the soldier</text>
@@ -358,7 +358,7 @@
 		<text>Find the enhanced rifle</text>
 	</string>
 	<string id="dolg_find_item_1_descr">
-		<text>Find the sample of an enhanced TRs 301 near the military warehouses.</text>
+		<text>Find the sample of an enhanced ZM LR-300-ML near the military warehouses.</text>
 	</string>
 	<string id="dolg_find_item_1_text">
 		<text>Someone helps the mercs. Quite recently they got equipped with machine-guns, enhanced for sniper fire. You understand that it's a dangerous toy? Well, I'm interested in such a gun. My gratitude will be pertinent, be sure.</text>
@@ -589,19 +589,19 @@
 		<text>Steal the sniper rifle</text>
 	</string>
 	<string id="freedom_find_item_1_descr">
-		<text>Steal the modified SVDm 2 from the Duty warehouse.</text>
+		<text>Steal the modified SVD from the Duty warehouse.</text>
 	</string>
 	<string id="freedom_find_item_1_text">
 		<text>There is a special assignment. And pretty tough, too... So, you'll need to retrieve an improved Dragunov from the Duty warehouse. This piece even has a name of its own, but never mind. The main thing is that with its awesome scope and recoil canceller you can shoot a squirrel in its eye from 400 meters. So, I trust you'll do it!</text>
 	</string>
 	<string id="freedom_find_item_2">
-		<text>Obtain the modified Chaser 13</text>
+		<text>Obtain the modified Mossberg 88</text>
 	</string>
 	<string id="freedom_find_item_2_descr">
-		<text>Obtain the modified Chaser 13 from the scientists.</text>
+		<text>Obtain the modified Mossberg 88 from the scientists.</text>
 	</string>
 	<string id="freedom_find_item_2_text">
-		<text>I hear the eggheads managed to improve the Chaser shotgun by using an artifact. The knockdown power of this thing is the same as a howitzer. So why don't you pay them a visit and see if you can make a bargain. I'll make up for all expenses!</text>
+		<text>I hear the eggheads managed to improve the Mossberg 88 shotgun by using an artifact. The knockdown power of this thing is the same as a howitzer. So why don't you pay them a visit and see if you can make a bargain. I'll make up for all expenses!</text>
 	</string>
 	<string id="freedom_find_item_3">
 		<text>Bring the bulletproof vest</text>
