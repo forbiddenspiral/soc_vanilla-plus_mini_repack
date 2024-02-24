@@ -2,11 +2,11 @@
 
 ## Based mainly on ZRP V1.07 R5 RC and PartyBoat's Vanilla Twist Concept
 
-This is a proof-of-concept mod, primarily aimed at experimentation and learning about modding. While it seeks to retain the spirit of the original gameplay, it's intended for exploration rather than full implementation.
+This is a proof-of-concept mod, primarily aimed at experimentation and learning about modding, it seeks to retain the spirit of the original gameplay and visuals, along with it, its core features are actively being developed with the goal of full implementation but is subject to change.
 
 Also, I'm aiming for unifying key mechanics across the trilogy (SOC, CS, COP) for a consistent experience. Features like closed-cycle suits lacking night vision (inspired by COP) ensure consistency, while drawing on [PartyBoat's Vanilla Twist mod](https://www.moddb.com/mods/stalker-vanilla-twist/downloads/stalker-vanilla-twist-v10) for replayability enhancements like realistic medkit usage.
 
-Tweaking vanilla taught me to respect certain features, like SOC/COP's sound/visibility HUD indicators and the radioactive zone PPE effect. Note: These changes are easily reversible if you prefer the original setup, just be aware reverting changes requires some modding knowledge.
+Tweaking vanilla taught me to respect certain features, like SOC/COP's sound/visibility HUD indicators and the radioactive zone PPE effect. Note: Many changes are easily reversible if you prefer the original setup, just be aware reverting changes requires some modding knowledge.
 
 Used addons/mods/code/files plus source + modder (some of them are used only as reference to do or learn things and aren't implemented as such):
 
@@ -37,9 +37,9 @@ Used addons/mods/code/files plus source + modder (some of them are used only as 
 
 **Limited Compatibility:** Currently supports 16:9 aspect ratio monitors, resolutions up to 1920x1080, and English language.
 
-**Limited Modifications:** most core features like the ballistic system, damage system, NPC behavior, and actor properties are unchanged from vanilla gameplay - item consumable properties are modified by the Medicine Mod.
+**Limited Modifications:** most core features like the ballistic system, damage system, NPC behavior, and actor properties are unchanged from vanilla gameplay. Of course, these are going to be changed by the future "Vanilla Twist Core" optional addon for the mini repack where I'm going to port these features from Vanilla Twist if possible. Item consumable properties are modified by the Medicine Mod.
 
-## Some screenshots here, if you'd like to give it a try (Vanilla/Modded)
+## Some outdated screenshots here, if you'd like to give it a try (Vanilla/Modded)
 
 ![Screenshot](https://i.ibb.co/8z7HZ8S/Vanilla-Modded-1.jpg)
 ![Screenshot](https://i.ibb.co/dWM25hs/Vanilla-Modded-2.jpg)
