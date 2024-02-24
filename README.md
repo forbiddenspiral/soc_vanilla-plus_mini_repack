@@ -20,6 +20,7 @@ Used addons/mods/code/files plus source + modder (some of them are used only as 
 - Helios: "Atlas (Spawn Menu) Mod 1.1" https://www.moddb.com/mods/atlas-spawn-menu/downloads/atlas-spawn-menu-mod-1-1
 - imperialreign: "Additional Nightvisions + Anomaly Effects 1.5" https://www.moddb.com/games/stalker/addons/additional-nightvisions-anomaly-effects-1-5
 - Kardiofatim: "Vanilla sounds reworked - weapon audio mod" https://www.moddb.com/games/stalker/addons/vanilla-sounds-reworked-weapon-audio-mod
+- kostiuk: "S.T.A.L.K.E.R Gasmask replacement" https://www.moddb.com/games/stalker/addons/stalker-gasmask-replacement
 - MrSeyker: "PRP v1.2" https://www.moddb.com/mods/pripyat-reclamation-patch
 - NatVac: "silence.ogg for contact_1.ogg and contact_8.ogg and other things" SAVandT_1.1.
 - NatVac: "SoC_SoundFixes_1.0" SoC_SoundFixes_1.0.7z.
