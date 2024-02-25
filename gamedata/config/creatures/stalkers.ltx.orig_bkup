@@ -6,5 +6,5 @@
 #include "m_stalker_monolith.ltx"
 
 [stalkers_common]
-corpse_remove_game_time_interval = 36 ; hours
-stay_after_death_time_interval = 36
+corpse_remove_game_time_interval = 4 ; hours
+stay_after_death_time_interval = 4

@@ -18,6 +18,6 @@
 #include "m_phantom.ltx"
 
 [monsters_common]
-	corpse_remove_game_time_interval	= 36	;36 ; in hours
-	stay_after_death_time_interval		= 36	;36 ; in hours
+	corpse_remove_game_time_interval	= 4	;36 ; in hours
+	stay_after_death_time_interval		= 4	;36 ; in hours
 
