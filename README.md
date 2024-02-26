@@ -32,6 +32,7 @@ Used addons/mods/code/files plus source + modder (some of them are used only as 
 - StreloksAmnesia: "Vanilla Weapons Adjusted - Final" https://www.moddb.com/mods/vanilla-weapons-adjusted/downloads/vanilla-weapons-adjusted-final
 - Teleshot: "Shadow of Chernobyl: How to remove artifacts (on the lower left) from the HUD?" https://www.reddit.com/r/stalker/comments/bfc2xd/shadow_of_chernobyl_how_to_remove_artifacts_on/
 - TWiST3D: "Revised Weapon HUD Placement" https://www.moddb.com/mods/revised-weapon-hud-placement/downloads/revised-weapon-hud-placement
+- william11698: "Vanilla CoP weapons for SoC in High Res v1.5" https://www.moddb.com/games/stalker/addons/vanilla-cop-weapons-for-soc-in-high-res-v15
 - XoBaaR: "Light HUD v1.2 (STALKER SoC)" https://www.moddb.com/games/stalker/addons/light-hud-v12
 ```
 
