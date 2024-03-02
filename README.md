@@ -1,51 +1,50 @@
-# Vanilla+ Personal Mini Repack (S.T.A.L.K.E.R.: SOC Edition)
+# Vanilla+ Personal Mini Repack - S.T.A.L.K.E.R.: SOC Edition
 
-## Based mainly on ZRP V1.07 R5 RC and PartyBoat's Vanilla Twist Concept
+## Based mainly on ZRP v1.07 R5 RC and PartyBoat's Vanilla Twist Ideas
 
-This is a proof-of-concept mod, primarily aimed at experimentation and learning about modding, it seeks to retain the spirit of the original gameplay and visuals, along with it, its core features are actively being developed with the goal of full implementation but is subject to change.
+This is a personal project I'm working on to experiment with modding and learn the ropes. My goal is to preserve the core gameplay and visuals while introducing subtle tweaks to enhance immersion and replayability.
 
-Also, I'm aiming for unifying key mechanics across the trilogy (SOC, CS, COP) for a consistent experience. Features like closed-cycle suits lacking night vision (inspired by COP) ensure consistency, while drawing on [PartyBoat's Vanilla Twist mod](https://www.moddb.com/mods/stalker-vanilla-twist/downloads/stalker-vanilla-twist-v10) for replayability enhancements like realistic medkit usage.
+While this is a small project, I'm aiming to unify certain aspects of gameplay across the trilogy to create a more consistent experience. This includes features like closed-cycle suits lacking night vision (inspired by COP) for a more unified feel. Additionally, I'm borrowing replayability enhancements like realistic medkit and food usage from PartyBoat's Vanilla Twist mod to add a touch of freshness to the familiar gameplay.
 
-Tweaking vanilla taught me to respect certain features, like SOC/COP's sound/visibility HUD indicators and the radioactive zone PPE effect. Note: Many changes are easily reversible if you prefer the original setup, just be aware reverting changes requires some modding knowledge.
+Through this project, I've gained a newfound appreciation for certain vanilla features, like SOC/COP's sound/visibility HUD indicators and the radioactive zone PPE effect. It's important to note that many of the changes are easily reversible if you prefer the original experience. However, reverting them requires some modding knowledge, so please proceed with caution.
 
-Used addons/mods/code/files plus source + modder (some of them are used only as reference to do or learn things and aren't implemented as such):
+**General Notes:**
 
-```txt
-- bac9-flcl: "Map Fix 0.5" https://gamebanana.com/mods/238241
-- ColR_iT/Translated by MisterBadGuy/Tweaked by PartyBoat/Tweaked again and adapted to multilanguage by forgottenspiral: "Medicine Mod" (one of my favorite Lua scripts)
-  - https://www.amk-team.ru/forum/topic/12674-medicina/
-  - https://www.moddb.com/mods/stalker-animationssounds-for-consumables/downloads/medicine-rc-ver1-1
-- Decane1: "SRP v1.1.4" https://www.moddb.com/mods/srp/downloads/srp-v114
-- forgottenspiral: "Mini-update patch for the InGameCC mod" https://www.moddb.com/games/stalker/addons/mini-update-patch-for-the-ingamecc-mod
-- Helios: "Atlas (Spawn Menu) Mod 1.1" https://www.moddb.com/mods/atlas-spawn-menu/downloads/atlas-spawn-menu-mod-1-1
-- imperialreign: "Additional Nightvisions + Anomaly Effects 1.5" https://www.moddb.com/games/stalker/addons/additional-nightvisions-anomaly-effects-1-5
-- Kardiofatim: "Vanilla sounds reworked - weapon audio mod" https://www.moddb.com/games/stalker/addons/vanilla-sounds-reworked-weapon-audio-mod
-- kostiuk: "S.T.A.L.K.E.R Gasmask replacement" https://www.moddb.com/games/stalker/addons/stalker-gasmask-replacement
-- MrSeyker: "PRP v1.2" https://www.moddb.com/mods/pripyat-reclamation-patch
-- NatVac: "silence.ogg for contact_1.ogg and contact_8.ogg and other things" SAVandT_1.1.
-- NatVac: "SoC_SoundFixes_1.0" SoC_SoundFixes_1.0.7z.
-- NatVac: "ZRP v1.07 R5 RC" https://www.metacognix.com/files/stlkrsoc/index.html
-- NonStopEnjoyer: "Mini crosshair Mod" https://www.moddb.com/games/stalker/addons/mini-crosshair-mod
-- PartyBoat: "STALKER - Vanilla Twist (v1.0 w/ ZRP Modifier)" https://www.moddb.com/mods/stalker-vanilla-twist/downloads/stalker-vanilla-twist-v10-w-zrp-modifier
-- pseudononymous: "Fixed Widescreen Scopes (16:9)" https://www.gamefront.com/games/stalker/file/fixed-widescreen-scopes-16-9
-- Shen: "Helcopters at CNPP to no longer use rockets on the player" heli.ltx.
-- StreloksAmnesia: "Vanilla Weapons Adjusted - Final" https://www.moddb.com/mods/vanilla-weapons-adjusted/downloads/vanilla-weapons-adjusted-final
-- Teleshot: "Shadow of Chernobyl: How to remove artifacts (on the lower left) from the HUD?" https://www.reddit.com/r/stalker/comments/bfc2xd/shadow_of_chernobyl_how_to_remove_artifacts_on/
-- TWiST3D: "Revised Weapon HUD Placement" https://www.moddb.com/mods/revised-weapon-hud-placement/downloads/revised-weapon-hud-placement
-- william11698: "Vanilla CoP weapons for SoC in High Res v1.5" https://www.moddb.com/games/stalker/addons/vanilla-cop-weapons-for-soc-in-high-res-v15
-- XoBaaR: "Light HUD v1.2 (STALKER SoC)" https://www.moddb.com/games/stalker/addons/light-hud-v12
-```
+- Core gameplay mechanics like ballistics, damage systems, AI, and player attributes remain unchanged from the vanilla game. Item consumable properties are modified by the Medicine Mod.
+- Due to time constraints and limited modding experience. An optional "Vanilla Twist Core" add-on is planned to potentially port these features directly from Vanilla Twist in the future.
+- Original graphics and visuals are preserved. While graphical/texture mods aren't currently included, Stalker Weather Overhaul (SWO) is being considered to potentially enhance visuals and performance through shaders.
+- Limited compatibility: supports 16:9 aspect ratio monitors, resolutions up to 1920x1080, and English language (subtitles included).
 
-**Limited Compatibility:** Currently supports 16:9 aspect ratio monitors, resolutions up to 1920x1080, and English language.
+**Credits and Thanks:**
 
-**Limited Modifications:** most core features like the ballistic system, damage system, NPC behavior, and actor properties are unchanged from vanilla gameplay. Of course, these are going to be changed by the future "Vanilla Twist Core" optional addon for the mini repack where I'm going to port these features from Vanilla Twist if possible. Item consumable properties are modified by the Medicine Mod.
+- My sincere gratitude to the following modders for creating these fantastic mods:
+  - bac9-flcl: "Map Fix 0.5" <https://gamebanana.com/mods/238241>
+  - ColR_iT/Translated by MisterBadGuy/Modified by PartyBoat/Modified again and adapted to multilanguage by forgottenspiral: "Medicine Mod" (one of my favorited Lua scripts)
+    - <https://www.amk-team.ru/forum/topic/12674-medicina/>
+    - <https://www.moddb.com/mods/stalker-animationssounds-for-consumables/downloads/medicine-rc-ver1-1>
+  - Decane1: "SRP v1.1.4" <https://www.moddb.com/mods/srp/downloads/srp-v114>
+  - forgottenspiral: "Mini-update patch for the InGameCC mod" <https://www.moddb.com/games/stalker/addons/mini-update-patch-for-the-ingamecc-mod>
+  - Helios: "Atlas (Spawn Menu) Mod 1.1" <https://www.moddb.com/mods/atlas-spawn-menu/downloads/atlas-spawn-menu-mod-1-1>
+  - imperialreign: "Additional Nightvisions + Anomaly Effects 1.5" <https://www.moddb.com/games/stalker/addons/additional-nightvisions-anomaly-effects-1-5>
+  - Kardiofatim: "Vanilla sounds reworked - weapon audio mod" <https://www.moddb.com/games/stalker/addons/vanilla-sounds-reworked-weapon-audio-mod>
+  - kostiuk: "S.T.A.L.K.E.R Gasmask replacement" <https://www.moddb.com/games/stalker/addons/stalker-gasmask-replacement>
+  - MrSeyker: "PRP v1.2" <https://www.moddb.com/mods/pripyat-reclamation-patch>
+  - NatVac: "silence.ogg for contact_1.ogg and contact_8.ogg and other things" SAVandT_1.1.
+  - NatVac: "SoC_SoundFixes_1.0" SoC_SoundFixes_1.0.7z.
+  - NatVac: "ZRP v1.07 R5 RC" <https://www.metacognix.com/files/stlkrsoc/index.html>
+  - NonStopEnjoyer: "Mini crosshair Mod" <https://www.moddb.com/games/stalker/addons/mini-crosshair-mod>
+  - PartyBoat: "STALKER - Vanilla Twist (v1.0 w/ ZRP Modifier)" <https://www.moddb.com/mods/stalker-vanilla-twist/downloads/stalker-vanilla-twist-v10-w-zrp-modifier>
+  - pseudononymous: "Fixed Widescreen Scopes (16:9)" <https://www.gamefront.com/games/stalker/file/fixed-widescreen-scopes-16-9>
+  - Shen: "Helcopters at CNPP to no longer use rockets on the player" heli.ltx.
+  - StreloksAmnesia: "Vanilla Weapons Adjusted - Final" <https://www.moddb.com/mods/vanilla-weapons-adjusted/downloads/vanilla-weapons-adjusted-final>
+  - Teleshot: "Shadow of Chernobyl: How to remove artifacts (on the lower left) from the HUD?" <https://www.reddit.com/r/stalker/comments/bfc2xd/shadow_of_chernobyl_how_to_remove_artifacts_on/>
+  - TWiST3D: "Revised Weapon HUD Placement" <https://www.moddb.com/mods/revised-weapon-hud-placement/downloads/revised-weapon-hud-placement>
+  - william11698: "Vanilla CoP weapons for SoC in High Res v1.5" <https://www.moddb.com/games/stalker/addons/vanilla-cop-weapons-for-soc-in-high-res-v15>
+  - XoBaaR: "Light HUD v1.2 (STALKER SoC)" <https://www.moddb.com/games/stalker/addons/light-hud-v12>
+- To all the amazing modders, from beginners to veterans, for sharing their tools, mods, and invaluable tutorials.
+- To GSC Game World for creating the S.T.A.L.K.E.R. universe.
+- To the developers of the open-source and non-open-source tools used in this project.
 
-## Some outdated screenshots here, if you'd like to give it a try (Vanilla/Modded)
+**Known Bugs or Issues:**
 
-![Screenshot](https://i.ibb.co/8z7HZ8S/Vanilla-Modded-1.jpg)
-![Screenshot](https://i.ibb.co/dWM25hs/Vanilla-Modded-2.jpg)
-![Screenshot](https://i.ibb.co/Jxpmmvw/Vanilla-Modded-3.jpg)
-![Screenshot](https://i.ibb.co/55RVrzQ/Vanilla-Modded-4.jpg)
-![Screenshot](https://i.ibb.co/bz3xj6w/Vanilla-Modded-5.jpg)
-![Screenshot](https://i.ibb.co/kg9J3dW/Vanilla-Modded-6.jpg)
-![Screenshot](https://i.ibb.co/vqMhXK1/Vanilla-Modded-7.jpg)
+- Known Bug: Occasionally, giving medkits to downed NPCs might not revive them. This primarily affects non-critical gameplay and shouldn't hinder progress. I'm working on a fix if a solution can be found.
