@@ -1,5 +1,15 @@
 # Changelog
 
+v0.2 - 03/09/2024
+
+- Restored crouch/walk/run/sprint indicator on HUD.
+- Added an optional, alternative HUD that:
+  - Removes the crouch/walk/run/sprint indicator.
+  - Moves the sound/endurance/visibility indicators further to the right side to look more like CS/COP.
+- Disabled outfit information with personal tweaks by default.
+- Added outfit information as an optional feature.
+- Updated InGameCC mod mini-update for ZRP v1.07 R5RC to v0.3.
+
 v0.1 - 03/02/2024
 
 - Enabled automatic ammo boxing.
