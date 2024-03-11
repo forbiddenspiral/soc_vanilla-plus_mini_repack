@@ -19,7 +19,7 @@ Through this project, I've gained a newfound appreciation for certain vanilla fe
 
 - My sincere gratitude to the following modders for creating these fantastic mods:
   - bac9-flcl: "Map Fix 0.5" <https://gamebanana.com/mods/238241>
-  - ColR_iT/Translated by MisterBadGuy/Modified by PartyBoat/Modified again and adapted to multilanguage by forgottenspiral: "Medicine Mod" (one of my favorited Lua scripts)
+  - ColR_iT/Fix for downed NPCs by naxac and Anim_rouge/Translated by MisterBadGuy/Modified by PartyBoat/Modified again and adapted to multilanguage by forgottenspiral: "Medicine Mod" (one of my favorited Lua scripts)
     - <https://www.amk-team.ru/forum/topic/12674-medicina/>
     - <https://www.moddb.com/mods/stalker-animationssounds-for-consumables/downloads/medicine-rc-ver1-1>
   - Decane1: "SRP v1.1.4" <https://www.moddb.com/mods/srp/downloads/srp-v114>
@@ -47,4 +47,4 @@ Through this project, I've gained a newfound appreciation for certain vanilla fe
 
 **Known Bugs or Issues:**
 
-- Known Bug: Occasionally, giving medkits to downed NPCs might not revive them. This primarily affects non-critical gameplay and shouldn't hinder progress. I'm working on a fix if a solution can be found.
+- Fixed Bug: In previous versions, giving medkits to downed NPCs occasionally failed to revive them. This issue primarily affected non-critical gameplay and has now been resolved.
