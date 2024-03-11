@@ -1,5 +1,14 @@
 # Changelog
 
+v0.3 - 03/11/2024
+
+- Disabled including stash's level abbreviation.
+  - It was enabled again by mistake during the implementation of the InGameCC mod mini-update.
+- Improved inventory icon for medical supplies to look more like COP (from PRP).
+- Fixed medkit revive functionality for downed NPCs.
+  - Resolved an issue where medkits occasionally failed to revive downed NPCs.
+  - This bug primarily affected non-critical gameplay but is now fixed.
+
 v0.2 - 03/09/2024
 
 - Restored crouch/walk/run/sprint indicator on HUD.
