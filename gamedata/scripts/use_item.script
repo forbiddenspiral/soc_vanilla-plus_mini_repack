@@ -149,10 +149,12 @@ local itemParam = {
 			howMuch		= 0.03,
 			timeRestore	= 8,
 		},
+		--[[ 		
 		power			= {
 			howMuch		= -0.1,
 			timeRestore = 8,
 		},
+		]]
 		timeHideWpn		= 4000,
 		notRepeatUse	= true,
 		timeReusing		= 4500,
@@ -174,10 +176,12 @@ local itemParam = {
 			howMuch		= hard and ((0 - db.actor.radiation) * 0.2) or -0.2,
 			timeRestore = 8,
 		},
+		--[[
 		power			= {
 			howMuch		= -0.15,
 			timeRestore = 8,
 		},
+		]]
 		timeHideWpn		= 4000,
 		notRepeatUse	= true,
 		timeReusing		= 4500,
@@ -199,10 +203,12 @@ local itemParam = {
 			howMuch		= hard and ((0 - db.actor.radiation) * 0.5) or -0.5,
 			timeRestore = 8,
 		},
+		--[[
 		power			= {
 			howMuch		= -0.2,
 			timeRestore = 8,
 		},
+		]]
 		timeHideWpn		= 4000,
 		notRepeatUse	= true,
 		timeReusing		= 4500,
@@ -219,10 +225,12 @@ local itemParam = {
 			howMuch		= hard and ((1.0 - actor.health) * 0.2) or 0.2,
 			timeRestore = 6,
 		},
+		--[[
 		power			= {
 			howMuch		= -0.25,
 			timeRestore = 6,
 		},
+		]]
 		timeHideWpn		= 3000,
 		notRepeatUse	= true,
 		timeReusing		= 3500,
@@ -239,10 +247,12 @@ local itemParam = {
 			howMuch		= -1.0,
 			timeRestore = 10,
 		},
+		--[[
 		power			= {
 			howMuch		= -0.3,
 			timeRestore = 10,
 		},
+		]]
 		timeHideWpn		= 3000,
 		notRepeatUse	= true,
 		timeReusing		= 3500,
@@ -267,10 +277,12 @@ local itemParam = {
 			howMuch		= hard and ((0 - db.actor.radiation) * 0.1) or -0.1,
 			timeRestore = 6,
 		},
+		--[[
 		power			= {
 			howMuch		= -0.2,
 			timeRestore = 9,
 		},
+		]]
 		timeHideWpn		= 4000,
 		notRepeatUse	= true,
 		timeReusing		= 4500,
@@ -307,10 +319,12 @@ local itemParam = {
 			howMuch		= hard and ((1.0 - actor.health) * 0.3) or 0.3,
 			timeRestore = 20,
 		},
+		--[[
 		power			= {
 			howMuch		= 2.0,
 			timeRestore = 20,
 		},
+		]]
 		timeHideWpn		= 5000,
 		notRepeatUse	= true,
 		timeReusing		= 5500,
@@ -324,10 +338,12 @@ local itemParam = {
 			howMuch		= hard and ((1.0 - actor.health) * 0.2) or 0.2,
 			timeRestore = 20,
 		},
+		--[[
 		power			= {
 			howMuch		= 1.5,
 			timeRestore = 20,
 		},
+		]]
 		timeHideWpn		= 4000,
 		notRepeatUse	= true,
 		timeReusing		= 4500,
@@ -341,10 +357,12 @@ local itemParam = {
 			howMuch		= hard and ((1.0 - actor.health) * 0.1) or 0.1,
 			timeRestore = 20,
 		},
+		--[[
 		power			= {
 			howMuch		= 1.0,
 			timeRestore = 20,
 		},
+		]]
 		timeHideWpn		= 3000,
 		notRepeatUse	= true,
 		timeReusing		= 3500,
