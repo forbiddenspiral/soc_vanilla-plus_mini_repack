@@ -19,11 +19,13 @@ Through this project, I've gained a newfound appreciation for certain vanilla fe
 
 - My sincere gratitude to the following modders for creating these fantastic mods:
   - bac9-flcl: "Map Fix 0.5" <https://gamebanana.com/mods/238241>
+  - Chocohex: "Short guide to fix the TOZ-34 low poly hand mesh"
   - ColR_iT/Fix for downed NPCs by naxac and Anim_rouge/Translated by MisterBadGuy/Modified by PartyBoat/Modified again and adapted to multilanguage by forgottenspiral: "Medicine Mod" (one of my favorited Lua scripts)
     - <https://www.amk-team.ru/forum/topic/12674-medicina/>
     - <https://www.moddb.com/mods/stalker-animationssounds-for-consumables/downloads/medicine-rc-ver1-1>
   - Decane1: "SRP v1.1.4" <https://www.moddb.com/mods/srp/downloads/srp-v114>
   - forgottenspiral: "Mini-update patch for the InGameCC mod" <https://www.moddb.com/games/stalker/addons/mini-update-patch-for-the-ingamecc-mod>
+  - GSC: "SDK 0.4 (Shadows of Chernobyl) from Anomaly Modding Book" <https://sharedby.blomp.com/gI0i4B>
   - Helios: "Atlas (Spawn Menu) Mod 1.1" <https://www.moddb.com/mods/atlas-spawn-menu/downloads/atlas-spawn-menu-mod-1-1>
   - imperialreign: "Additional Nightvisions + Anomaly Effects 1.5" <https://www.moddb.com/games/stalker/addons/additional-nightvisions-anomaly-effects-1-5>
   - Kardiofatim: "Vanilla sounds reworked - weapon audio mod" <https://www.moddb.com/games/stalker/addons/vanilla-sounds-reworked-weapon-audio-mod>
@@ -34,6 +36,7 @@ Through this project, I've gained a newfound appreciation for certain vanilla fe
   - NatVac: "ZRP v1.07 R5 RC" <https://www.metacognix.com/files/stlkrsoc/index.html>
   - NonStopEnjoyer: "Mini crosshair Mod" <https://www.moddb.com/games/stalker/addons/mini-crosshair-mod>
   - PartyBoat: "STALKER - Vanilla Twist (v1.0 w/ ZRP Modifier)" <https://www.moddb.com/mods/stalker-vanilla-twist/downloads/stalker-vanilla-twist-v10-w-zrp-modifier>
+  - PavelBlend and contributors: "blender-xray" <https://github.com/PavelBlend/blender-xray>
   - pseudononymous: "Fixed Widescreen Scopes (16:9)" <https://www.gamefront.com/games/stalker/file/fixed-widescreen-scopes-16-9>
   - Shen: "Helcopters at CNPP to no longer use rockets on the player" heli.ltx.
   - StreloksAmnesia: "Vanilla Weapons Adjusted - Final" <https://www.moddb.com/mods/vanilla-weapons-adjusted/downloads/vanilla-weapons-adjusted-final>
