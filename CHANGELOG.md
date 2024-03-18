@@ -1,5 +1,13 @@
 # Changelog
 
+v0.4 - 03/18/2024
+
+- Restored more vanilla behavior for medical items and food. Changes:
+  - Using medical items no longer penalizes stamina.
+  - Food no longer restores stamina.
+- Made red hit marks invisible on HUD from mutants and NPCs (optional feature).
+- Fixed the low poly hand mesh and weapon model for TOZ-34.
+
 v0.3 - 03/11/2024
 
 - Disabled including stash's level abbreviation.
