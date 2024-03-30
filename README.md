@@ -1,6 +1,6 @@
 # Vanilla+ Personal Mini Repack - S.T.A.L.K.E.R.: SOC Edition
 
-## Based mainly on ZRP v1.07 R5 RC and PartyBoat's Vanilla Twist Ideas
+## Based mainly on ZRP v1.07 R5 RC + Custom Gameplay Tweaks
 
 This is a personal project I'm working on to experiment with modding and learn the ropes. My goal is to preserve the core gameplay and visuals while introducing subtle tweaks to enhance immersion and replayability.
 
@@ -11,7 +11,7 @@ Through this project, I've gained a newfound appreciation for certain vanilla fe
 **General Notes:**
 
 - Core gameplay mechanics like ballistics, damage systems, AI, and player attributes remain unchanged from the vanilla game. Item consumable properties are modified by the Medicine Mod.
-- Due to time constraints and limited modding experience. An optional "Vanilla Twist Core" add-on is planned to potentially port these features directly from Vanilla Twist in the future.
+- Due to time constraints and limited modding experience. An optional "Alternative Ballistics Core" add-on is planned to potentially port these features directly from SRP in the future.
 - Original graphics and visuals are preserved. While graphical/texture mods aren't currently included, Stalker Weather Overhaul (SWO) is being considered to potentially enhance visuals and performance through shaders.
 - Limited compatibility: supports 16:9 aspect ratio monitors, resolutions up to 1920x1080, and English language (subtitles included).
 
