@@ -1,5 +1,21 @@
 # Changelog
 
+v0.5 - 04/01/2024
+
+- Weight and Movement:
+  - Increased weight limit before fatigue from 30kg to 35kg (matches vanilla COP and offers a more vanilla gameplay experience).
+  - Increased maximum weight for movement from 50kg to 60kg (aligns with vanilla values across all three STALKER games).
+- Player Character Properties (Aligned with CS/COP):
+  - Adjusted movement properties (run, walk, sprint, etc.) to match CS values. These values provide a more balanced gameplay experience for the player character, as observed during testing.
+  - Restored healing functionality to slightly restore health when injured, mirroring behavior found in CS and COP. The value used is consistent with COP for a balanced approach across all three games.
+  - Adjusted bleeding value to the more balanced level found in COP.
+  - Wound healing rate when bleeding now aligns with the more balanced value from COP.
+- Neutral NPC Visual Update:
+  - Reverted the model used by some neutral NPCs to the original vanilla model featuring a gas mask with disjointed lenses and an oxygen tank. This ensures a clearer distinction between these NPCs and the player character, who previously shared a similar gas mask variant.
+- Player Gas Mask Expansion:
+  - Updated outfit.ltx to reference five new .ogf model files designed specifically for the player character's gas mask.
+  - Added the line #include "models\capture\stalker_hero_captures.ltx" to the UserData section within these new models. This ensures they inherit the appropriate properties defined in stalker_hero_captures.ltx for the player character, potentially including differences compared to NPC models.
+
 v0.4 - 03/18/2024
 
 - Restored more vanilla behavior for medical items and food. Changes:
