@@ -10,14 +10,14 @@ Through this project, I've gained a newfound appreciation for certain vanilla fe
 
 **General Notes:**
 
-- Core gameplay mechanics like ballistics, damage systems, AI, and player attributes remain unchanged from the vanilla game. Item consumable properties are modified by the Medicine Mod.
-- Due to time constraints and limited modding experience. An optional "Alternative Ballistics Core" add-on is planned to potentially port these features directly from SRP in the future.
+- Core gameplay mechanics like ballistics, damage systems, and AI remain faithful to the vanilla experience. Player attributes have been adjusted to align more closely with the values found in CS and COP. Item consumable properties are modified by the Medicine Mod.
+- Due to time constraints and limited modding experience. An optional "Alternative Ballistics Core" addon is planned to potentially port these features directly from SRP in the future.
 - Original graphics and visuals are preserved. While graphical/texture mods aren't currently included, Stalker Weather Overhaul (SWO) is being considered to potentially enhance visuals and performance through shaders.
 - Limited compatibility: supports 16:9 aspect ratio monitors, resolutions up to 1920x1080, and English language (subtitles included).
 
 **Credits and Thanks:**
 
-- My sincere gratitude to the following modders for creating these fantastic mods:
+- My sincere gratitude to the following modders for creating these fantastic mods and tools:
   - bac9-flcl: "Map Fix 0.5" <https://gamebanana.com/mods/238241>
   - Chocohex: "Short guide to fix the TOZ-34 low poly hand mesh"
   - ColR_iT/Fix for downed NPCs by naxac and Anim_rouge/Translated by MisterBadGuy/Modified by PartyBoat/Modified again and adapted to multilanguage by forgottenspiral: "Medicine Mod" (one of my favorited Lua scripts)
@@ -30,6 +30,7 @@ Through this project, I've gained a newfound appreciation for certain vanilla fe
   - imperialreign: "Additional Nightvisions + Anomaly Effects 1.5" <https://www.moddb.com/games/stalker/addons/additional-nightvisions-anomaly-effects-1-5>
   - Kardiofatim: "Vanilla sounds reworked - weapon audio mod" <https://www.moddb.com/games/stalker/addons/vanilla-sounds-reworked-weapon-audio-mod>
   - kostiuk: "S.T.A.L.K.E.R Gasmask replacement" <https://www.moddb.com/games/stalker/addons/stalker-gasmask-replacement>
+  - mortany/VaIeroK: "OGF Tool" <https://github.com/VaIeroK/OGF-tool>  
   - MrSeyker: "PRP v1.2" <https://www.moddb.com/mods/pripyat-reclamation-patch>
   - NatVac: "silence.ogg for contact_1.ogg and contact_8.ogg and other things" SAVandT_1.1.
   - NatVac: "SoC_SoundFixes_1.0" SoC_SoundFixes_1.0.7z.
