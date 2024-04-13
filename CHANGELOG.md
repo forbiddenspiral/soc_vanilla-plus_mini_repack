@@ -1,5 +1,11 @@
 # Changelog
 
+v0.6 - 04/13/2024
+
+- Standardized Artifact Bleeding Restoration Rates: Several artifacts previously had inconsistencies in their bleeding_restore_speed property. This update adjusts these values to match the vanilla game.
+  - Increased Bleeding: af_rusty_sea-urchin, af_rusty_kristall, af_rusty_thorn (previously +1000%, now +100%).
+  - Decreased Bleeding: af_ameba_mica (previously -4000%, now -400%), af_ameba_slug (previously -2667%, now -267%), af_ameba_slime (previously -1333%, now -133%).
+
 v0.5 - 04/01/2024
 
 - Weight and Movement:
