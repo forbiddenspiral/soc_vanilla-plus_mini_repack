@@ -1,0 +1,77 @@
+-- -----------------------------
+--  DreamMod v0.1 by Ab@dDon ---
+--  nv120307 tweaks
+-- -----------------------------
+local play_alarm_sound = true
+
+function sleep_one_hour()
+	sleep_manager.main(1)
+end
+function sleep_three_hours()
+	sleep_manager.main(3)
+end
+function sleep_nine_hours()
+	sleep_manager.main(9)
+end
+function sleep_unlim(scale)
+	local sleep_time = 1 + (1 - db.actor.health)*2.75
+	sleep_manager.main(sleep_time)
+end
+
+local basic_time_factor = 10
+local rest_hours = 1
+
+function main(scale)
+	rest_hours = scale
+	basic_time_factor = level.get_time_factor()
+	db.actor:stop_talk()
+	db.actor:hide_weapon()
+	level.disable_input()
+	-- get_console():execute(basic_time_factor)
+	-- sleep_manager.hp_corrector(scale)	
+	sleep_manager.starter(scale)
+end
+
+function starter(scale)
+	local factor = scale * 2650
+	game.start_tutorial("time_scaling")
+	level.set_time_factor(factor)
+end
+
+function dreamer()
+	level.set_time_factor(basic_time_factor)
+	-- sleep_manager.hp_corrector(0)
+	local dream = dream.sleep_video_name_callback ()
+	-- get_console():execute(dream)
+	if dream ~= "" then game.start_tutorial(dream)
+	else game.start_tutorial("without_dream") end
+end
+
+function stopper()
+	if db.actor:alive() then
+		level.add_cam_effector("camera_effects\\dream.anm", 1, false, "")
+		if rest_hours < 6 then -- short nap, awaken woozy
+			if play_alarm_sound then
+				xr_effects.play_snd (db.actor, nil, {"monsters\\beeps_0", 0})
+			end
+			level.add_cam_effector("camera_effects\\prison_1.anm", 2506, false, "")
+		else
+			level.add_cam_effector("camera_effects\\hit_back_left.anm", 10, false, "")
+		end
+		db.actor:restore_weapon()
+	end
+	level.enable_input()
+end
+
+function hp_corrector(fr)
+	if fr ~= 0 then
+		hp = fr/6 + db.actor.health
+		if hp > 1 then hp = 1 end
+		return
+	elseif db.actor.health > hp then 
+		db.actor.health = hp - db.actor.health
+	end
+end
+
+-- function verifyier()
+-- end

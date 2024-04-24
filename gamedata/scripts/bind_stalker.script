@@ -34,7 +34,7 @@ local keep_first_level_access = true
 -- set this true to preserve your first access to a level after key progress points
 local keep_progress_level_access = true
 -- set true if you want to use a sleeping bag in the game (see docs)
-local use_sleeping_bag = false
+local use_sleeping_bag = true
 
 -- lasthealth  = 0
 -- lasttime	= 0
