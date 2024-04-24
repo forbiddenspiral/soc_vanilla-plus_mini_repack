@@ -4,7 +4,7 @@
 		<text>Go on...</text>
 	</string>
 	<string id="bar_arena_man_job_11">
-		<text>So, your first fight? Your opponent is a piece of meat just like you. He's here because of debts and he only has two options: to come out and fight or to land himself in the nearest anomaly. He's gonna fight like a cornered animal. Equipment for today... lemme think... OK! Why don't you two use PMs...two magazines each should be plenty. Either you kick his arse or we feed you to the dogs - not much of a choice. Go on now.</text>
+		<text>So, your first fight? Your opponent is a piece of meat just like you. He's here because of debts and he only has two options: to come out and fight or to land himself in the nearest anomaly. He's gonna fight like a cornered animal. Equipment for today... lemme think... OK! Why don't you two use PMms...two magazines each should be plenty. Either you kick his arse or we feed you to the dogs - not much of a choice. Go on now.</text>
 	</string>
 	<string id="bar_arena_man_job_111">
 		<text>I'm ready.</text>
@@ -58,7 +58,7 @@
 		<text>I'm not ready.</text>
 	</string>
 	<string id="bar_arena_man_job_17">
-		<text>Well, you're almost in the final. Now you'll be fighting a real stalker. He's alone but he's got an FN F2000 and he's inside an exoskeleton. Catch one burst and you're toast. There will be a surprise that I can't tell you about too... Here's my advice: be prepared, it's gonna be tough. The winner makes it through to the final. Fight to the death, go!</text>
+		<text>Well, you're almost in the final. Now you'll be fighting a real stalker. He's alone but he's got an FT 200M and he's inside an exoskeleton. Catch one burst and you're toast. There will be a surprise that I can't tell you about too... Here's my advice: be prepared, it's gonna be tough. The winner makes it through to the final. Fight to the death, go!</text>
 	</string>
 	<string id="bar_arena_man_job_171">
 		<text>I'm ready.</text>
@@ -67,7 +67,7 @@
 		<text>I'm not ready.</text>
 	</string>
 	<string id="bar_arena_man_job_18">
-		<text>Congratulations, you're in the final! One more to go and this one is to the death, every man for himself. There will be 4 other stalkers in the arena: all real pros in exoskeletons with H&amp;K G36s but it's a fair deal this time - you'll get exactly what they have. The only thing is, you don't get medkits or bandages in a fight to the death. Ready? Go prove you're the best, GO!</text>
+		<text>Congratulations, you're in the final! One more to go and this one is to the death, every man for himself. There will be 4 other stalkers in the arena: all real pros in exoskeletons with GP-37s but it's a fair deal this time - you'll get exactly what they have. The only thing is, you don't get medkits or bandages in a fight to the death. Ready? Go prove you're the best, GO!</text>
 	</string>
 	<string id="bar_arena_man_job_181">
 		<text>I'm ready.</text>
@@ -982,7 +982,7 @@
 		<text>Barkeep told me that you have some assignment for me at the military warehouses...</text>
 	</string>
 	<string id="bar_dolg_leader_join_1">
-		<text>I want to ask you to do one thing, personally for me, you see? We're in the midst of territorial warfare with the Freedom faction and we need some weapons more powerful than what we have. Freedom has some excellent RG-6 grenade launchers. If you could penetrate their territory and steal at least one such grenade launcher, I would generously reward you. Since you aren't in our faction, you can quickly gain the trust of Freedom and, if you're lucky, get a hold of the RG-6.</text>
+		<text>I want to ask you to do one thing, personally for me, you see? We're in the midst of territorial warfare with the Freedom faction and we need some weapons more powerful than what we have. Freedom has some excellent Bulldog 6 grenade launchers. If you could penetrate their territory and steal at least one such grenade launcher, I would generously reward you. Since you aren't in our faction, you can quickly gain the trust of Freedom and, if you're lucky, get a hold of the Bulldog 6.</text>
 	</string>
 	<string id="bar_dolg_leader_join_11">
 		<text>Go on.</text>
@@ -991,10 +991,10 @@
 		<text>I'll upload the location of the Freedom base for you. You'll need to find the Chef. He's a member of Freedom. He knows where the RG-6s are kept. And he likes his booze so bring a lot of vodka with you. So, what do you say?</text>
 	</string>
 	<string id="bar_dolg_leader_join_1111">
-		<text>OK, I'll try to steal an RG-6 from Freedom.</text>
+		<text>OK, I'll try to steal an Bulldog 6 from Freedom.</text>
 	</string>
 	<string id="bar_dolg_leader_join_11111">
-		<text>Oh, and one more thing. Colonel Skull and his boys disobeyed my order and decided to attack the Freedom base without authorization. Well, they can reap what they sow... suicidal bastards. Don't get involved in their fight. Just try to get me the RG-6 - nothing else matters.</text>
+		<text>Oh, and one more thing. Colonel Skull and his boys disobeyed my order and decided to attack the Freedom base without authorization. Well, they can reap what they sow... suicidal bastards. Don't get involved in their fight. Just try to get me the Bulldog 6 - nothing else matters.</text>
 	</string>
 	<string id="bar_dolg_leader_join_1112">
 		<text>I'm not ready for such exploits just yet.</text>
@@ -1033,7 +1033,7 @@
 		<text>Congratulations! You are now a full member of Duty.</text>
 	</string>
 	<string id="bar_dolg_leader_quest_rg6_finish_0">
-		<text>I completed the mission. I brought the RG-6.</text>
+		<text>I completed the mission. I brought the Bulldog 6.</text>
 	</string>
 	<string id="bar_dolg_leader_quest_rg6_finish_1">
 		<text>Good work, stalker. This is exactly what we need. Well, Marked One, you carried out my request, and in return you can take this suit. I think you'll like it.</text>
@@ -1045,10 +1045,10 @@
 		<text>What brings you here, brother?</text>
 	</string>
 	<string id="bar_dolg_leader_start_31">
-		<text>You brought the RG-6?</text>
+		<text>You brought the Bulldog 6?</text>
 	</string>
 	<string id="bar_dolg_leader_start_311">
-		<text>Yes, here is the RG-6.</text>
+		<text>Yes, here is the Bulldog 6.</text>
 	</string>
 	<string id="bar_dolg_leader_start_3111">
 		<text>Good work, stalker. This is exactly what we need. Well, Marked One, you carried out my request, and in return you can take this suit. I think you'll like it.</text>
