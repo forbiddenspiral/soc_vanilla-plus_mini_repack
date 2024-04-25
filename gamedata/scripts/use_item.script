@@ -274,7 +274,7 @@ local itemParam = {
 			timeRestore	= 9,
 		},
 		radiation		= {
-			howMuch		= hard and ((0 - db.actor.radiation) * 0.1) or -0.1,
+			howMuch		= hard and ((0 - db.actor.radiation) * 0.1) or -0.167,
 			timeRestore = 6,
 		},
 		--[[
