@@ -1,5 +1,15 @@
 # Changelog
 
+v0.7 - 04/25/2024
+
+- Fixes:
+  - Fixed incorrect SEVA Suit texture (stalker_scien.ogf).
+- Gameplay Adjustments:
+  - Restored default grid cell size to match vanilla game.
+  - Reverted weapon names to vanilla.
+  - Added Sleeping Bag feature: Allows players to sleep anywhere in the Zone using this item.
+  - Increased vodka's radiation cure by ~40% based on user feedback.
+
 v0.6 - 04/13/2024
 
 - Standardized Artifact Bleeding Restoration Rates: Several artifacts previously had inconsistencies in their bleeding_restore_speed property. This update adjusts these values to match the vanilla game.
