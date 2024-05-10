@@ -15,7 +15,7 @@
 	</deadbody_location>
 
 	<enemy_mini_spot width="4" height="4" stretch="1" alignment="c" xform_anim="map_spot_rel_xform" xform_anim_cyclic="0">
-		<texture r="255" g="0" b="0" a="0">ui_minimap_point</texture>
+		<texture r="255" g="0" b="0">ui_minimap_point</texture>
 	</enemy_mini_spot>
 	
 	<neutral_mini_spot width="4" height="4" stretch="1" alignment="c"> 
