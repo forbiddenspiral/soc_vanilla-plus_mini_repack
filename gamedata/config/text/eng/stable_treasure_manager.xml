@@ -1291,6 +1291,6 @@
 		<text>Kruglov's stuff</text>
 	</string>
 	<string id="st_found_new_treasure">
-		<text>Information about stash</text>
+		<text>Information about stash:</text>
 	</string>
 </string_table>
