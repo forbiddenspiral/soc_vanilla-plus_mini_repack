@@ -1,5 +1,22 @@
 # Changelog
 
+v0.8 - 05/12/2024
+
+- Updated inventory icon for MP5: The inventory icon for the MP5 has been replaced with one that better matches the world model used by the OSRM mod.
+- Restored vanilla behavior: Several functionalities have been restored to align with the original game experience:
+  - Enemies are now displayed on the minimap.
+  - NPC detection sounds are audible again on the PDA.
+  - The HUD now displays the NPC counter, ammo counter, and distance task counter.
+  - The minimap shows the objective marker and red hit indicator.
+  - The HUD displays the NPC counter indicator.
+  - Binocular functionality has been restored, allowing you to tag NPCs and receive sound notifications upon detecting them.
+- Fixed trader menu scrollbar behavior: An issue causing scrollbars to be constantly displayed in trader menus, even when unnecessary, has been resolved.
+- Optional Feature Removal:
+  - "Red hit marks invisible on HUD" option removed: This optional feature has been removed to prioritize a more vanilla experience. Players will now see red hit markers on the HUD as intended.
+  - "Alternative HUD" option removed: In keeping with the focus on a vanilla experience, the default SOC HUD layout has been reinstated. This change removes modifications previously implemented to achieve a HUD similar to Clear Sky and Call of Pripyat.
+- Visual Tweaks:
+  - Adjusted vanilla colors for PDA stash messages: The colors used for PDA messages displayed on the HUD when finding or emptying stashes have been adjusted to better match the standard vanilla color scheme used for other PDA messages.
+
 v0.7 - 04/25/2024
 
 - Fixes:
