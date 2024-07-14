@@ -20,17 +20,17 @@ Through this project, I've gained a newfound appreciation for certain vanilla fe
 - My sincere gratitude to the following modders for creating these fantastic mods and tools:
   - bac9-flcl: "Map Fix 0.5" <https://gamebanana.com/mods/238241>
   - Chocohex: "Short guide to fix the TOZ-34 low poly hand mesh"
-  - ColR_iT/Fix for downed NPCs by naxac and Anim_rouge/Translated by MisterBadGuy/Modified by PartyBoat/Modified again and adapted to multilanguage by forgottenspiral: "Medicine Mod" (one of my favorited Lua scripts)
+  - ColR_iT/Fix for downed NPCs by naxac and Anim_rouge/Translated by MisterBadGuy/Modified by PartyBoat/Modified again and adapted to multilanguage by forbiddenspiral: "Medicine Mod" (one of my favorited Lua scripts)
     - <https://www.amk-team.ru/forum/topic/12674-medicina/>
     - <https://www.moddb.com/mods/stalker-animationssounds-for-consumables/downloads/medicine-rc-ver1-1>
   - Decane1: "SRP v1.1.4" <https://www.moddb.com/mods/srp/downloads/srp-v114>
-  - forgottenspiral: "Mini-update patch for the InGameCC mod" <https://www.moddb.com/games/stalker/addons/mini-update-patch-for-the-ingamecc-mod>
+  - forbiddenspiral: "Mini-update InGameCC mod v0.4 for ZRP 1.07 R5RC" <https://www.moddb.com/games/stalker/addons/mini-update-ingamecc-for-zrp>
   - GSC: "SDK 0.4 (Shadows of Chernobyl) from Anomaly Modding Book" <https://sharedby.blomp.com/gI0i4B>
   - Helios: "Atlas (Spawn Menu) Mod 1.1" <https://www.moddb.com/mods/atlas-spawn-menu/downloads/atlas-spawn-menu-mod-1-1>
   - imperialreign: "Additional Nightvisions + Anomaly Effects 1.5" <https://www.moddb.com/games/stalker/addons/additional-nightvisions-anomaly-effects-1-5>
   - Kardiofatim: "Vanilla sounds reworked - weapon audio mod" <https://www.moddb.com/games/stalker/addons/vanilla-sounds-reworked-weapon-audio-mod>
   - kostiuk: "S.T.A.L.K.E.R Gasmask replacement" <https://www.moddb.com/games/stalker/addons/stalker-gasmask-replacement>
-  - mortany/VaIeroK: "OGF Tool" <https://github.com/VaIeroK/OGF-tool>  
+  - mortany/VaIeroK: "OGF Tool" <https://github.com/VaIeroK/OGF-tool>
   - MrSeyker: "PRP v1.2" <https://www.moddb.com/mods/pripyat-reclamation-patch>
   - NatVac: "silence.ogg for contact_1.ogg and contact_8.ogg and other things" SAVandT_1.1.
   - NatVac: "SoC_SoundFixes_1.0" SoC_SoundFixes_1.0.7z.
