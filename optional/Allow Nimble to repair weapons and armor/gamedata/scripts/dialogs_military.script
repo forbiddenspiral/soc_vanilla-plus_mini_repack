@@ -2,6 +2,7 @@ allow_join_freedom = false
 
 allow_screw_repair = true
 allow_ivantsov_repair = true
+allow_nimble_repair = true
 allow_skinflint_artifact_trade = false
 
 pistol_markup = 1.4
@@ -41,6 +42,14 @@ end
 function ivantsov_can_repair(npc, actor)
 	--dbglog("repair permitted")
 	return allow_ivantsov_repair
+end	
+
+function no_nimble_repair(npc, actor)
+	return not allow_nimble_repair
+end	
+
+function nimble_can_repair(npc, actor)
+	return allow_nimble_repair
 end	
 
 function screw_repair_needed(npc, actor)

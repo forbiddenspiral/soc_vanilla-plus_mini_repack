@@ -537,6 +537,8 @@
         <phrase_list>
             <phrase id="21">
                 <text>escape_shustryi_start_21</text>
+                <next>41</next>
+                <next>42</next>                
             </phrase>
             <phrase id="2">
                 <text />
@@ -590,6 +592,79 @@
             <phrase id="31111">
                 <text>escape_shustryi_start_31111</text>
                 <next>311111</next>
+            </phrase>
+            <phrase id="41">
+                <text></text>
+                <precondition>dialogs_military.no_nimble_repair</precondition>
+            </phrase>
+            <phrase id="42">
+                <text></text>
+                <precondition>dialogs_military.nimble_can_repair</precondition>
+                <next>3000</next>
+            </phrase>
+            <phrase id="3000">
+                <text>mil_screw_dialog_1000</text>
+                <next>3001</next>
+                <next>3011</next>
+            </phrase>
+            <phrase id="3001">
+                <precondition>dialogs_military.screw_repair_needed</precondition>
+                <text>mil_screw_dialog_3001</text>
+                <next>3002</next>
+            </phrase>
+            <phrase id="3002">
+                <text>mil_screw_dialog_3002</text>
+                <action>dialogs_military.show_repair_charges</action>
+                <next>3003</next>
+                <next>3004</next>
+                <next>3005</next>
+                <next>3006</next>
+            </phrase>
+            <phrase id="3003">
+                <precondition>dialogs_military.can_get_rifle_repair</precondition>
+                <text>mil_screw_dialog_3003</text>
+                <action>dialogs_military.repair_rifle</action>
+                <next>3007</next>
+            </phrase>
+            <phrase id="3004">
+                <precondition>dialogs_military.can_get_pistol_repair</precondition>
+                <text>mil_screw_dialog_3004</text>
+                <action>dialogs_military.repair_pistol</action>
+                <next>3007</next>
+            </phrase>
+            <phrase id="3005">
+                <precondition>dialogs_military.can_get_armor_repair</precondition>
+                <text>mil_screw_dialog_3005</text>
+                <action>dialogs_military.repair_armor</action>
+                <next>3007</next>
+            </phrase>
+            <phrase id="3006">
+                <text>mil_screw_dialog_3006</text>
+            </phrase>
+            <phrase id="3007">
+                <text>mil_screw_dialog_3007</text>
+                <next>3008</next>
+                <next>3009</next>
+            </phrase>
+            <phrase id="3008">
+                <text>mil_screw_dialog_3008</text>
+            </phrase>
+            <phrase id="3009">
+                <precondition>dialogs_military.screw_repair_needed</precondition>
+                <text>mil_screw_dialog_3009</text>
+                <next>3010</next>
+           </phrase>
+            <phrase id="3010">
+                <text>mil_screw_dialog_3010</text>
+                <next>3003</next>
+                <next>3004</next>
+                <next>3005</next>
+                <next>3006</next>
+            </phrase>
+            <phrase id="3011">
+                <precondition>dialogs_military.screw_repair_not_needed</precondition>
+                <text>mil_screw_dialog_3011</text>
+                <action>dialogs.break_dialog</action>
             </phrase>
         </phrase_list>
     </dialog>
