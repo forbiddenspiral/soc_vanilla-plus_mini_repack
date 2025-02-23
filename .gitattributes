@@ -2,3 +2,6 @@ bin/** linguist-vendored
 gamedata/** linguist-vendored
 optional/** linguist-vendored
 *.ps1 linguist-vendored
+
+# Since this mod is for a Windows-only game, CRLF line endings can be safely used for all text files.
+* text=auto eol=crlf
