@@ -270,13 +270,13 @@ function Build-Mod {
 
       # Create the files or folders that optional features require.
 
-      # Optional feature #1: COP weapon textures for SOC.
+      # Optional feature #1: Vanilla CoP weapon textures for SoC.
       if (Test-Path -Path "$cop_weapon_textures_path" -PathType Container) {
-        Copy-Item -Path "$cop_weapon_textures_path\*" -Destination "$build_folder_path\optional\COP weapon textures for SOC" -Recurse -Force
-        Write-Message -Status $? -Verb "Copied" -Message "COP weapon textures mod for SOC to '$build_folder_path\optional\COP weapon textures for SOC'"
+        Copy-Item -Path "$cop_weapon_textures_path\*" -Destination "$build_folder_path\optional\Vanilla CoP weapon textures for SoC" -Recurse -Force
+        Write-Message -Status $? -Verb "Copied" -Message "CoP weapon textures mod for SoC to '$build_folder_path\optional\Vanilla CoP weapon textures for SoC'"
       }
       else {
-        Write-Host "COP weapon textures mod for SOC does not exist in '$cop_weapon_textures_path'"
+        Write-Host "CoP weapon textures mod for SoC does not exist in '$cop_weapon_textures_path'"
       }
 
       # Copy the Instructions and Notes file if it exists in $build_path.
