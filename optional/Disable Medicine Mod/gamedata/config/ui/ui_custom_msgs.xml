@@ -31,7 +31,7 @@
 		<text align="c" font="graffiti32"  r="240" g="217" b="182" a="255"/>
 	</main_task>
 
-	<main_time_static x="20" y="636" width="55" height="17" stretch="1">
+	<main_time_static x="27" y="636" width="72" height="17" stretch="1">
 		<!-- <texture x=16 y=226 width=73 height=15>ui\ui_hud</texture> -->
 		<text x="0" y="1" font="letterica16" r="240" g="217" b="182" a="255" align="c"/>
 	</main_time_static>
@@ -60,15 +60,15 @@
 	</autosave>
 
 	<item_used  x="112" y="740" width="800" height="26">
-		<text font="graffiti22"  r="240" g="217" b="182" a="0" align="c"/>
+		<text font="graffiti22"  r="240" g="217" b="182" a="255" align="c"/>
 	</item_used>
 
 	<item_used_custom x="112" y="740" width="800" height="26">
-		<text font="graffiti22" r="240" g="217" b="182" a="255" align="c"/>
+		<text font="graffiti22" r="240" g="217" b="182" a="0" align="c"/>
 	</item_used_custom>
 
 	<item_use_error x="112" y="740" width="800" height="26">
-		<text font="graffiti22"  r="240" g="217" b="182" a="255" align="c"/>
+		<text font="graffiti22"  r="240" g="217" b="182" a="0" align="c"/>
 	</item_use_error>
 
 	<gun_jammed x="212" y="70" width="600" height="50" ttl="3">
