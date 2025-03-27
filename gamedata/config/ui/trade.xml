@@ -39,8 +39,8 @@
 		<text align="c" y="13" font="graffiti22" r="238" g="155" b="23" complex_mode="0"/>
 	</our_money_static>
 
-	<dragdrop_list x="16" y="32" width="280" height="396"
-			cell_width = "33" cell_height="33" rows_num="12" cols_num="8" 
+	<dragdrop_list x="16" y="32" width="280" height="420"
+			cell_width = "41" cell_height="41" rows_num="10" cols_num="6" 
 			group_similar="1" unlimited="1"/>
 
 
@@ -54,8 +54,8 @@
 		<text align="c" y="13" font="graffiti22" r="238" g="155" b="23" complex_mode="0"/>
 	</other_money_static>
 
-	<dragdrop_list x="16" y="32" width="280" height="396"
-			cell_width = "33" cell_height="33" rows_num="12" cols_num="8" 
+	<dragdrop_list x="16" y="32" width="280" height="420"
+			cell_width = "41" cell_height="41" rows_num="10" cols_num="6" 
 			group_similar="1" unlimited="1"/>
 
 	<!-- OUR TRADE -->
@@ -64,8 +64,8 @@
 	</static>
 
 	<dragdrop_list x="27" y="38" width="313" height="165"
-			cell_width = "33" cell_height="33"
-			rows_num="5" cols_num="9" 
+			cell_width = "41" cell_height="41"
+			rows_num="4" cols_num="7" 
 			group_similar="1" unlimited="1"/>
 
 
@@ -75,8 +75,8 @@
 	</static>
 
 	<dragdrop_list x="27" y="38" width="313" height="165"
-			cell_width = "33" cell_height="33"
-			rows_num="5" cols_num="9" 
+			cell_width = "41" cell_height="41"
+			rows_num="4" cols_num="7" 
 			group_similar="1" unlimited="1"/>
 
 

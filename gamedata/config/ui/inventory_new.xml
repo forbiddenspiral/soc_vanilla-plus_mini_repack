@@ -22,8 +22,8 @@
 		<texture>ui\ui_bottom_background</texture>
 	</bottom_static>
 
-    <dragdrop_bag x="6" y="34" width="346" height="480"
-            cell_width = "30" cell_height="30" rows_num="16" cols_num="11" 
+    <dragdrop_bag x="6" y="34" width="346" height="504"
+            cell_width = "41" cell_height="41" rows_num="12" cols_num="8" 
             unlimited="1" group_similar="1"/>
 
     <dragdrop_belt x="645" y="76" width="410" height="60"
