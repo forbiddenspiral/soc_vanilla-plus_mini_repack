@@ -596,9 +596,9 @@
 		<text>[замок открыт]</text>
 	</string>
 	<string id="cc_characters_voice-scenario-escape-heli_radio_part_1">
-		<text>Командир, какой-то идиот бродит внизу, должны мы его поджечь?
-		\n%c[255,240,217,182]Отрицательно. Нет смысла тратить боеприпасы на такие мелочи.
-		\n%c[default]Хе-хе, понял. Он пока что живет.</text>
+		<text>Командир! Там придурок какой-то внизу шляется, шугнём?
+		\n%c[255,240,217,182]Отставить. Нехрен на мелочь боезапас тратить.
+		\n%c[default]Хаха. Ну, пусть живёт.</text>
 	</string>
 
 	<!-- Garbage -->
@@ -1695,9 +1695,9 @@
 		<text>Внимание! Защита отключена!</text>
 	</string>
 	<string id="cc_characters_voice-scenario-bun-patrol_prikaz">
-		<text>Нештатная ситуация. Обеспечьте безопасность немедленно.
-		\nПервый этаж, второй этаж, главный зал.
-		\nЛиквидировать нарушителей. Подавить проникновение.</text>
+		<text>Группа один и два проверить первый этаж.
+		\nГруппа три - главный зал.
+		\nЧетвёртая и пятая - второй этаж.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-radar-rad_soldier_des_1">
 		<text>База, это 056. Отсутствие излучения подтверждено. Крупных скоплений противника не обнаружено. Вепря... высадил в районе антенн для разведки. Жду дальнейших указаний.
@@ -1713,29 +1713,27 @@
 	</string>
 
 	<!-- Pripyat -->
-	<!-- 
 	<string id="cc_characters_voice-scenario-pri-heli_phrase1">
-		<text>Placeholder (pri).</text>
+		<text>База, я Стая-4, скоро будем на месте.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-pri-heli_phrase2">
-		<text>Placeholder (pri).</text>
+		<text>Удачи, Стая-4.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-pri-heli_phrase3">
-		<text>Placeholder (pri).</text>
+		<text>Я борт 0-20-й, что-то не так.. Слуховые галлюцинации... Да слышу.. Черт, что это было? Нет, нет! База, у меня все нормально. Ложная тревога.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-pri-heli_phrase4">
-		<text>Placeholder (pri).</text>
+		<text>Борт 0-20-й падает!</text>
 	</string>
 	<string id="cc_characters_voice-scenario-pri-heli_phrase5">
-		<text>Placeholder (pri).</text>
+		<text>Я база. Продолжайте следовать точке назначения.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-pri-heli_phrase6">
-		<text>Placeholder (pri).</text>
+		<text>Это же наши ребята, мы должны помочь!</text>
 	</string>
 	<string id="cc_characters_voice-scenario-pri-heli_phrase7">
-		<text>Placeholder (pri).</text>
+		<text>Выполняйте приказы, Стая-4!</text>
 	</string>
-	-->
 	<string id="pri_followers_final_phrase2-0">
 		<text>Меченый, иди сюда! Поговорить надо.</text>
 	</string>
@@ -1852,184 +1850,286 @@
 	</string>
 
 	<!-- AES -->
-	<!-- 
 	<string id="cc_characters_voice-scenario-aes-aes_2chopers_attack">
-		<text>Placeholder (aes).</text>
+		<text>Полста Второй, справа двадцать, дальше сто пятьдесят — трансформаторная будка. Дятел с гранатомётом. Охолости его!
+		\nПонял, дятла вижу... На, сука!</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_blockpost_battle">
-		<text>Placeholder (aes).</text>
+		<text>Оба-на, еще трое вылезли. Коршун-Пять, вали их!
+		\nКоршун есть, я их срезал.
+		\nСапсан-Три, по кустам!</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_choper_anomaly">
-		<text>Placeholder (aes).</text>
+		<text>Шестьдесят Четвёртый, я над точкой, рабо... А-а-а!
+		\nКвартет, Шестьдесят Пятый взорвался на посадке. Из экипажа и группы живых не вижу.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_choper_crush">
-		<text>Placeholder (aes).</text>
+		<text>Ноль Тридцать Первый, говнюк с РГ на крыше!
+		\nА-а, твою мать! Командир, левый движок!
+		\nЩас, щас! Тяни, ну! Все, пи…</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_choper_hunt">
-		<text>Placeholder (aes).</text>
+		<text>Квартет, слева три-две полста, возле рва, наблюдаю скопление противника.
+		\nТвою мать! Командир, утечка масла из редуктора!
+		\nПонял, машину держу! Ванёк, помоги!
+		\nШестьдесят четвёртый, прыгай!
+		\nНе идёт!</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_choper_hunt_1">
-		<text>Placeholder (aes).</text>
+		<text>Квартет, слева три-две полста, возле рва, наблюдаю скопление противника.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_choper_hunt_2">
-		<text>Placeholder (aes).</text>
+		<text>Твою мать! Командир, утечка масла из редуктора!
+		\nПонял, машину держу! Ванёк, помоги!
+		\nШестьдесят четвёртый, прыгай!
+		\nНе идёт!</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_choper_patrol">
-		<text>Placeholder (aes).</text>
+		<text>Земля, воздух, где работаем?
+		\nВоздух, обозначаю себя трассой. От фасада 250 влево, запузырьте.
+		\nЗемля, тебя понял, Полста Второй, делай, раз!</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_chopers_begin">
-		<text>Placeholder (aes).</text>
+		<text>Полста Второй, я Полста Первый. Подхожу к точке.
+		\nКвартет, я Ноль Тридцатый. Подходим к точке.
+		\nНоль Тридцатый, там сбита пара радиохимической разведки, пробей.
+		\nКвартет, я Ноль Тридцатый. Понял.
+		\nШестьдесят Четвертый, тут гондурасы зашевелились. Полста Второй — давай, давай заход. Херанём по ним!
+		\nЛегко, щас херанём!
+		\nПолста Первый, у нас вроде чисто, начинаем работать.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_chopers_begin_1">
-		<text>Placeholder (aes).</text>
+		<text>Квартет, я Ноль Тридцатый. Подходим к точке.
+		\nНоль Тридцатый, там сбита пара радиохимической разведки, пробей.
+		\nКвартет, я Ноль Тридцатый. Понял.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_chopers_begin_2">
-		<text>Placeholder (aes).</text>
+		<text>Полста Второй, я Полста Первый. Подхожу к точке.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_chopers_begin_3">
-		<text>Placeholder (aes).</text>
+		<text>Шестьдесят Четвертый, тут гондурасы зашевелились. Полста Второй — давай, давай заход. Херанём по ним!
+		\nЛегко, щас херанём!
+		\nПолста Первый, у нас вроде чисто, начинаем работать.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_desant_gate">
-		<text>Placeholder (aes).</text>
+		<text>Сапсан-Пять, за воротами смотри!
+		\nСапсан, не вижу!
+		\nПоказываю трассой.
+		\nПонял.
+		\nКвартет, Коршун на точке, объект чист. Имею двух трёхсотых.
+		\nКоршун, занять позиции. Ждать подхода Ястреба и Сапсана.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_desant_gate2">
-		<text>Placeholder (aes).</text>
+		<text>Квартет, я Сапсан. Подхожу к точке. Коршуна и Ястреба вижу. Имею двухсотого и трёх трёхсотых.
+		\nСапсан, удерживай объект. Ястреб, Коршун — продолжайте движение.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_desant_more">
-		<text>Placeholder (aes).</text>
+		<text>Квартет, Сокол сел. Начинаю движение.
+		\nКвартет, я Канюк. Сел. Вижу противника, начинаю бой.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_desant_more_1">
-		<text>Placeholder (aes).</text>
+		<text>Квартет, Сокол сел. Начинаю движение.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_desant_more_2">
-		<text>Placeholder (aes).</text>
+		<text>Квартет, я Канюк. Сел. Вижу противника, начинаю бой.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_desant_proceed2">
-		<text>Placeholder (aes).</text>
+		<text>Квартет, я Ястреб. Пока чисто. Двигаюсь вперёд.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_desant_proceed3">
-		<text>Placeholder (aes).</text>
+		<text>Квартет, Коршун на точке. Двигаюсь вперёд.
+		\nПолста Первый, прикрой Коршуна. Как с боеприпасами и горючкой?
+		\nКвартет, я Полста Первый. По б/к и горючке — две трети. Понял, выполняю.
+		\nВсем Коршунам! Огонь по входу!</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_desant_proceed_part_1">
-		<text>Placeholder (aes).</text>
+		<text>Воздух, я Земля. Слева десять, дальше двести. Работают, уроды. Обозначаю себя ракетой, шмали их.
+		\nЗемля, понял тебя. Обозначай.
+		\nЗемля, тебя вижу. Их вижу, щас херану.
+		\nВоздух, чуть ближе.
+		\nПонял.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_desant_proceed_part_2">
-		<text>Placeholder (aes).</text>
+		<text>Квартет, продолжаю выполнение задачи. На точке через две минуты.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_desant_proceed_part_3">
-		<text>Placeholder (aes).</text>
+		<text>Сапсан-Пять, твою ёпр… прямо правее. Сапсан-Четыре, тварей вали!</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_desant_proceed_part_4">
-		<text>Placeholder (aes).</text>
+		<text>Квартет, Ястреб на месте, вижу Коршуна. Потерь не имею.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_first_desant_wave">
-		<text>Placeholder (aes).</text>
+		<text>Полста Второй, вроде чисто. Работай.
+		\nЗашибись, начинаю работать.
+		\nПолста Первый, я на месте. Группа пошла.
+		\nКвартет, я Коршун. Сел. Начинаю работать.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_forth_desant_wave">
-		<text>Placeholder (aes).</text>
+		<text>Ноль Восемнадцатый отработал.
+		\nСергей, вспышка справа!
+		\nНиже, ниже давай! Туда давай!
+		\nКвартет, я Пустельга! Сел, начинаю работать
+		\nКвартет, сильно побит несущий винт! Иду домой!</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_monsters">
-		<text>Placeholder (aes).</text>
+		<text>Охренеть! Пустельга, здесь тварей… туча!</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_monsters_ambush">
-		<text>Placeholder (aes).</text>
+		<text>Квартет, я Пустельга, взяли в кольцо, веду бой. Имею два двухсотых, два трехсотых, из них один тяжелый. Прошу помощи, пришлите вертушки!
+		\nПонял, щас поможем.
+		\nЗемля, я Воздух, щас прищучим гадов.
+		\nВоздух, обозначаюсь дымом, твари кругом, усвинячь по периметру!
+		\nЗемля, понял тебя.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_road_battle">
-		<text>Placeholder (aes).</text>
+		<text>Сокол-Три, сектор справа! Квартет, веду бой. По датчикам, на подходе выброс!
+		\nВнимание всем, приготовиться! На подходе выброс! Ещё раз, на подходе выброс!
+		\nСорок Восьмой, Сорок Девятый, валим на хер.
+		\nСорок Девятый, оглох или уху ел?!
+		\nДа щас. Выстроились, суки…</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_second_desant_wave">
-		<text>Placeholder (aes).</text>
+		<text>Полста Первый, работу закончил.
+		\nПолста Второй, понял тебя. Прикрывай, начинаю работу.
+		\nКвартет, я Сапсан. На месте.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_third_desant_wave">
-		<text>Placeholder (aes).</text>
-	</string>
-	-->	
+		<text>Квартет, Ястреб на точке.</text>
+	</string>	
 	<string id="cc_characters_voice-scenario-aes-aes2-aes2_trader_ask">
 		<text>Меченый? Какого черта?</text>
 	</string>
-	<!-- 	
 	<string id="cc_characters_voice-scenario-aes-aes2-aes_actor_hunt">
-		<text>Placeholder (aes2).</text>
+		<text>Воздух, там урод какой-то в бронике, у трансформатора бегает!
+		\nЗемля, понял тебя. Полста Первый, урода видишь? Займись!
+		\nПолста Второй, работаю.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes2-aes_blowout_1">
-		<text>Placeholder (aes2).</text>
+		<text>Выброс, командир. Валим на хер.
+		\nНыкайтесь, Земля — выброс! Мы ушли.
+		\nДавай, давай, давай. Сваливаем.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes2-aes_blowout_2">
-		<text>Placeholder (aes2).</text>
+		<text>Внимание всем! Выброс! Рассредоточиться по укрытиям!
+		\nНихера себе! Прибор зашкалило, командир!
+		\nНоги! Ноги!
+		\nГде бы норочку уютную найти…</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes2-aes_blowout_3">
-		<text>Placeholder (aes2).</text>
+		<text>Ястреб, всем укрыться!
+		\nКомандир! Спалимся, на хер! Нормальное укрытие надо!
+		\nСапсан! Давай наших внутрь!
+		\nЯстреб, понял!
+		\nСапсан, слушай меня! Всем огонь по входу!
+		\nВсё! Почистили! Сапсан-Шесть, прикрывай! Ну давай, всё! Пошли, пошли!</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes2-aes_bridge_ambush_1">
-		<text>Placeholder (aes2).</text>
+		<text>Квартет, я Гриф. На точке. Начинаю продвижение.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes2-aes_bridge_ambush_2">
-		<text>Placeholder (aes2).</text>
+		<text>Грифы, занять круговую оборону. Квартет, я Гриф. На мосту около статуи веду бой. Есть двухсотый и трехсотый, прошу помощи!
+		\nЗемля, тебя слышу, иду на помощь.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes2-aes_choper_down_1">
-		<text>Placeholder (aes2).</text>
+		<text>Стоять...!</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes2-aes_choper_down_2">
-		<text>Placeholder (aes2).</text>
+		<text>Колян накрылся!
+		\nКвартет, я Ноль Девяносто Восьмой. Вижу разбитого Ноль Девяносто Седьмого. Писец…</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes2-aes_choper_down_3">
-		<text>Placeholder (aes2).</text>
+		<text>Земля! Откуда по мне мочат?! Укажите напра...
+		\nКвартет. Ноль Девяносто Седьмого упал! 500 метров на юг от входа.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes2-aes_commander_out">
-		<text>Placeholder (aes2).</text>
+		<text>Гриф, закрепитесь! Ждите подхода тех…
+		\nКвартет, я Гриф, вас не понял. Квартет, не понял вас!
+		\nКвартет, здесь Канюк. Подтвердите связь!
+		\nКвартет, я Гриф, вас не слышу! Квартет! Вас не слышу...</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes2-aes_enter_battle_1">
-		<text>Placeholder (aes2).</text>
+		<text>Алексей, не лезь суда, собьют на хер!
+		\nНе ссы, Земля. Все будет пучк…
+		\nКвартет, Ноль Девяносто Восьмой сбит, бл…
+		\nКвартет, я Гриф. Нужна пара двадцать четвертых.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes2-aes_road_battle_2">
-		<text>Placeholder (aes2).</text>
+		<text>Сапсан-Пять, за составом на рельсах.
+		\nСапсан, не вижу.
+		\nДаю трассу.
+		\nПонял!
+		\nГотов, гад!</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes2-aes_road_battle_3">
-		<text>Placeholder (aes2).</text>
+		<text>Воздух, за бульдозером, на дороге причеши!
+		\nЯсно, Земля, сделаем.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes2-aes_road_battle_4">
-		<text>Placeholder (aes2).</text>
+		<text>Ястреб-Три, Ястреб-Шесть! А ну-ка, пройдите вправо, через простеночек.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes2-aes_road_battle_5">
-		<text>Placeholder (aes2).</text>
+		<text>Всем Пустельгам, внимание, бьют с крыши! Пузом на землю! Коршун, пока не высовывайся! Воздух, обозначаюсь ракетой! На крыше, прямо двести, правее пятнадцать, возле трубопроводов, снайпер!
+		\nЗемля, вас понял.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes2-aes_road_battle_6">
-		<text>Placeholder (aes2).</text>
+		<text>Квартет, я Ястреб. На дороге много брошенной техники. За ней противник. Численность пока не установленная. Лучше почистить.
+		\nЗемля, я над вами, обозначьтесь.
+		\nЗдесь Ястреб, обозначаюсь трассерами.
+		\nЗемля, вижу тебя. Начинаю работу. Поскучайте в норке пока.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes2-aes_road_battle_7">
-		<text>Placeholder (aes2).</text>
+		<text>Сокол-Пять, мля! Не жги патроны, не на учениях!
+		\nКомандир, трое за трубами!
+		\nВнимание Соколам! Слева мудаки за трубами!</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes2-aes_road_battle_8">
-		<text>Placeholder (aes2).</text>
+		<text>Квартет, я Канюк. У меня пока тихо, продолжаю движение.
+		\nКанюкам, внимание! Справа гранатомётчик! Рассредоточиться.
+		\nКанюк-Пять, смотри за краем крыши.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes2-aes_rpg_1">
-		<text>Placeholder (aes2).</text>
+		<text>Пустельга! Вижу гранатометы!</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes2-aes_rpg_2">
-		<text>Placeholder (aes2).</text>
+		<text>Пустельга, рассредоточься! Воздух, справа 30, дальше 200, я вижу троих с РГ!
+		\nЗемля, понял, Полста Второй, работаем осторожно. В заход!</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes2-aes_rpg_3">
-		<text>Placeholder (aes2).</text>
+		<text>Коршун, за вагонами РГ!
+		\nВсем Коршунам, внимание! За вагонами гранатометчик!
+		\Коршун-Пять, займись!
+		\nПонял!</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes2-aes_seven_desant_wave">
-		<text>Placeholder (aes2).</text>
+		<text>Квартет, я Ноль Девяносто Восьмой, начинаю работу.
+		\nКвартет, я Гриф. На точке. Начинаю продвижение.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes2-aes_six_desant_wave">
-		<text>Placeholder (aes2).</text>
+		<text>Квартет, я Лунь. На земле. Начинаю движение к точке. Командир, слева сто пятьдесят, за арматурой вижу группу. Не пойму кто.
+		\nСокол, я Лунь. Обозначься. Всем Луням! Группа противников слева, за арматурой. Лунь-Пять, Лунь-Два — прикрывайте!
+		\nЗемля, тебя слышу, иду на помощь.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes2-aes_sniper_desant">
-		<text>Placeholder (aes2).</text>
+		<text>Квартет, я Ноль Девяносто Седьмой, над точкой. Чисто. Но площадка маленькая, сесть не смогу. Бросаю с зависания.
+		\nНоль Девяносто Седьмой, понял вас. Даю добро.
+		\nКвартет, я Ноль Девяносто Седьмой. Работу закончил. Ухожу домой.
+		\nКвартет, это Сова. Все на месте, занимаем позицию.
+		\nПонял тебя, Сова. Осторожно там со своими.
+		\nЕсть, Квартет. Об чем разговор?</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes2-aes_sniper_talk">
-		<text>Placeholder (aes2).</text>
+		<text>Не ревную я к другой, да это переменится. Все равно ты будешь мой, да никуда не денешься…
+		\nСова-Три, не засирай эфир!</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes2-aes_snipers_out">
-		<text>Placeholder (aes2).</text>
+		<text>Воздух, даю трассу! По ходу, клоуны с оптикой!
+		\nЗемля, понял, щас отработаю...</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes2-aes_unknown_weapon">
-		<text>Placeholder (aes2).</text>
+		<text>Квартет, это Ястреб! Противник применил неизвестное оружие. У меня два двухсотых и один трехсотый.
+		\nЯстреб, вас понял. Не подставляйтесь, пусть работает воздух.
+		\nЯстреб, мы над вами. Обозначьте цель.</text>
 	</string>
-	-->
 	<!-- Sarcofag -->
 
 	<string id="cc_characters_voice-scenario-sarcofag-monolith_call_1">
@@ -2118,4 +2218,66 @@
 	</string>
 	<string id="cc_monsters-poltergeist-die_0">
 		<text>[смерть полтергейста]</text>
+	</string>
+
+	<!-- Sidorovich's PDA tutorial -->
+	<string id="cc_characters_voice-scenario-trader-trader_tutorial_pda_1-1">
+		<text>...</text>
+	</string>
+	<string id="cc_characters_voice-scenario-trader-trader_tutorial_pda_1-2">
+		<text>...</text>
+	</string>
+	<string id="cc_characters_voice-scenario-trader-trader_tutorial_pda_2">
+		<text>...</text>
+	</string>
+	<string id="cc_characters_voice-scenario-trader-trader_tutorial_pda_3">
+		<text>...</text>
+	</string>
+	<string id="cc_characters_voice-scenario-trader-trader_tutorial_pda_4">
+		<text>...</text>
+	</string>
+	<string id="cc_characters_voice-scenario-trader-trader_tutorial_pda_5">
+		<text>...</text>
+	</string>
+	<string id="cc_characters_voice-scenario-trader-trader_tutorial_pda_6">
+		<text>...</text>
+	</string>
+	<string id="cc_characters_voice-scenario-trader-trader_tutorial_pda_7">
+		<text>...</text>
+	</string>
+	<string id="cc_characters_voice-scenario-trader-trader_tutorial_pda_9">
+		<text>...</text>
+	</string>
+	<string id="cc_characters_voice-scenario-trader-trader_tutorial_pda_11-1">
+		<text>...</text>
+	</string>
+	<string id="cc_characters_voice-scenario-trader-trader_tutorial_pda_11-2">
+		<text>...</text>
+	</string>	
+	<string id="cc_characters_voice-scenario-trader-trader_tutorial_pda_12-1">
+		<text>...</text>
+	</string>
+	<string id="cc_characters_voice-scenario-trader-trader_tutorial_pda_12-2">
+		<text>...</text>
+	</string>
+	<string id="cc_characters_voice-scenario-trader-trader_tutorial_pda_13">
+		<text>...</text>
+	</string>
+	<string id="cc_characters_voice-scenario-trader-trader_tutorial_pda_14">
+		<text>...</text>
+	</string>
+	<string id="cc_characters_voice-scenario-trader-trader_tutorial_pda_14_1">
+		<text>...</text>
+	</string>
+	<string id="cc_characters_voice-scenario-trader-trader_tutorial_pda_15">
+		<text>...</text>
+	</string>
+	<string id="cc_characters_voice-scenario-trader-trader_tutorial_pda_15_1-1">
+		<text>...</text>
+	</string>
+	<string id="cc_characters_voice-scenario-trader-trader_tutorial_pda_15_1-2">
+		<text>...</text>
+	</string>
+	<string id="cc_characters_voice-scenario-trader-trader_tutorial_pda_15_1-3">
+		<text>...</text>
 	</string>

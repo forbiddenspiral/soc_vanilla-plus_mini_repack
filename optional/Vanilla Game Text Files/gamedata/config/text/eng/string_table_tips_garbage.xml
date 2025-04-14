@@ -27,6 +27,7 @@
 	</string>
 
 	<!-- ZRP begin -->
+
 	<string id="tips_gar_seryi_help_1">
 		<text>Anyone who can hear me! We've been attacked by a gang of bandits, we need help! Brothers, help us, we're in deep shit!</text>
 	</string>
@@ -34,10 +35,8 @@
 		<text>Bandits have gone mad, is there anyone nearby, damn it?! We're dead meat!</text>
 	</string>
 	<string id="tips_gar_seryi_victory">
-		<text>Man, that was close! Glad you're here. Sit down for a minute, let's catch our breath and
-		I'll tell you what's going on.</text>
+		<text>Man, that was close! Glad you're here. Sit down for a minute, let's catch our breath and I'll tell you what's going on.</text>
 	</string>
 	<string id="gar_sos_pda">
 		<text>Help! I'm wounded!</text>
 	</string>
-	<!-- ZRP end -->

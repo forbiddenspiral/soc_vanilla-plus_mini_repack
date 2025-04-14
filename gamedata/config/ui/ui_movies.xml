@@ -21,20 +21,6 @@
 			</auto_static>
 		</global_wnd>
 
-		<item type="video">  <!-- precache video file -->
-			<sound>ambient\silence</sound>
-			<pause_state>on</pause_state>
-			<pause_sound>on</pause_sound>
-			<video_wnd x="0" y="0" width="1024" height="768" stretch="1">
-				<texture x="0" y="1" width="512" height="286">intro\intro_stalker</texture>
-				<auto_static x="0" y="0" width="1024" height="768" stretch="1">
-					<texture>intro\intro_back</texture>
-				</auto_static>
-				<auto_static start_time="0" length_sec="4.5" x="262" y="270" width="500" height="40">
-					<text align="c" font="graffiti50">cc_title_STALKER</text>
-				</auto_static>
-			</video_wnd>
-		</item>
 		<item type="video">
 			<sound>characters_voice\scenario\video\intro_stalker</sound>
 			<pause_state>on</pause_state>

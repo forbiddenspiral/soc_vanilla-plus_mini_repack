@@ -86,7 +86,7 @@
 			<grab_input>1</grab_input>
 			<pda_section>pda_map</pda_section>
 			<main_wnd>
-				<auto_static start_time="0" length_sec="4" x="216" y="608" width="50" height="50"  stretch="1" light_anim="tutor_rad_sign_clr" light_anim_cyclic="1" la_alpha="0" la_texture="1" xform_anim="tutor_rad_sign_xform" xform_anim_cyclic="1" alignment="c">
+				<auto_static start_time="0" length_sec="4" x="205" y="608" width="50" height="50"  stretch="1" light_anim="tutor_rad_sign_clr" light_anim_cyclic="1" la_alpha="0" la_texture="1" xform_anim="tutor_rad_sign_xform" xform_anim_cyclic="1" alignment="c">
 					<window_name>w1</window_name>
 					<texture>ui_highlight</texture>
 				</auto_static>
@@ -162,7 +162,7 @@
 			<grab_input>1</grab_input>
 			<pda_section>pda_contacts</pda_section>
 			<main_wnd>
-				<auto_static start_time="0" length_sec="4" x="357" y="608" width="50" height="50" stretch="1" light_anim="tutor_rad_sign_clr" light_anim_cyclic="1" la_alpha="0" la_texture="1" xform_anim="tutor_rad_sign_xform" xform_anim_cyclic="1" alignment="c">
+				<auto_static start_time="0" length_sec="4" x="305" y="608" width="50" height="50" stretch="1" light_anim="tutor_rad_sign_clr" light_anim_cyclic="1" la_alpha="0" la_texture="1" xform_anim="tutor_rad_sign_xform" xform_anim_cyclic="1" alignment="c">
 					<window_name>w1</window_name>
 					<texture>ui_highlight</texture>
 				</auto_static>
@@ -212,7 +212,7 @@
 			<grab_input>1</grab_input>
 			<pda_section>pda_diary</pda_section>
 			<main_wnd>
-				<auto_static start_time="0" length_sec="4" x="275" y="608" width="50" height="50" stretch="1" light_anim="tutor_rad_sign_clr" light_anim_cyclic="1" la_alpha="0" la_texture="1" xform_anim="tutor_rad_sign_xform" xform_anim_cyclic="1" alignment="c">
+				<auto_static start_time="0" length_sec="4" x="245" y="608" width="50" height="50" stretch="1" light_anim="tutor_rad_sign_clr" light_anim_cyclic="1" la_alpha="0" la_texture="1" xform_anim="tutor_rad_sign_xform" xform_anim_cyclic="1" alignment="c">
 					<window_name>w1</window_name>
 					<texture>ui_highlight</texture>
 				</auto_static>
@@ -231,7 +231,7 @@
 			<grab_input>1</grab_input>
 			<pda_section>pda_ranking</pda_section>
 			<main_wnd>
-				<auto_static start_time="0" length_sec="4" x="437" y="608" width="50" height="50" stretch="1" light_anim="tutor_rad_sign_clr" light_anim_cyclic="1" la_alpha="0" la_texture="1" xform_anim="tutor_rad_sign_xform" xform_anim_cyclic="1" alignment="c">
+				<auto_static start_time="0" length_sec="4" x="365" y="608" width="50" height="50" stretch="1" light_anim="tutor_rad_sign_clr" light_anim_cyclic="1" la_alpha="0" la_texture="1" xform_anim="tutor_rad_sign_xform" xform_anim_cyclic="1" alignment="c">
 					<window_name>w1</window_name>
 					<texture>ui_highlight</texture>
 				</auto_static>
@@ -250,7 +250,7 @@
 			<grab_input>1</grab_input>
 			<pda_section>pda_statistics</pda_section>
 			<main_wnd>
-				<auto_static start_time="0" length_sec="4" x="515" y="608" width="50" height="50" stretch="1" light_anim="tutor_rad_sign_clr" light_anim_cyclic="1" la_alpha="0" la_texture="1" xform_anim="tutor_rad_sign_xform" xform_anim_cyclic="1" alignment="c">
+				<auto_static start_time="0" length_sec="4" x="430" y="608" width="50" height="50" stretch="1" light_anim="tutor_rad_sign_clr" light_anim_cyclic="1" la_alpha="0" la_texture="1" xform_anim="tutor_rad_sign_xform" xform_anim_cyclic="1" alignment="c">
 					<window_name>w1</window_name>
 					<texture>ui_highlight</texture>
 				</auto_static>
@@ -269,7 +269,7 @@
 			<grab_input>1</grab_input>
 			<pda_section>pda_encyclopedia</pda_section>
 			<main_wnd>
-				<auto_static start_time="0" length_sec="6" x="622" y="608" width="50" height="50" stretch="1" light_anim="tutor_rad_sign_clr" light_anim_cyclic="1" la_alpha="0" la_texture="1" xform_anim="tutor_rad_sign_xform" xform_anim_cyclic="1" alignment="c">
+				<auto_static start_time="0" length_sec="6" x="505" y="608" width="50" height="50" stretch="1" light_anim="tutor_rad_sign_clr" light_anim_cyclic="1" la_alpha="0" la_texture="1" xform_anim="tutor_rad_sign_xform" xform_anim_cyclic="1" alignment="c">
 					<window_name>w1</window_name>
 					<texture>ui_highlight</texture>
 				</auto_static>

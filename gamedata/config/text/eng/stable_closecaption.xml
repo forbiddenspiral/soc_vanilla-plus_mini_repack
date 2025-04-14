@@ -1087,7 +1087,7 @@
 		<text>Come in, come in!</text>
 	</string>
 	<string id="bar_start_megafon-1">	<!-- copy of "dolg_speech-1" -->
-		<text>Attention stalkers! We need volunteers for dangerous but well payed missions. Come to the bar if you're interested.</text>
+		<text>Attention stalkers! We need volunteers for dangerous but well paid missions. Come to the bar if you're interested.</text>
 	</string>
 	<string id="bar_start_megafon-2">	<!-- copy of "dolg_speech-2" -->
 		<text>Stalkers! If you're looking for a place to rest, eat, drink, talk or finding some work, the 100 Rads bar is the place for you. We're always happy to serve new customers.</text>
@@ -1111,7 +1111,7 @@
 		<text>Attention! A murderer is present! To everyone on Duty territory: kill the murderer immediately!</text>
 	</string>
 	<string id="dolg_speech-1">
-		<text>Attention stalkers! We need volunteers for dangerous but well payed missions. Come to the bar if you're interested.</text>
+		<text>Attention stalkers! We need volunteers for dangerous but well paid missions. Come to the bar if you're interested.</text>
 	</string>
 	<string id="dolg_speech-2">
 		<text>Stalkers! If you're looking for a place to rest, eat, drink, talk or finding some work, the 100 Rads bar is the place for you. We're always happy to serve new customers.</text>
@@ -1267,10 +1267,10 @@
 		<text>Teams One and Two, check the first floor! Team Three, the main hall! Teams Four and Five, second floor!</text>
 	</string>
 	<string id="cc_characters_voice-scenario-val-val_desant_1">
-		<text>Base, this is Zero-Three-Four. We're right above the target.
+		<text>Base, this is 034. We're right above the target.
 		\n%c[255,240,217,182]Roger. Start the action!%c[default]
-		\nZero-Three-Two, drop your men onto the roof! Do you read me?
-		\n%c[255,216,186,140]Zero-Three-Two, roger. On the roof it is.%c[default]</text>
+		\n032, drop your men onto the roof! Do you read me?
+		\n%c[255,216,186,140]032, roger. On the roof it is.%c[default]</text>
 	</string>
 
 	<!-- Rostok -->
@@ -1701,8 +1701,8 @@
 		\nEliminate the trespassers. Suppress the intrusion.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-radar-rad_soldier_des_1">
-		<text>Base, this is Zero-Five-Six. Absence of radiation confirmed. No large enemy groups detected. Scrufa landed in the antennae area for reconnaissance. Standing by for further instructions. Over.
-		\n%c[255,216,186,140]Zero-Six-Five, this is base. Return home! Scrufa, report!%c[default]
+		<text>Base, this is 056. Absence of radiation confirmed. No large enemy groups detected. Scrufa landed in the antennae area for reconnaissance. Standing by for further instructions. Over.
+		\n%c[255,216,186,140]065, this is base. Return home! Scrufa, report!%c[default]
 		\n%c[255,240,217,182]Base, this is Scrufa. Minimal resistance. Someone has been here before us.%c[default]
 		\n%c[255,216,186,140]Scrufa, implement quarantine procedures in the antennae area! Eliminate quarantine violators on sight.%c[default]
 		\n%c[255,240,217,182]Base, roger.%c[default]</text>
@@ -1714,29 +1714,27 @@
 	</string>
 
 	<!-- Pripyat -->
-	<!-- 
 	<string id="cc_characters_voice-scenario-pri-heli_phrase1">
-		<text>Placeholder (pri).</text>
+		<text>Base, this is Staya 04, we'll be on site soon.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-pri-heli_phrase2">
-		<text>Placeholder (pri).</text>
+		<text>Good luck, Staya 04.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-pri-heli_phrase3">
-		<text>Placeholder (pri).</text>
+		<text>Base, 020, something's not right. Auditory hallucinations. Yes, I hear it. Damn, what was that?! No, no...! Base, I'm okay. False alarm.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-pri-heli_phrase4">
-		<text>Placeholder (pri).</text>
+		<text>Shit, 020 is going down!</text>
 	</string>
 	<string id="cc_characters_voice-scenario-pri-heli_phrase5">
-		<text>Placeholder (pri).</text>
+		<text>This is base. Continue to your destination.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-pri-heli_phrase6">
-		<text>Placeholder (pri).</text>
+		<text>These are our guys, we must help!</text>
 	</string>
 	<string id="cc_characters_voice-scenario-pri-heli_phrase7">
-		<text>Placeholder (pri).</text>
+		<text>Follow orders, Staya 04!</text>
 	</string>
-	-->
 	<string id="pri_followers_final_phrase2-0">
 		<text>Marked One, come here! We need to talk!</text>
 	</string>
@@ -1853,184 +1851,285 @@
 	</string>
 
 	<!-- AES -->
-	<!-- 
 	<string id="cc_characters_voice-scenario-aes-aes_2chopers_attack">
-		<text>Placeholder (aes).</text>
+		<text>052, "20" to the right, then "150", transformer shed - asshole with a launcher, silence him.
+		\nCopy, see him... Eat this!</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_blockpost_battle">
-		<text>Placeholder (aes).</text>
+		<text>Shit, three more just came out. Korshun 05, take them out!
+		\nKorshun here, I cut them down.
+		\nSapsan 03, into the bushes!</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_choper_anomaly">
-		<text>Placeholder (aes).</text>
+		<text>064, I'm above the spot, wor... Ah-ah-ah!
+		\nQuartet, 065 exploded upon landing. No sign of survivors.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_choper_crush">
-		<text>Placeholder (aes).</text>
+		<text>031, asshole with a launcher on the roof!
+		\nOh, shit! Chief, left engine!
+		\nHold it, hold it! Pull, come on! Fuck, that's i...</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_choper_hunt">
-		<text>Placeholder (aes).</text>
+		<text>Quartet, two "300" to the left, near a moat, got enemy movement.
+		\nShit! Chief, oil leak from the reduction gear!
+		\nCopy, got control on the bird! Ivan, some help!
+		\n064, eject!
+		\nNo good!</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_choper_hunt_1">
-		<text>Placeholder (aes).</text>
+		<text>Quartet, two "300" to the left, near a moat, got enemy movement.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_choper_hunt_2">
-		<text>Placeholder (aes).</text>
+		<text>Shit! Chief, oil leak from the reduction gear!
+		\nCopy, got control on the bird! Ivan, some help!
+		\n064, eject!
+		\nNo good!</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_choper_patrol">
-		<text>Placeholder (aes).</text>
+		<text>Ground to Air, where are we working?
+		\nAir here, marking my position with tracers. "250" left from the facade, light them up.
+		\nGround, got you. 052, do it, go!</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_chopers_begin">
-		<text>Placeholder (aes).</text>
+		<text>052, 051. Approaching target.
+		\nQuartet, this is 030. Approaching target.
+		\n030, you got two electronic recon vehicles disabled down there, check them.
+		\nQuartet, 030, roger.
+		\n064, we got movement down here. 052, make a pass, let's blast them.
+		\nEasy, let's do it.
+		\n051, looks clear, working.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_chopers_begin_1">
-		<text>Placeholder (aes).</text>
+		<text>Quartet, this is 030. Approaching target.
+		\n030, you got two electronic recon vehicles disabled down there, check them.
+		\nQuartet, 030, roger.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_chopers_begin_2">
-		<text>Placeholder (aes).</text>
+		<text>052, 051. Approaching target.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_chopers_begin_3">
-		<text>Placeholder (aes).</text>
+		<text>064, we got movement down here. 052, make a pass, let's blast them.
+		\nEasy, let's do it.
+		\n051, looks clear, working.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_desant_gate">
-		<text>Placeholder (aes).</text>
+		<text>Sapsan 05, watch the gates!
+		\nSapsan Actual, don't see them!
+		\nSending tracers!
+		\nSee them!
+		\nQuartet, Korshun in position, area clear. Got two "300".
+		\nKorshun, take positions. Await arrival of Yastreb and Sapsan.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_desant_gate2">
-		<text>Placeholder (aes).</text>
+		<text>Quartet, Sapsan. Approaching target. Got eyes on Korshun and Yastreb. We got one "200" and two "300".
+		\nSapsan, hold the objective. Yastreb, Korshun - continue movement.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_desant_more">
-		<text>Placeholder (aes).</text>
+		<text>Quartet, Sokol on the ground. Proceeding.
+		\nQuartet, Kanyuk on the ground. See the enemy, engaging.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_desant_more_1">
-		<text>Placeholder (aes).</text>
+		<text>Quartet, Sokol on the ground. Proceeding.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_desant_more_2">
-		<text>Placeholder (aes).</text>
+		<text>Quartet, Kanyuk on the ground. See the enemy, engaging.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_desant_proceed2">
-		<text>Placeholder (aes).</text>
+		<text>Quartet, Yastreb. Quiet so far. Proceeding.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_desant_proceed3">
-		<text>Placeholder (aes).</text>
+		<text>Quartet, Korshun in position. Proceeding.
+		\n051, cover Korshun. Status on ammo and fuel?
+		\nQuartet, 051. Ammo/fuel - 2/3. Roger on Korshun, en route.
+		\nTo all Korshuns! Fire at the entrance!</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_desant_proceed_part_1">
-		<text>Placeholder (aes).</text>
+		<text>Air, this is Ground. "60" to the left, then "200". Got enemy, marking ourselves with a flare, wipe their asses.
+		\nRead you, Ground. Mark it.
+		\nGround, I see you. See the hostiles, wait for splash.
+		\nAir, a little closer.
+		\nRoger.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_desant_proceed_part_2">
-		<text>Placeholder (aes).</text>
+		<text>Quartet, proceeding with the task. At position in 2 minutes.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_desant_proceed_part_3">
-		<text>Placeholder (aes).</text>
+		<text>Sapsan 05, son of a... go there! Sapsan 04, shoot the mutants!</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_desant_proceed_part_4">
-		<text>Placeholder (aes).</text>
+		<text>Quartet, Yastreb in position, got eyes on Korshun. No casualties.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_first_desant_wave">
-		<text>Placeholder (aes).</text>
+		<text>052, looks clear. Go to work.
+		\nAwesome, working.
+		\n051, in position, troops are on the ground.
+		\nQuartet, this is Korshun. On the ground, working.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_forth_desant_wave">
-		<text>Placeholder (aes).</text>
+		<text>018 finished work.
+		\nSergiy, danger right! Lower, lower! Over there!
+		\nQuartet, Pustelga! On the ground, engaging!
+		\nQuartet, heavy rotor damage! RTB!</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_monsters">
-		<text>Placeholder (aes).</text>
+		<text>Holy shit! Pustelga! There's a swarm of mutants... here!</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_monsters_ambush">
-		<text>Placeholder (aes).</text>
+		<text>Quartet, Pustelga! We're surrounded! Engaging! Got two "200", two "300". One is heavily wounded. Need help, send the birds!
+		\nRoger, help is on the way.
+		\nGround, Air. We'll wipe those assholes.
+		\nAir! Smoke on our position, mutants are around us! Wipe our perimeter!
+		\nCopy that, Ground.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_road_battle">
-		<text>Placeholder (aes).</text>
+		<text>Sokol 03, sector to the right! Quartet, we're engaging! Equipment is registering a blowout!
+		\nAll stations, get ready! Blowout is approaching! I repeat! Blowout is approaching!
+		\n048, 049, let's get the fuck out.
+		\n049, are you deaf or just stupid?!
+		\nWait one! Got shit down here...</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_second_desant_wave">
-		<text>Placeholder (aes).</text>
+		<text>051, work completed.
+		\n052, copy that. Cover me, working.
+		\nQuartet, this is Sapsan. On the ground.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes_third_desant_wave">
-		<text>Placeholder (aes).</text>
+		<text>Quartet, Yastreb on the ground.</text>
 	</string>
-	-->
 	<string id="cc_characters_voice-scenario-aes-aes2-aes2_trader_ask">
 		<text>Marked One?! What the hell...?!</text>
 	</string>
-	<!-- 	
 	<string id="cc_characters_voice-scenario-aes-aes2-aes_actor_hunt">
-		<text>Placeholder (aes2).</text>
+		<text>Air! There's some armored asshole running around near the transformer!
+		\nRoger, Ground. 051, see him? Work him.
+		\n052, working.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes2-aes_blowout_1">
-		<text>Placeholder (aes2).</text>
+		<text>Blowout, command. Let's get the fuck off.
+		\nGround, find cover! We're out.
+		\nCome on, come on. Get out.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes2-aes_blowout_2">
-		<text>Placeholder (aes2).</text>
+		<text>To all stations! Blowout! Spread out into covers!
+		\nHoly shit! Chief, the readings are off the scales!
+		\nMove, move!
+		\nIf only there was a nice hole to cover in...</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes2-aes_blowout_3">
-		<text>Placeholder (aes2).</text>
+		<text>All Yastrebs, find cover!
+		\nCommand! We'll get fried out here! We need proper cover!
+		\nSapsan! Let's get the boys inside!
+		\nCopy that, Yastreb!
+		\nSapsan, listen up! Concentrate fire on the plant entrance!
+		\nAlright, looks clear! Sapsan 06, cover us! That's it, come one! Let's move, let's move!</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes2-aes_bridge_ambush_1">
-		<text>Placeholder (aes2).</text>
+		<text>Quartet, Grif. In position, proceeding.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes2-aes_bridge_ambush_2">
-		<text>Placeholder (aes2).</text>
+		<text>All Grifs, take 360 security. Quartet, Grif. Got into an ambush on the bridge, taking fire. Got one "200", one "300", need help!
+		\nGround, we hear you, coming over.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes2-aes_choper_down_1">
-		<text>Placeholder (aes2).</text>
+		<text>Wait!</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes2-aes_choper_down_2">
-		<text>Placeholder (aes2).</text>
+		<text>Kolya is down!
+		\nQuartet, 098. Got eyes on crashed 097. Fuck...</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes2-aes_choper_down_3">
-		<text>Placeholder (aes2).</text>
+		<text>Ground! Where the hell are they shooting at me from?! Give me a direc...
+		\nQuartet! 097 is down. 500 meters south of the entrance.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes2-aes_commander_out">
-		<text>Placeholder (aes2).</text>
+		<text>Grif, establish defense! Wait until the mechanized forc...
+		\nQuartet, Grif, repeat last! Quartet, do not copy!
+		\nQuartet! This is Kanyuk. Confirm last!
+		\nQuartet, Grif, do not copy! Quartet! Repeat last!</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes2-aes_enter_battle_1">
-		<text>Placeholder (aes2).</text>
+		<text>Alex, stay outta here, you'll get downed!
+		\nDon't worry, Ground, all's gonna be alri...
+		\nQuartet, 098 is down, fuck...
+		\nQuartet, Grif! Need a pair of 24s.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes2-aes_road_battle_2">
-		<text>Placeholder (aes2).</text>
+		<text>Sapsan 05, behind the carts on the rails.
+		\nSapsan Actual, don't see them.
+		\nTracing.
+		\nSee them!
+		\nMinus one!</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes2-aes_road_battle_3">
-		<text>Placeholder (aes2).</text>
+		<text>Air, behind a bulldozer, on the road, wipe 'em!
+		\nCopy that, Ground, will do.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes2-aes_road_battle_4">
-		<text>Placeholder (aes2).</text>
+		<text>Yastreb 03, Yastreb 06! Hey, go to the right, through that wall opening!</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes2-aes_road_battle_5">
-		<text>Placeholder (aes2).</text>
+		<text>All Pustelga stations, fire from the roof! Get down! Korshun, keep your head down! Air, marking with flare! On the roof, straight "200", "50" to the right, near pipeline, sniper!
+		\nRoger, Ground.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes2-aes_road_battle_6">
-		<text>Placeholder (aes2).</text>
+		<text>Quartet, Yastreb. A lot of broken vehicles on the road, enemy behind them. No idea on the count. Better clean that up.
+		\nGround, I'm above you, mark yourselves.
+		\nYastreb here, look for tracers.
+		\nGround, see you. Engaging. Stay in your cover for now.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes2-aes_road_battle_7">
-		<text>Placeholder (aes2).</text>
+		<text>Sokol 05, shit! Don't waste the ammo, not on training!
+		\nChief, three behind the pipes!
+		\nAll Sokol stations! Assholes behind the pipes, to the left!</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes2-aes_road_battle_8">
-		<text>Placeholder (aes2).</text>
+		<text>Quartet, Kanyuk. Quiet here for now, proceeding.
+		\nAttention all Kanyuk stations! Grenadier, on the right! Spread out!
+		\nKanyuk 05, watch the roof corner!</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes2-aes_rpg_1">
-		<text>Placeholder (aes2).</text>
+		<text>Pustelga! I see grenade launchers!</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes2-aes_rpg_2">
-		<text>Placeholder (aes2).</text>
+		<text>Pustelga, spread out! Air, "30" right, "200" further, I see three with RPGs!
+		\nGround, got it. 052, proceed with caution. Engage!</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes2-aes_rpg_3">
-		<text>Placeholder (aes2).</text>
+		<text>Korshun, RPG behind the train cars!
+		\nAll Korshuns, attention! Grenade launcher behind the train cars!
+		\nKorshun 05, take care of it!
+		\nGot it!</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes2-aes_seven_desant_wave">
-		<text>Placeholder (aes2).</text>
+		<text>Quartet, 098, engaging.
+		\nQuartet, Grif. In position, proceeding.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes2-aes_six_desant_wave">
-		<text>Placeholder (aes2).</text>
+		<text>Quartet, Lun on the ground. Moving to objective. Command, "150" to the left, got someone behind rebar. Can't identify.
+		\nSokol, this is Lun, identify yourselves. All Lun stations! Enemy squad on the left, behind rebar. Lun 05, Lun 02 - cover us!
+		\nGround, I hear you, coming to help.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes2-aes_sniper_desant">
-		<text>Placeholder (aes2).</text>
+		<text>Quartet, 097, we're above the target. Looks clear, but there's little space, can't land. We'll go for fast-rope.
+		\n097, copy. Go ahead.
+		\nQuartet, 097. We're done. RTB.
+		\nQuartet, Sova. All accounted for, taking position.
+		\nCopy that, Sova. Be careful with friendly fire.
+		\nRoger, Quartet. No problem.</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes2-aes_sniper_talk">
-		<text>Placeholder (aes2).</text>
+		<text>I don't envy the other one, but this will change. Anyway, you will be mine, and you won't go anywhere...
+		\nSova 03, don't clutter the comms!</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes2-aes_snipers_out">
-		<text>Placeholder (aes2).</text>
+		<text>Air, sending tracers! Looks like assholes with optics!
+		\nGround, copy that. Wait for splash...</text>
 	</string>
 	<string id="cc_characters_voice-scenario-aes-aes2-aes_unknown_weapon">
-		<text>Placeholder (aes2).</text>
+		<text>Quartet, Yastreb. Enemy is using unidentified weaponry. I got two "200" and one "300".
+		\nYastreb, copy that. Don't expose yourself, let Air handle it.
+		\nYastreb, we're above you. Mark the target.</text>
 	</string>
-	-->
 	<!-- Sarcofag -->
 	
 	<string id="cc_characters_voice-scenario-sarcofag-monolith_call_1">
@@ -2119,4 +2218,66 @@
 	</string>
 	<string id="cc_monsters-poltergeist-die_0">
 		<text>[poltergeist death]</text>
+	</string>
+
+	<!-- Sidorovich's PDA tutorial -->
+	<string id="cc_characters_voice-scenario-trader-trader_tutorial_pda_1-1">
+		<text>This is your personal PDA. This useful device will help you survive in the zone. And if you do die, others will know where and how.</text>
+	</string>
+	<string id="cc_characters_voice-scenario-trader-trader_tutorial_pda_1-2">
+		<text>Just kidding. Here, let me remind you how to use it.</text>
+	</string>
+	<string id="cc_characters_voice-scenario-trader-trader_tutorial_pda_2">
+		<text>Your tasks can be found in the first section of the PDA.</text>
+	</string>
+	<string id="cc_characters_voice-scenario-trader-trader_tutorial_pda_3">
+		<text>Most tasks have buttons which allow you to access additional information on the task.</text>
+	</string>
+	<string id="cc_characters_voice-scenario-trader-trader_tutorial_pda_4">
+		<text>Remember, each new task is automatically shown on your mini-map.</text>
+	</string>
+	<string id="cc_characters_voice-scenario-trader-trader_tutorial_pda_5">
+		<text>Moving on, the second section on the PDA is the map.</text>
+	</string>
+	<string id="cc_characters_voice-scenario-trader-trader_tutorial_pda_6">
+		<text>Buttons above the map allow you to zoom in and out.</text>
+	</string>
+	<string id="cc_characters_voice-scenario-trader-trader_tutorial_pda_7">
+		<text>Oh, you can also center them upon yourself, and what else?</text>
+	</string>
+	<string id="cc_characters_voice-scenario-trader-trader_tutorial_pda_9">
+		<text>I'm sure you'll work it out. It's not very complicated. The PDA also has a contact section.</text>
+	</string>
+	<string id="cc_characters_voice-scenario-trader-trader_tutorial_pda_11-1">
+		<text>The contacts section contains a list of stalkers within 50 meters of you. You can see a brief description, rank, group allegiance, and probable attitude towards you here.</text>
+	</string>
+	<string id="cc_characters_voice-scenario-trader-trader_tutorial_pda_11-2">
+		<text>Remember that while you're neutral, the way other stalkers feel towards you depends on you alone. Note how someone's attitude towards you changes when you help them.</text>
+	</string>	
+	<string id="cc_characters_voice-scenario-trader-trader_tutorial_pda_12-1">
+		<text>Be careful if enemies are around. They're marked red on the visor. Friends are green and neutrals are yellow. Oh, and PDAs of dead stalkers are gray. Helps if you're into looting corpses.</text>
+	</string>
+	<string id="cc_characters_voice-scenario-trader-trader_tutorial_pda_12-2">
+		<text>What else? Oh yeah, there's a diary, too.</text>
+	</string>
+	<string id="cc_characters_voice-scenario-trader-trader_tutorial_pda_13">
+		<text>Well, what is there to say about it? All the information you need is noted in your journal. And news, too. Even what I am telling you right now can be found in this section. Then there's a rating section.</text>
+	</string>
+	<string id="cc_characters_voice-scenario-trader-trader_tutorial_pda_14">
+		<text>You can see the top 20 stalkers I know. I refresh this info from time to time to keep up the competitive spirit. Maybe you'll be at the top of this list someday. Who knows? Your own achievements are noted in the stats section.</text>
+	</string>
+	<string id="cc_characters_voice-scenario-trader-trader_tutorial_pda_14_1">
+		<text>It's pretty much self-explanatory. And then we have the encyclopedia.</text>
+	</string>
+	<string id="cc_characters_voice-scenario-trader-trader_tutorial_pda_15">
+		<text>It contains information about the zone and survival advice which you find or are given by other stalkers. That's basically it, I think.</text>
+	</string>
+	<string id="cc_characters_voice-scenario-trader-trader_tutorial_pda_15_1-1">
+		<text>Oh, one more thing. Your PDA model has a wide-frequency radio wave scanner with an in-built decoder. Its radius of operation is about 400 meters, so you can even intercept military comms.</text>
+	</string>
+	<string id="cc_characters_voice-scenario-trader-trader_tutorial_pda_15_1-2">
+		<text>Mine has a working radius of 30 kilometers, so I can always get in touch with you. I'll give you the tasks and the latest news.</text>
+	</string>
+	<string id="cc_characters_voice-scenario-trader-trader_tutorial_pda_15_1-3">
+		<text>Initially, I'll give you advice, too. So, is everything clear, or should I repeat?</text>
 	</string>
