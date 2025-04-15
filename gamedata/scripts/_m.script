@@ -1,5 +1,5 @@
 ----------------------------------
--- forgottenspiral
+-- forbiddenspiral
 -- based on _z.script by NatVac and PartyBoat
 ----------------------------------
 function show_HUD_msg(static_id_string, msg_text, time)
