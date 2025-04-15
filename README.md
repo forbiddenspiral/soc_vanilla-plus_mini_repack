@@ -1,4 +1,4 @@
-# Vanilla+ Personal Mini Repack - S.T.A.L.K.E.R.: SOC Edition
+# Vanilla+ Personal Mini Repack
 
 ## Based mainly on ZRP v1.07 R5 RC + Custom Gameplay Tweaks
 
@@ -11,8 +11,8 @@ Through this project, I've gained a newfound appreciation for certain vanilla fe
 **General Notes:**
 
 - Core gameplay mechanics like ballistics, damage systems, and AI remain faithful to the vanilla experience. Player attributes have been adjusted to align more closely with the values found in CS and COP. Item consumable properties are modified by the Medicine Mod.
-- Due to time constraints and limited modding experience. An optional "Alternative Ballistics Core" addon is planned to potentially port these features directly from SRP in the future.
-- Original graphics and visuals are preserved. While graphical/texture mods aren't currently included, Stalker Weather Overhaul (SWO) is being considered to potentially enhance visuals and performance through shaders.
+- Due to time constraints and limited modding experience. An optional "Alternative Ballistics" addon is planned to potentially port these features directly from SRP in the future.
+- Original graphics and visuals are preserved.
 - Limited compatibility: supports 16:9 aspect ratio monitors, resolutions up to 1920x1080, and English language (subtitles included).
 
 **Credits and Thanks:**
@@ -24,7 +24,7 @@ Through this project, I've gained a newfound appreciation for certain vanilla fe
     - <https://www.amk-team.ru/forum/topic/12674-medicina/>
     - <https://www.moddb.com/mods/stalker-animationssounds-for-consumables/downloads/medicine-rc-ver1-1>
   - Decane1: "SRP v1.1.4" <https://www.moddb.com/mods/srp/downloads/srp-v114>
-  - forbiddenspiral: "InGameCC mod v0.4 for ZRP 1.07 R5RC" <https://www.moddb.com/games/stalker/addons/mini-update-ingamecc-for-zrp>
+  - forbiddenspiral: "InGameCC mod for ZRP 1.07 R5RC" <https://www.moddb.com/games/stalker/addons/mini-update-ingamecc-for-zrp>
   - GSC: "SDK 0.4 (Shadows of Chernobyl) from Anomaly Modding Book" <https://sharedby.blomp.com/gI0i4B>
   - Helios: "Atlas (Spawn Menu) Mod 1.1" <https://www.moddb.com/mods/atlas-spawn-menu/downloads/atlas-spawn-menu-mod-1-1>
   - imperialreign: "Additional Nightvisions + Anomaly Effects 1.5" <https://www.moddb.com/games/stalker/addons/additional-nightvisions-anomaly-effects-1-5>
