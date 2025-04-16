@@ -1,5 +1,21 @@
 # Changelog
 
+v0.9 - 04/16/2025
+
+- Optional Features:
+  - Nimble Repairs (Early Game): Added an optional feature allowing Nimble to repair weapons and armor after being rescued from the Bandits at the Car Park. This provides an early-game alternative to Captain Ivantsov and Screw.
+  - Adapted Vanilla Text Files: Introduced an optional feature that merges vanilla game text files with ZRP's, maintaining compatibility with certain features like Skinflint's artifact swapping. This also includes fixes for four missing string lines identified in the previous WIP patch. Note: Further updates to these files may be needed for minor vanilla text errors.
+  - Reduced Iron Sight Zoom & Tracers: Implemented an optional feature with two weapon enhancements:
+    - Reduced Iron Sight Zoom: Adjusted zoom levels for a more realistic aiming experience.
+    - Tracers for Specific Ammo: Enabled tracers for 9x18, .45, and 12x70 ammunition for improved visual feedback.
+  - Disable Medicine Mod: Added an option to disable the Medicine Mod, reverting consumable items to their original vanilla properties and removing associated long usage and sound effects.
+- Bug Fixes:
+  - Medicine Mod CTD on Non-Widescreen: Fixed a crash related to using consumable items on monitors with non-widescreen aspect ratios and non-widescreen resolutions by updating ui_custom_msgs.xml.
+- Gameplay Adjustments:
+  - Restored Vanilla Grid Cell Size (Non-Widescreen): Reverted a ZRP feature that set a smaller default inventory grid cell size on non-widescreen monitors, restoring the original, larger vanilla size. Also includes a fix for trader menu scrollbar behavior.
+- Mod Updates:
+  - Updated InGameCC Mod (v0.5): Updated the InGameCC mod to version 0.5, compatible with ZRP v1.07 R5RC. This update includes various fixes, new features like Sidorovich's PDA tutorial, revised subtitle text, completed translation for military radio communication at CNPP, and restoration of some vanilla behaviors.
+
 v0.8 - 05/12/2024
 
 - Updated inventory icon for MP5: The inventory icon for the MP5 has been replaced with one that better matches the world model used by the OSRM mod.

@@ -9,7 +9,7 @@
 ----------------------------------
 
 -- Put your mod's name and version here
-mod_version_str = "ZRP 1.07 R5 RC - Mini Repack 0.8"
+mod_version_str = "ZRP 1.07 R5 RC - Mini Repack 0.9"
 
 -- set this var true if you want debug and bug workaround support
 zrp_debug_enabled = false
